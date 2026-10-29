@@ -76,8 +76,8 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 
 <style>
   /* ---------- Eintrittskarte ---------- */
-  .ticket { display: grid; grid-template-columns: minmax(0, 1fr) 220px; background: var(--elfenbein); box-shadow: 0 34px 70px -40px rgba(43, 32, 24, .55), 0 2px 8px rgba(43, 32, 24, .06); position: relative; animation: hereingleiten .8s var(--weich) .15s both; }
-  .ticket__haupt { padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--blattgold); border-right: 0; outline: 1px solid var(--blattgold); outline-offset: -9px; }
+  .ticket { display: grid; grid-template-columns: minmax(0, 1fr) 220px; filter: drop-shadow(0 22px 26px rgba(43, 32, 24, .2)) drop-shadow(0 2px 3px rgba(43, 32, 24, .08)); position: relative; animation: hereingleiten .8s var(--weich) .15s both; }
+  .ticket__haupt { background: var(--elfenbein); padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--blattgold); border-right: 0; outline: 1px solid var(--blattgold); outline-offset: -9px; }
   .ticket__oben { color: var(--rot); display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin-bottom: 6px; }
   .ticket__countdown { font-family: var(--titel); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 19px; color: var(--gold); }
   .ticket__datum { font-family: var(--titel); font-size: clamp(22px, 2.6vw, 28px); color: var(--tinte-2); }
@@ -87,9 +87,10 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
   .ticket__programm { font-size: 17px; color: var(--tinte-3); }
   .ticket__knopf { align-self: flex-start; margin-top: 18px; }
   .ticket__abriss { position: relative; background: var(--rot); color: var(--elfenbein); padding: 28px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; border-left: 2px dashed rgba(255, 252, 245, .55); background-image: radial-gradient(ellipse 120% 70% at 50% 0%, rgba(201, 164, 92, .25), transparent 70%); }
-  .ticket__abriss::before, .ticket__abriss::after { content: ''; position: absolute; left: -15px; width: 28px; height: 28px; border-radius: 50%; background: var(--papier); }
-  .ticket__abriss::before { top: -14px; }
-  .ticket__abriss::after { bottom: -14px; }
+  /* echte Ausstanzungen an der Abrisskante: Halbkreise werden aus beiden Teilen herausmaskiert */
+  .ticket { --loch: 14px; }
+  .ticket__haupt { -webkit-mask: radial-gradient(circle var(--loch) at 100% 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 100%, transparent 97%, #000 100%); mask: radial-gradient(circle var(--loch) at 100% 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 100%, transparent 97%, #000 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  .ticket__abriss { -webkit-mask: radial-gradient(circle var(--loch) at 0 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 0 100%, transparent 97%, #000 100%); mask: radial-gradient(circle var(--loch) at 0 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 0 100%, transparent 97%, #000 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
   .ticket__tag { font-family: var(--titel); font-weight: 500; font-size: 96px; line-height: .9; }
   .ticket__monat { font-size: 15px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--blattgold-hell); }
   .ticket__jahr { font-family: var(--titel); font-style: italic; font-size: 20px; }
@@ -98,9 +99,8 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
     .ticket { grid-template-columns: 1fr; }
     .ticket__haupt { border-right: 1px solid var(--blattgold); border-bottom: 0; }
     .ticket__abriss { flex-direction: row; flex-wrap: wrap; gap: 4px 12px; padding: 18px 20px; border-left: 0; border-top: 2px dashed rgba(255, 252, 245, .55); }
-    .ticket__abriss::before, .ticket__abriss::after { top: -15px; left: auto; }
-    .ticket__abriss::before { left: -14px; }
-    .ticket__abriss::after { right: -14px; bottom: auto; }
+    .ticket__haupt { -webkit-mask: radial-gradient(circle var(--loch) at 0 100%, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 100%, transparent 97%, #000 100%); mask: radial-gradient(circle var(--loch) at 0 100%, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 100%, transparent 97%, #000 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
+    .ticket__abriss { -webkit-mask: radial-gradient(circle var(--loch) at 0 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 0, transparent 97%, #000 100%); mask: radial-gradient(circle var(--loch) at 0 0, transparent 97%, #000 100%), radial-gradient(circle var(--loch) at 100% 0, transparent 97%, #000 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
     .ticket__tag { font-size: 44px; }
     .ticket__fuss { display: none; }
   }
