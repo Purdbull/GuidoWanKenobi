@@ -41,7 +41,20 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Seitenwechsel: weiches Überblenden statt hartem Schnitt (Chrome, Edge, Safari 18.2+).
+   Kopfzeile bleibt stehen, der Inhalt blendet aus und steigt sanft neu ein. */
+@view-transition { navigation: auto; }
+.kopf { view-transition-name: kopf; }
+main { view-transition-name: inhalt; }
+::view-transition-group(*) { animation-duration: .55s; animation-timing-function: cubic-bezier(.22,.7,.2,1); }
+::view-transition-old(root),
+::view-transition-old(inhalt) { animation: seite-aus .26s cubic-bezier(.4,0,1,1) both; }
+::view-transition-new(root) { animation: seite-ein .5s cubic-bezier(.2,.7,.2,1) .12s both; }
+::view-transition-new(inhalt) { animation: seite-ein-hoch .62s cubic-bezier(.2,.7,.2,1) .12s both; }
+@keyframes seite-aus { to { opacity: 0; } }
+@keyframes seite-ein { from { opacity: 0; } }
+@keyframes seite-ein-hoch { from { opacity: 0; transform: translateY(14px); } }
 
 body {
   margin: 0;

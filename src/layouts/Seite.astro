@@ -12,6 +12,7 @@ const {
 } = Astro.props;
 
 const kanonisch = new URL(Astro.url.pathname, Astro.site);
+const BASIS = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 // Solange die Seite nur unter github.io läuft: nicht bei Google aufnehmen (sonst doppelte Inhalte zu mancusi.at)
 const vorschau = Astro.site?.hostname !== 'mancusi.at';
 const bildUrl = new URL(url(bild), Astro.site);
@@ -57,6 +58,8 @@ const person = {
   <meta property="og:image" content={bildUrl} />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  {/* Unterseiten schon beim Draufzeigen vorladen – der Wechsel wirkt dann sofort (Chrome/Edge) */}
+  <script type="speculationrules" set:html={JSON.stringify({ prerender: [{ where: { and: [{ href_matches: `${BASIS}*` }, { not: { href_matches: '*.mp3' } }, { not: { href_matches: BASIS } }, { not: { href_matches: `${BASIS}#*` } }] }, eagerness: 'moderate' }] })} />
 </head>
 <body>
   <a class="springe" href="#inhalt">Zum Inhalt springen</a>

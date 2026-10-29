@@ -60,8 +60,9 @@
 
 <script>
   document.querySelectorAll('.auftakt').forEach((knopf) => {
-    knopf.addEventListener('click', () => {
-      knopf.querySelectorAll('svg').forEach((svg) => { const neu = svg.cloneNode(true); svg.replaceWith(neu); });
-    });
+    const neuStarten = () => knopf.querySelectorAll('svg').forEach((svg) => { const neu = svg.cloneNode(true); svg.replaceWith(neu); });
+    knopf.addEventListener('click', neuStarten);
+    // Falls die Seite im Hintergrund vorgeladen wurde: Auftakt erst beim tatsächlichen Öffnen spielen
+    if (document.prerendering) document.addEventListener('prerenderingchange', neuStarten, { once: true });
   });
 </script>
