@@ -26,6 +26,16 @@
   --gold-hell: #9A6F2A;
   --hell-auf-dunkel: #CDBB9C;
 
+  /* Opernhaus: Samtrot, Blattgold, Elfenbein, dunkle Bühne */
+  --elfenbein: #FFFCF5;
+  --nacht: #1D1511;
+  --nacht-2: #2A1F18;
+  --samt: #6E1C1A;
+  --samt-dunkel: #561513;
+  --blattgold: #C9A45C;
+  --blattgold-hell: #E2C88E;
+  --rot-leuchtend: #A8392A;
+
   --titel: 'Libre Bodoni', Didot, 'Bodoni 72', Georgia, serif;
   --text: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --noten: 'Noto Music', serif;
@@ -123,6 +133,23 @@ h1, h2, h3, p { margin: 0; }
 .knopf--linie:hover { background: var(--tinte); color: var(--papier-hell); transform: translateY(-1px); }
 .mehr { align-self: flex-start; color: var(--tinte); font-size: 15px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--tinte); padding-bottom: 2px; min-height: 44px; display: inline-flex; align-items: flex-end; transition: color .35s var(--weich), border-color .35s var(--weich); }
 .mehr:hover { color: var(--rot); border-color: var(--rot); }
+.knopf--gold { background: var(--blattgold); color: var(--nacht); }
+.knopf--gold:hover { background: var(--blattgold-hell); color: var(--nacht); transform: translateY(-1px); }
+.mehr--hell { color: var(--elfenbein); border-color: var(--blattgold); }
+.mehr--hell:hover { color: var(--blattgold-hell); border-color: var(--blattgold-hell); }
+
+/* ---------- Bühne: dunkle, randlose Fläche mit Scheinwerferlicht ---------- */
+.buehne { margin-top: var(--abstand); background-color: var(--nacht); background-image: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(201, 164, 92, .16), transparent 70%), radial-gradient(ellipse 120% 80% at 50% 120%, rgba(110, 28, 26, .35), transparent 70%); color: var(--papier); position: relative; }
+.buehne::before, .buehne::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blattgold) 20%, var(--blattgold) 80%, transparent); opacity: .6; }
+.buehne::before { top: 10px; }
+.buehne::after { bottom: 10px; }
+
+/* ---------- Elfenbein-Blatt: helle Fläche mit Goldrahmen ---------- */
+.blatt { background: var(--elfenbein); border: 1px solid var(--blattgold); outline: 1px solid var(--blattgold); outline-offset: -9px; box-shadow: 0 30px 60px -36px rgba(43, 32, 24, .45), 0 2px 8px rgba(43, 32, 24, .06); }
+
+/* beim Sichtbarwerden einmal abspielen (Klasse setzt ein kleines Skript im Seitenlayout) */
+[data-sichtbar] .gestaffelt { opacity: 0; transform: translateY(14px); }
+[data-sichtbar].ist-sichtbar .gestaffelt { animation: hereingleiten .7s var(--weich) both; animation-delay: calc(var(--i, 0) * 45ms); }
 
 /* ---------- Abschnitte ---------- */
 .abschnitt { padding-top: var(--abstand); display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 24px; }
@@ -130,7 +157,7 @@ h1, h2, h3, p { margin: 0; }
 .tempo { font-family: var(--titel); font-weight: 600; font-size: 19px; color: var(--tinte-2); }
 .tempo .note { font-size: 1.45em; line-height: 0; margin: 0 .05em; }
 .abschnitt__titel { display: flex; align-items: center; gap: 22px; }
-.ziffer { flex: 0 0 52px; width: 52px; height: 52px; border: 1.5px solid var(--tinte); display: inline-flex; align-items: center; justify-content: center; font-family: var(--titel); font-size: 28px; font-weight: 700; }
+.ziffer { flex: 0 0 52px; width: 52px; height: 52px; background: var(--rot); color: var(--elfenbein); box-shadow: inset 0 0 0 4px var(--rot), inset 0 0 0 5px rgba(255, 252, 245, .55); display: inline-flex; align-items: center; justify-content: center; font-family: var(--titel); font-size: 28px; font-weight: 700; }
 .abschnitt__titel h1, .abschnitt__titel h2 { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.015em; }
 .einleitung { max-width: 760px; font-size: 22px; line-height: 1.5; text-wrap: pretty; }
 

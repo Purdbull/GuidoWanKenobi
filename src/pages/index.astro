@@ -5,16 +5,15 @@ import Abschnittskopf from '../components/Abschnittskopf.astro';
 import TerminListe from '../components/TerminListe.astro';
 import WerkListe from '../components/WerkListe.astro';
 import Hoerbeispiele from '../components/Hoerbeispiele.astro';
+import Plakat from '../components/Plakat.astro';
 import {
   texte, url, kommendeTermine, datum, terminZeile, termineFuerClient,
-  werkeNeuesteZuerst, REPERTOIRE_KATEGORIEN, repertoireKurz,
+  werkeNeuesteZuerst,
 } from '../lib/daten.js';
 
 const kommend = kommendeTermine();
 const naechster = kommend[0];
 const nd = naechster ? datum(naechster.von, naechster.bis) : null;
-const KARTEN_NAMEN = { 'Konzerte und Kirchenmusik': 'Konzerte' };
-const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
 ---
 <Seite aktiv="start">
   <section class="held huelle" aria-label="Guido Mancusi">
@@ -64,7 +63,8 @@ const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
     <a class="mehr" href={url('werke/')}>Gesamtes Werkverzeichnis</a>
   </section>
 
-  <section class="zitat huelle aufziehen" aria-label="Zitat">
+  <section class="buehne" aria-label="Zitat">
+   <div class="zitat huelle aufziehen">
     <figure class="foto zitat__foto">
       <img src={url('bilder/guido-mancusi-dirigat.webp')} width="1007" height="670" alt="Guido Mancusi beim Dirigieren vor Publikum" loading="lazy" />
     </figure>
@@ -73,20 +73,12 @@ const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
       <p>„{texte.zitat}.“</p>
       <footer class="versal">Guido Mancusi</footer>
     </blockquote>
+   </div>
   </section>
 
   <section id="repertoire" class="abschnitt huelle aufziehen">
     <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" />
-    <div class="karten">
-      {REPERTOIRE_KATEGORIEN.map((kat, i) => (
-        <div class="karte">
-          <span class="karte__nr">{ROEMISCH[i]}</span>
-          <h3>{KARTEN_NAMEN[kat] || kat}</h3>
-          <p>{repertoireKurz(kat).slice(0, 9).join(', ')}</p>
-        </div>
-      ))}
-    </div>
-    <a class="mehr" href={url('repertoire/')}>Vollständiges Repertoire</a>
+    <Plakat />
   </section>
 
   <section id="hoeren" class="abschnitt huelle aufziehen">
@@ -98,8 +90,8 @@ const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
         <h3>{texte.cd.titel}</h3>
         <p>Orchesterwerke von Guido Mancusi, eingespielt auf CD.</p>
         <div class="cd__links">
-          <a class="knopf knopf--rot" href={texte.cd.url}>Zur CD</a>
-          <a class="mehr" href={texte.cd.alle}>Alle Aufnahmen</a>
+          <a class="knopf knopf--gold" href={texte.cd.url}>Zur CD</a>
+          <a class="mehr mehr--hell" href={texte.cd.alle}>Alle Aufnahmen</a>
         </div>
       </aside>
     </div>
@@ -140,20 +132,21 @@ const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
   .held__foto { flex: 0 1 420px; min-width: 0; animation: fade 1.4s ease-out .6s both; }
   @keyframes steigen { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
-  .zitat { padding-top: var(--abstand); display: flex; flex-direction: column; align-items: center; gap: 44px; }
+  .zitat { padding-block: clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; gap: 44px; }
   .zitat__foto { width: 100%; max-width: 1040px; }
   .zitat__foto img { aspect-ratio: 1007 / 520; object-fit: cover; object-position: 50% 30%; }
   .zitat__text { margin: 0; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
-  .zitat__fermate { font-size: 104px; line-height: .7; color: var(--rot); }
-  .zitat__text p { font-family: var(--titel); font-style: italic; font-size: clamp(38px, 5.4vw, 68px); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
-  .zitat__text footer { color: var(--tinte-2); letter-spacing: .3em; }
+  .zitat__foto { background: var(--nacht-2); border-color: rgba(201, 164, 92, .55); outline-color: rgba(201, 164, 92, .35); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .8); }
+  .zitat__fermate { font-size: 104px; line-height: .7; color: var(--blattgold); }
+  .zitat__text p { font-family: var(--titel); font-style: italic; font-size: clamp(38px, 5.4vw, 68px); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; color: var(--elfenbein); }
+  .zitat__text footer { color: var(--blattgold); letter-spacing: .3em; }
 
   .hoeren { display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start; }
   .hoeren__spuren { flex: 2 1 520px; min-width: 0; }
-  .cd { flex: 1 1 300px; min-width: 0; padding: 34px 32px; background-color: var(--band); border: 1px solid var(--linie); outline: 1px solid var(--linie); outline-offset: -8px; display: flex; flex-direction: column; gap: 14px; }
-  .cd__label { color: var(--rot); font-size: 14px; }
-  .cd h3 { font-family: var(--titel); font-style: italic; font-weight: 400; font-size: 34px; line-height: 1.12; }
-  .cd p { color: var(--tinte-2); }
+  .cd { flex: 1 1 300px; min-width: 0; padding: 38px 34px; background-color: var(--samt); background-image: radial-gradient(ellipse 90% 70% at 30% 0%, rgba(201, 164, 92, .18), transparent 70%), linear-gradient(160deg, var(--samt), var(--samt-dunkel)); outline: 1px solid rgba(201, 164, 92, .7); outline-offset: -9px; box-shadow: 0 30px 60px -32px rgba(86, 21, 19, .7); display: flex; flex-direction: column; gap: 14px; color: var(--papier); }
+  .cd__label { color: var(--blattgold); font-size: 14px; }
+  .cd h3 { font-family: var(--titel); font-style: italic; font-weight: 400; font-size: 34px; line-height: 1.12; color: var(--elfenbein); }
+  .cd p { color: var(--hell-auf-dunkel); }
   .cd__links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
 
   .bio { display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start; }
@@ -163,7 +156,7 @@ const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
   .bio__erster::first-letter { float: left; font-family: var(--titel); font-weight: 500; font-size: 96px; line-height: .82; padding: 8px 12px 0 0; color: var(--rot); }
   .bio__zahlen { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 20px 28px; margin-top: 10px; border-top: 3px double var(--tinte); padding-top: 20px; }
   .bio__zahlen div { display: flex; flex-direction: column; gap: 4px; }
-  .bio__zahlen span { font-family: var(--titel); font-weight: 500; font-size: 34px; line-height: 1; }
+  .bio__zahlen span { font-family: var(--titel); font-weight: 500; font-size: 34px; line-height: 1; color: var(--rot); }
   .bio__zahlen em { font-size: 17px; color: var(--tinte-2); }
   @media (max-width: 760px) { .bio__absatz { font-size: 19px; } }
 </style>

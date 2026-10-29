@@ -5,6 +5,7 @@ import werkeRoh from '../data/werke.json';
 import repertoireRoh from '../data/repertoire.json';
 import hoerbeispiele from '../data/hoerbeispiele.json';
 import texte from '../data/texte.json';
+import { LEBENSDATEN, lebenszeit, kurzname } from './komponisten.js';
 
 export { hoerbeispiele, texte };
 
@@ -106,4 +107,68 @@ export function repertoireKurz(kat) {
 export function url(pfad = '') {
   const basis = import.meta.env.BASE_URL.replace(/\/$/, '');
   return `${basis}/${pfad.replace(/^\//, '')}`;
+}
+
+// ---------- Repertoire: Kennzahlen, Zeitstrahl, Plakat ----------
+
+/** Kennzahlen für den Kopf der Repertoire-Seite. */
+export function repertoireZahlen() {
+  const namen = [...new Set(repertoire.map((r) => r.komponist))];
+  const jahre = namen.map((n) => LEBENSDATEN[n]?.[0]).filter(Boolean);
+  const aeltester = namen.find((n) => LEBENSDATEN[n]?.[0] === Math.min(...jahre));
+  const jetzt = Number(heute().slice(0, 4));
+  return {
+    werke: repertoire.length,
+    komponisten: namen.length,
+    gattungen: new Set(repertoire.map((r) => r.kat)).size,
+    jahre: jahre.length ? jetzt - Math.min(...jahre) : 0,
+    aeltester: aeltester ? { name: kurzname(aeltester), jahr: LEBENSDATEN[aeltester][0] } : null,
+  };
+}
+
+/**
+ * Komponisten als Noten auf einem Notensystem: waagrecht nach Geburtsjahr,
+ * senkrecht so verteilt, dass sich keine Noten überdecken.
+ */
+export const ZEITSTRAHL = { von: 1640, bis: 1960, breite: 1100, stufe: 13 };
+export function zeitstrahl() {
+  const { von, bis, breite } = ZEITSTRAHL;
+  const namen = [...new Set(repertoire.map((r) => r.komponist))].filter((n) => LEBENSDATEN[n]);
+  namen.sort((a, b) => LEBENSDATEN[a][0] - LEBENSDATEN[b][0] || a.localeCompare(b));
+  // Positionen 0 (oberste Linie) bis 8 (unterste Linie); -2/-1 und 9/10 sind Hilfslinien
+  const VORLIEBE = [4, 2, 6, 3, 5, 1, 7, 0, 8, -1, 9, -2, 10];
+  const gesetzt = [];
+  return namen.map((name, i) => {
+    const [geb, gest] = LEBENSDATEN[name];
+    const x = ((geb - von) / (bis - von)) * breite;
+    const pos = VORLIEBE.find((p) => gesetzt.every((g) => {
+      const dx = Math.abs(g.x - x);
+      if (g.pos === p) return dx >= 26;
+      if (Math.abs(g.pos - p) === 1) return dx >= 13;
+      return true;
+    })) ?? 4;
+    gesetzt.push({ x, pos });
+    const werke = repertoire.filter((r) => r.komponist === name);
+    return {
+      i, name, kurz: kurzname(name), geb, gest, zeit: lebenszeit(name),
+      links: (x / breite) * 100, pos,
+      werke: REPERTOIRE_KATEGORIEN.map((kat) => ({ kat, werke: werke.filter((w) => w.kat === kat) })).filter((g) => g.werke.length),
+      anzahl: werke.length,
+    };
+  });
+}
+
+/** Hauptwerke für das Plakat auf der Startseite – erscheinen nur, solange sie im Repertoire stehen. */
+const PLAKAT = [
+  ['Die Zauberflöte', 3], ['Carmen', 2], ['La Traviata', 1], ['Die Fledermaus', 3], ['Tosca', 2],
+  ['My Fair Lady', 1], ['Der Nussknacker', 2], ['Le Nozze di Figaro', 1], ['Die Lustige Witwe', 2],
+  ['Aida', 3], ['Cabaret', 1], ['La Bohème', 2], ['Lohengrin', 1], ['Requiem', 1, 'Wolfgang Amadeus Mozart'],
+  ['Il Barbiere di Siviglia', 2], ['Romeo und Julia', 1], ['Wiener Blut', 2], ['Elisabeth', 1],
+  ['Die Schöpfung', 1], ['Madama Butterfly', 2], ['Gräfin Mariza', 1], ['Don Giovanni', 2],
+];
+export function plakat() {
+  return PLAKAT.map(([titel, groesse, komponist]) => {
+    const r = repertoire.find((x) => x.werk === titel && (!komponist || x.komponist === komponist));
+    return r ? { titel: r.werk, groesse, komponist: kurzname(r.komponist) } : null;
+  }).filter(Boolean);
 }

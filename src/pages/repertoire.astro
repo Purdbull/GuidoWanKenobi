@@ -1,49 +1,325 @@
 ---
 import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
-import { repertoireNachKategorie } from '../lib/daten.js';
+import { repertoireNachKategorie, repertoireZahlen, zeitstrahl, ZEITSTRAHL } from '../lib/daten.js';
+import { lebenszeit } from '../lib/komponisten.js';
+
 const gruppen = repertoireNachKategorie();
-const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
+const z = repertoireZahlen();
+const noten = zeitstrahl();
+const start = noten.find((n) => n.name === 'Wolfgang Amadeus Mozart') || noten.reduce((a, b) => (b.anzahl > a.anzahl ? b : a), noten[0]);
+const erster = noten[0];
+const letzter = noten[noten.length - 1];
+
+const ROEMISCH = ['I', 'II', 'III', 'IV', 'V'];
+const PARTE = ['Parte prima', 'Parte seconda', 'Parte terza', 'Parte quarta', 'Parte quinta'];
+const pct = (j) => ((j - ZEITSTRAHL.von) / (ZEITSTRAHL.bis - ZEITSTRAHL.von)) * 100;
+const ACHSE = [1650, 1700, 1750, 1800, 1850, 1900, 1950];
+const EPOCHEN = [['Barock', 1640, 1725], ['Klassik', 1725, 1790], ['Romantik', 1790, 1868], ['Moderne', 1868, 1960]];
+const mehrzahl = (n, eins, viele) => `${n} ${n === 1 ? eins : viele}`;
 ---
 <Seite titel="Repertoire – Guido Mancusi" beschreibung="Das Dirigier-Repertoire von Guido Mancusi: Opern, Operetten, Musicals, Ballette, Konzerte und Kirchenmusik." aktiv="repertoire">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" ebene="h1" />
-    <nav class="sprung" aria-label="Gattungen">
-      {gruppen.map((g, i) => <a href={`#g${i}`}><span class="karte__nr">{ROEMISCH[i]}</span> {g.kat}</a>)}
-    </nav>
-    {gruppen.map((g, i) => (
-      <section class="gattung" id={`g${i}`} aria-labelledby={`gt${i}`}>
-        <div class="gattung__kopf">
-          <span class="karte__nr">{ROEMISCH[i]}</span>
-          <h2 id={`gt${i}`} class="titel">{g.kat}</h2>
+    <p class="einleitung">Musiktheater und Konzert aus mehr als drei Jahrhunderten – von {z.aeltester?.name ?? 'Purcell'} bis {letzter?.kurz ?? 'heute'}, von der Barockoper bis zum Broadway.</p>
+    <dl class="zahlen blatt" data-sichtbar>
+      <div class="gestaffelt" style="--i:0"><dd data-zaehlen={z.werke}>{z.werke}</dd><dt>Werke</dt></div>
+      <div class="gestaffelt" style="--i:1"><dd data-zaehlen={z.komponisten}>{z.komponisten}</dd><dt>Komponisten</dt></div>
+      <div class="gestaffelt" style="--i:2"><dd data-zaehlen={z.gattungen}>{z.gattungen}</dd><dt>Gattungen</dt></div>
+      <div class="gestaffelt" style="--i:3"><dd data-zaehlen={z.jahre}>{z.jahre}</dd><dt>Jahre Musikgeschichte</dt></div>
+    </dl>
+  </section>
+
+  <section class="buehne zs" aria-labelledby="zs-titel">
+    <div class="huelle zs__innen">
+      <div class="zs__kopf">
+        <p class="versal zs__label">Zeitstrahl</p>
+        <h2 id="zs-titel">Von {erster.kurz} bis {letzter.kurz}</h2>
+        <p class="zs__hinweis">Jede Note ist ein Komponist, gesetzt nach seinem Geburtsjahr. Antippen zeigt die Werke.</p>
+      </div>
+
+      <p class="zs__wischen" aria-hidden="true">← Zum Blättern wischen →</p>
+      <div class="zs__rahmen" data-sichtbar>
+        <div class="zs__flaeche">
+          <div class="zs__epochen" aria-hidden="true">
+            {EPOCHEN.map(([name, von, bis]) => <span style={`--x:${pct(von)}%; --b:${pct(bis) - pct(von)}%`}>{name}</span>)}
+          </div>
+          <div class="zs__system" role="group" aria-label="Komponisten nach Geburtsjahr">
+            <div class="zs__linien" aria-hidden="true"></div>
+            {noten.map((n) => (
+              <button type="button" class:list={['zs__note', 'gestaffelt', n.pos >= 4 ? 'hals-oben' : 'hals-unten', (n.pos <= -2 || n.pos >= 10) && 'hilfslinie']}
+                style={`--x:${n.links.toFixed(3)}%; --p:${n.pos}; --i:${n.i}`} data-k={n.i}
+                aria-pressed={n === start ? 'true' : 'false'} aria-controls="zs-tafeln" aria-label={`${n.name}, ${n.zeit}`}>
+                <span class="zs__kopfnote" aria-hidden="true"></span>
+                <span class="zs__name" aria-hidden="true">{n.kurz}</span>
+              </button>
+            ))}
+          </div>
+          <div class="zs__achse" aria-hidden="true">
+            {ACHSE.map((j) => <span style={`--x:${pct(j)}%`}>{j}</span>)}
+          </div>
         </div>
+      </div>
+
+      <div class="zs__tafeln" id="zs-tafeln" aria-live="polite">
+        {noten.map((n) => (
+          <article class="zs__tafel" data-k={n.i} hidden={n !== start}>
+            <header class="zs__tafelkopf">
+              <h3>{n.name}</h3>
+              <p>{n.zeit} <span>· {mehrzahl(n.anzahl, 'Werk', 'Werke')} im Repertoire</span></p>
+            </header>
+            <div class="zs__werke">
+              {n.werke.map((g) => (
+                <div>
+                  <p class="versal">{g.kat}</p>
+                  <ul>{g.werke.map((w) => <li>{w.werk}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt huelle" id="liste" aria-label="Vollständiges Repertoire">
+    <div class="suche">
+      <label class="versal" for="suche">Im Repertoire suchen</label>
+      <div class="suche__feld">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="M17 17l7 7" /></svg>
+        <input id="suche" type="search" placeholder="Werk oder Komponist – zum Beispiel Tosca" autocomplete="off" spellcheck="false" enterkeyhint="search" />
+      </div>
+      <p class="suche__info" aria-live="polite"></p>
+    </div>
+
+    <nav class="sprung" aria-label="Gattungen">
+      {gruppen.map((g, i) => (
+        <a href={`#g${i}`}><span class="sprung__nr">{ROEMISCH[i]}.</span> {g.kat} <span class="sprung__zahl">{g.komponisten.reduce((s, k) => s + k.werke.length, 0)}</span></a>
+      ))}
+    </nav>
+
+    {gruppen.map((g, i) => (
+      <section class="kapitel" id={`g${i}`} aria-labelledby={`gt${i}`} data-kapitel>
+        <header class="kapitel__kopf">
+          <span class="kapitel__nr" aria-hidden="true">{ROEMISCH[i]}</span>
+          <div class="kapitel__titel">
+            <p class="versal">{PARTE[i]}</p>
+            <h2 id={`gt${i}`}>{g.kat}</h2>
+          </div>
+          <p class="kapitel__zahl">{mehrzahl(g.komponisten.reduce((s, k) => s + k.werke.length, 0), 'Werk', 'Werke')} · {mehrzahl(g.komponisten.length, 'Komponist', 'Komponisten')}</p>
+        </header>
         <div class="komponisten">
           {g.komponisten.map((k) => (
-            <div class="komponist">
-              <h3>{k.name}</h3>
+            <div class:list={['komponist', k.werke.length >= 5 && 'komponist--gross']} data-komponist>
+              <h3>{k.name} {lebenszeit(k.name) && <span class="komponist__zeit">{lebenszeit(k.name)}</span>}</h3>
               <ul>
-                {k.werke.map((r) => <li>{r.werk}{r.notiz && <span class="notiz"> {r.notiz}</span>}</li>)}
+                {k.werke.map((r) => <li><span class="w">{r.werk}</span>{r.notiz && <span class="notiz"> {r.notiz}</span>}</li>)}
               </ul>
             </div>
           ))}
         </div>
       </section>
     ))}
+    <p class="suche__leer" hidden>Dieses Werk steht (noch) nicht im Repertoire. Für Anfragen: <a href="mailto:office@mancusi.at">office@mancusi.at</a></p>
   </section>
 </Seite>
 
 <style>
-  .sprung { display: flex; flex-wrap: wrap; gap: 8px 28px; }
-  .sprung a { color: var(--tinte); text-decoration: none; font-size: 19px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; transition: color .35s var(--weich); }
-  .sprung a:hover { color: var(--rot); }
-  .gattung { scroll-margin-top: 24px; display: flex; flex-direction: column; gap: 24px; padding-top: 32px; }
-  .gattung__kopf { display: flex; align-items: baseline; gap: 16px; border-top: 3px double var(--tinte); padding-top: 18px; }
-  .gattung__kopf h2 { font-size: clamp(30px, 3.6vw, 40px); }
+  /* ---------- Kennzahlen ---------- */
+  .zahlen { margin: 8px 0 0; padding: 40px clamp(20px, 4vw, 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 28px; }
+  .zahlen div { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; border-left: 1px solid var(--blattgold); }
+  .zahlen dd { margin: 0; font-family: var(--titel); font-weight: 500; font-size: clamp(56px, 7vw, 84px); line-height: .95; color: var(--rot); font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.02em; }
+  @media (max-width: 560px) { .zahlen { grid-template-columns: 1fr 1fr; gap: 26px 12px; padding: 30px 20px; } .zahlen div { padding-left: 14px; } .zahlen dd { font-size: 48px; } .zahlen dt { font-size: 12px !important; letter-spacing: .16em !important; } }
+  .zahlen dt { font-size: 14px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--tinte-2); }
+
+  /* ---------- Zeitstrahl ---------- */
+  .zs__innen { padding-block: clamp(72px, 9vw, 104px); display: flex; flex-direction: column; gap: 40px; }
+  .zs__kopf { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+  .zs__label { color: var(--blattgold); }
+  .zs__kopf h2 { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5.4vw, 64px); line-height: 1.05; color: var(--elfenbein); letter-spacing: -0.015em; }
+  .zs__hinweis { font-style: italic; font-size: 20px; color: var(--hell-auf-dunkel); }
+  .zs__wischen { display: none; font-size: 13px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--blattgold); margin-top: -18px; }
+  @media (max-width: 1040px) { .zs__wischen { display: block; } }
+
+  .zs__rahmen { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--blattgold) transparent; margin-inline: calc(var(--rand) * -1); padding-inline: var(--rand); }
+  .zs__flaeche { position: relative; min-width: 980px; padding-top: 12px; }
+  .zs__epochen { position: relative; height: 34px; }
+  .zs__epochen span { position: absolute; left: var(--x); width: var(--b); top: 0; padding-top: 10px; border-top: 1px solid rgba(201, 164, 92, .45); font-family: var(--titel); font-style: italic; font-size: 17px; color: var(--blattgold); text-align: center; }
+  .zs__epochen span::before, .zs__epochen span::after { content: ''; position: absolute; top: -4px; width: 1px; height: 8px; background: rgba(201, 164, 92, .6); }
+  .zs__epochen span::before { left: 0; }
+  .zs__epochen span::after { right: 0; }
+
+  .zs__system { position: relative; height: 104px; margin: 92px 0 70px; }
+  .zs__linien { position: absolute; inset: 0 0 -1px; background-image: repeating-linear-gradient(to bottom, rgba(201, 164, 92, .5) 0 1px, transparent 1px 26px); }
+  .zs__linien::before, .zs__linien::after { content: ''; position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(201, 164, 92, .6); }
+  .zs__linien::before { left: 0; }
+  .zs__linien::after { right: 0; width: 4px; box-shadow: -7px 0 0 -3px rgba(201, 164, 92, .6); }
+
+  .zs__note { position: absolute; left: var(--x); top: calc(var(--p) * 13px); width: 26px; height: 22px; margin: -11px 0 0 -13px; padding: 0; border: 0; background: none; cursor: pointer; color: var(--blattgold); z-index: 1; }
+  .zs__note:hover, .zs__note:focus-visible { z-index: 3; }
+  .zs__note[aria-pressed="true"] { z-index: 4; color: var(--elfenbein); }
+  .zs__note:focus-visible { outline: none; }
+  .zs__kopfnote { position: absolute; left: 50%; top: 50%; width: 15px; height: 11px; margin: -5.5px 0 0 -7.5px; border-radius: 50%; background: currentColor; transform: rotate(-22deg); transition: transform .35s var(--weich), box-shadow .45s var(--weich), background-color .35s var(--weich); }
+  .zs__note::after { content: ''; position: absolute; width: 1.2px; height: 34px; background: currentColor; opacity: .75; transition: background-color .35s var(--weich); }
+  .hals-oben::after { left: calc(50% + 6.4px); bottom: 50%; }
+  .hals-unten::after { left: calc(50% - 7.4px); top: 50%; }
+  .hilfslinie::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(201, 164, 92, .5); }
+  .zs__note:hover .zs__kopfnote, .zs__note:focus-visible .zs__kopfnote { transform: rotate(-22deg) scale(1.35); }
+  .zs__note[aria-pressed="true"] .zs__kopfnote { transform: rotate(-22deg) scale(1.45); box-shadow: 0 0 0 4px rgba(201, 164, 92, .28), 0 0 22px 4px rgba(226, 200, 142, .55); }
+  .zs__name { position: absolute; left: 50%; bottom: calc(100% + 30px); transform: translate(-50%, 6px); white-space: nowrap; padding: 5px 10px 6px; background: var(--elfenbein); color: var(--nacht); font-family: var(--titel); font-size: 17px; line-height: 1; opacity: 0; pointer-events: none; transition: opacity .3s var(--weich), transform .3s var(--weich); box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .6); }
+  .hals-unten .zs__name { bottom: calc(100% + 8px); }
+  .zs__note:hover .zs__name, .zs__note:focus-visible .zs__name { opacity: 1; transform: translate(-50%, 0); }
+  .zs__note[aria-pressed="true"] .zs__name { opacity: 1; transform: translate(-50%, 0); background: var(--blattgold); }
+
+  .zs__achse { position: relative; height: 26px; border-top: 1px solid rgba(201, 164, 92, .35); }
+  .zs__achse span { position: absolute; left: var(--x); top: 8px; transform: translateX(-50%); font-size: 15px; letter-spacing: .12em; color: var(--hell-auf-dunkel); font-variant-numeric: lining-nums; }
+  .zs__achse span::before { content: ''; position: absolute; left: 50%; top: -12px; width: 1px; height: 7px; background: rgba(201, 164, 92, .6); }
+
+  /* Noten erscheinen nacheinander, wie beim Notieren */
+  [data-sichtbar] .zs__note.gestaffelt { opacity: 0; transform: translateY(-10px); }
+  [data-sichtbar].ist-sichtbar .zs__note.gestaffelt { animation: notieren .6s var(--weich) both; animation-delay: calc(200ms + var(--i, 0) * 28ms); }
+  @keyframes notieren { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+
+  .zs__tafeln { min-height: 180px; }
+  .zs__tafel { border-top: 1px solid rgba(201, 164, 92, .45); padding-top: 28px; display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px 56px; animation: tafel .55s var(--weich) both; }
+  @keyframes tafel { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .zs__tafelkopf h3 { font-family: var(--titel); font-weight: 500; font-size: clamp(32px, 3.6vw, 44px); line-height: 1.08; color: var(--elfenbein); }
+  .zs__tafelkopf p { margin-top: 8px; font-style: italic; font-size: 19px; color: var(--blattgold); }
+  .zs__tafelkopf p span { color: var(--hell-auf-dunkel); }
+  .zs__werke { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 20px 40px; }
+  .zs__werke .versal { color: var(--blattgold); font-size: 13px; margin-bottom: 8px; }
+  .zs__werke ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .zs__werke li { font-size: 19px; line-height: 1.4; color: var(--papier); }
+  @media (max-width: 760px) { .zs__tafel { grid-template-columns: 1fr; } }
+
+  /* ---------- Suche ---------- */
+  .suche { display: flex; flex-direction: column; gap: 12px; }
+  .suche label { color: var(--rot); }
+  .suche__feld { display: flex; align-items: center; gap: 14px; border-bottom: 2px solid var(--tinte); padding-bottom: 6px; transition: border-color .35s var(--weich); }
+  .suche__feld:focus-within { border-color: var(--rot); }
+  .suche__feld svg { flex: 0 0 auto; color: var(--tinte-2); }
+  .suche__feld input { flex: 1 1 auto; min-width: 0; min-height: 56px; border: 0; background: transparent; color: var(--tinte); font-family: var(--titel); font-style: italic; font-size: clamp(24px, 3.2vw, 34px); outline: none; }
+  .suche__feld input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; cursor: pointer; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22' fill='none' stroke='%238E2F22' stroke-width='1.6'%3E%3Cpath d='M5 5l12 12M17 5L5 17'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .suche__feld input::placeholder { color: var(--tinte-3); opacity: .6; }
+  .suche__info { min-height: 1.5em; font-size: 17px; color: var(--tinte-2); }
+  .suche__leer { font-size: 20px; font-style: italic; color: var(--tinte-2); }
+  :global(mark) { background: linear-gradient(transparent 55%, rgba(168, 57, 42, .22) 55%); color: inherit; padding: 0 1px; }
+
+  /* ---------- Sprungleiste ---------- */
+  .sprung { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sprung a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--linie-2); background: var(--elfenbein); color: var(--tinte); text-decoration: none; font-size: 18px; transition: border-color .35s var(--weich), background-color .35s var(--weich), color .35s var(--weich); }
+  .sprung a:hover { border-color: var(--rot); color: var(--rot); }
+  .sprung__nr { font-family: var(--titel); font-style: italic; color: var(--rot); }
+  .sprung__zahl { font-size: 14px; color: var(--gold); font-variant-numeric: lining-nums; }
+
+  /* ---------- Kapitel ---------- */
+  .kapitel { scroll-margin-top: 24px; display: flex; flex-direction: column; gap: 28px; padding-top: 40px; }
+  .kapitel[hidden] { display: none; }
+  .kapitel__kopf { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: 8px 24px; padding-bottom: 18px; border-bottom: 3px double var(--blattgold); }
+  .kapitel__nr { font-family: var(--titel); font-weight: 500; font-size: clamp(80px, 10vw, 128px); line-height: .78; color: transparent; -webkit-text-stroke: 1.2px var(--blattgold); }
+  .kapitel__titel .versal { color: var(--gold); font-style: italic; text-transform: none; letter-spacing: .04em; font-family: var(--titel); font-size: 18px; }
+  .kapitel__titel h2 { font-family: var(--titel); font-weight: 500; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.02; letter-spacing: -0.015em; }
+  .kapitel__zahl { font-size: 14px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--tinte-2); padding-bottom: 6px; }
+  @media (max-width: 640px) { .kapitel__kopf { grid-template-columns: auto minmax(0, 1fr); } .kapitel__zahl { grid-column: 1 / -1; } }
+
   .komponisten { columns: 3 280px; column-gap: 48px; }
-  .komponist { break-inside: avoid; padding-bottom: 22px; }
+  .komponist { break-inside: avoid; padding-bottom: 26px; }
+  .komponist[hidden] { display: none; }
   .komponist h3 { font-family: var(--titel); font-weight: 600; font-size: 21px; line-height: 1.25; margin-bottom: 6px; }
+  .komponist--gross h3 { font-size: 25px; color: var(--rot); }
+  .komponist__zeit { display: block; margin-top: 2px; font-family: var(--text); font-weight: 400; font-style: italic; font-size: 15px; color: var(--gold); }
   .komponist ul { margin: 0; padding: 0; list-style: none; }
   .komponist li { font-size: 18px; line-height: 1.5; color: var(--tinte-2); padding-left: 1em; text-indent: -1em; }
-  .komponist li::before { content: '♩'; font-family: var(--noten); color: var(--linie-2); display: inline-block; width: 1em; text-indent: 0; }
+  .komponist li[hidden] { display: none; }
+  .komponist li::before { content: '♩'; font-family: var(--noten); color: var(--blattgold); display: inline-block; width: 1em; text-indent: 0; }
   .notiz { font-style: italic; }
+  .treffer { animation: hereingleiten .45s var(--weich) both; }
 </style>
+
+<script>
+  // ---------- Kennzahlen hochzählen ----------
+  const zahlen = document.querySelector('.zahlen');
+  if (zahlen) {
+    const felder = [...zahlen.querySelectorAll('[data-zaehlen]')];
+    felder.forEach((f) => { f.textContent = '0'; });
+    const los = () => {
+      const t0 = performance.now();
+      const dauer = 1600;
+      const schritt = (t) => {
+        const p = Math.min(1, (t - t0) / dauer);
+        const e = 1 - Math.pow(1 - p, 3);
+        felder.forEach((f) => { f.textContent = String(Math.round(Number(f.dataset.zaehlen) * e)); });
+        if (p < 1) requestAnimationFrame(schritt);
+      };
+      requestAnimationFrame(schritt);
+    };
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { o.disconnect(); setTimeout(los, 250); } }, { threshold: 0.4 }).observe(zahlen);
+  }
+
+  // ---------- Zeitstrahl ----------
+  const noten = [...document.querySelectorAll('.zs__note')];
+  const tafeln = [...document.querySelectorAll('.zs__tafel')];
+  const waehle = (knopf, fokus = false) => {
+    noten.forEach((n) => n.setAttribute('aria-pressed', String(n === knopf)));
+    tafeln.forEach((t) => { t.hidden = t.dataset.k !== knopf.dataset.k; });
+    if (fokus) { knopf.focus({ preventScroll: true }); knopf.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+  };
+  // Auf schmalen Bildschirmen die gewählte Note in die Mitte rücken
+  const rahmen = document.querySelector('.zs__rahmen');
+  const gewaehlt = noten.find((n) => n.getAttribute('aria-pressed') === 'true');
+  if (rahmen && gewaehlt && rahmen.scrollWidth > rahmen.clientWidth) {
+    rahmen.scrollLeft = gewaehlt.offsetLeft + gewaehlt.closest('.zs__flaeche').offsetLeft - rahmen.clientWidth / 2;
+  }
+  noten.forEach((n, i) => {
+    n.addEventListener('click', () => waehle(n));
+    n.addEventListener('keydown', (e) => {
+      const z = e.key === 'ArrowRight' ? noten[i + 1] : e.key === 'ArrowLeft' ? noten[i - 1] : null;
+      if (z) { e.preventDefault(); waehle(z, true); }
+    });
+  });
+
+  // ---------- Suche ----------
+  const eingabe = document.getElementById('suche');
+  const info = document.querySelector('.suche__info');
+  const leer = document.querySelector('.suche__leer');
+  const kapitel = [...document.querySelectorAll('[data-kapitel]')];
+  const ohneAkzent = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const eintraege = [...document.querySelectorAll('[data-komponist] li')].map((li) => {
+    const w = li.querySelector('.w');
+    const name = li.closest('[data-komponist]').querySelector('h3').firstChild.textContent;
+    return { li, w, original: w.textContent, such: ohneAkzent(`${w.textContent} ${li.textContent} ${name}`) };
+  });
+  const maskiere = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // markiert Fundstellen, ohne auf Akzente zu achten (dvorak findet Dvořák)
+  const markiere = (text, woerter) => {
+    let norm = ''; const pos = [];
+    [...text].forEach((c, i) => { const n = ohneAkzent(c); for (const z of n) { norm += z; pos.push(i); } });
+    const zeichen = [...text]; const an = new Array(zeichen.length).fill(false);
+    for (const w of woerter) {
+      let k = norm.indexOf(w);
+      while (k !== -1 && w) { for (let j = k; j < k + w.length; j++) an[pos[j]] = true; k = norm.indexOf(w, k + w.length); }
+    }
+    let html = ''; let offen = false;
+    zeichen.forEach((c, i) => { if (an[i] && !offen) { html += '<mark>'; offen = true; } if (!an[i] && offen) { html += '</mark>'; offen = false; } html += maskiere(c); });
+    return offen ? html + '</mark>' : html;
+  };
+  let timer;
+  const filtern = () => {
+    const q = ohneAkzent(eingabe.value.trim());
+    const woerter = q.split(/\s+/).filter(Boolean);
+    let treffer = 0;
+    for (const e of eintraege) {
+      const passt = woerter.every((w) => e.such.includes(w));
+      e.li.hidden = !passt;
+      if (passt) treffer++;
+      e.w.innerHTML = woerter.length && passt ? markiere(e.original, woerter) : maskiere(e.original);
+      e.li.classList.toggle('treffer', !!woerter.length && passt);
+    }
+    document.querySelectorAll('[data-komponist]').forEach((k) => { k.hidden = !k.querySelector('li:not([hidden])'); });
+    kapitel.forEach((k) => { k.hidden = !k.querySelector('[data-komponist]:not([hidden])'); });
+    info.textContent = woerter.length ? (treffer ? `${treffer} ${treffer === 1 ? 'Werk' : 'Werke'} gefunden` : '') : '';
+    leer.hidden = !woerter.length || treffer > 0;
+  };
+  eingabe?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(filtern, 140); });
+  eingabe?.addEventListener('keydown', (e) => { if (e.key === 'Escape') { eingabe.value = ''; filtern(); } });
+</script>

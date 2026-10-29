@@ -57,6 +57,7 @@ const person = {
   <meta property="og:url" content={kanonisch} />
   <meta property="og:image" content={bildUrl} />
   <meta name="twitter:card" content="summary_large_image" />
+  <noscript><style>[data-sichtbar] .gestaffelt { opacity: 1 !important; transform: none !important; }</style></noscript>
   <script type="application/ld+json" set:html={JSON.stringify(person)} />
   {/* Unterseiten schon beim Draufzeigen vorladen – der Wechsel wirkt dann sofort (Chrome/Edge) */}
   <script type="speculationrules" set:html={JSON.stringify({ prerender: [{ where: { and: [{ href_matches: `${BASIS}*` }, { not: { href_matches: '*.mp3' } }, { not: { href_matches: BASIS } }, { not: { href_matches: `${BASIS}#*` } }] }, eagerness: 'moderate' }] })} />
@@ -123,6 +124,12 @@ const person = {
   </footer>
 
   <script>
+    // Elemente mit data-sichtbar bekommen beim ersten Erscheinen im Bild die Klasse ist-sichtbar
+    const beobachter = new IntersectionObserver((eintraege) => {
+      for (const e of eintraege) if (e.isIntersecting) { e.target.classList.add('ist-sichtbar'); beobachter.unobserve(e.target); }
+    }, { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('[data-sichtbar]').forEach((el) => beobachter.observe(el));
+
     const knopf = document.querySelector('.menueknopf');
     const menue = document.getElementById('menue');
     if (knopf && menue) {

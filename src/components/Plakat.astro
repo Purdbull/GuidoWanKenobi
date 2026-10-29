@@ -1,0 +1,80 @@
+---
+// Repertoire auf der Startseite als Theaterzettel: große Titel, darunter der Komponist.
+import { plakat, repertoireZahlen, repertoireNachKategorie, url } from '../lib/daten.js';
+const eintraege = plakat();
+const z = repertoireZahlen();
+const gruppen = repertoireNachKategorie();
+const ROEMISCH = ['I', 'II', 'III', 'IV', 'V'];
+const FARBEN = ['tinte', 'rot', 'tinte', 'gold', 'tinte', 'rot', 'gold'];
+const rest = z.werke - eintraege.length;
+---
+<div class="plakat blatt" data-sichtbar>
+  <div class="plakat__kopf">
+    <span class="plakat__strich" aria-hidden="true"></span>
+    <p class="versal">Im Repertoire</p>
+    <span class="plakat__strich" aria-hidden="true"></span>
+  </div>
+
+  <ul class="plakat__titel" role="list">
+    {eintraege.map((e, i) => (
+      <li class:list={['gestaffelt', `g${e.groesse}`, `f-${FARBEN[i % FARBEN.length]}`, i % 2 === 1 && 'kursiv']} style={`--i:${i}`}>
+        <span class="plakat__werk">{e.titel}</span>
+        <span class="plakat__komponist">{e.komponist}</span>
+      </li>
+    ))}
+  </ul>
+
+  <p class="plakat__rest">{rest > 0 && <>und {rest} weitere Werke aus {z.jahre} Jahren Musikgeschichte</>}</p>
+
+  <nav class="plakat__gattungen" aria-label="Repertoire nach Gattung">
+    {gruppen.map((g, i) => (
+      <a href={url(`repertoire/#g${i}`)}><em>{ROEMISCH[i]}.</em> {g.kat === 'Konzerte und Kirchenmusik' ? 'Konzerte & Kirchenmusik' : g.kat}</a>
+    ))}
+  </nav>
+</div>
+<a class="mehr" href={url('repertoire/')}>Vollständiges Repertoire mit Zeitstrahl</a>
+
+<style>
+  .plakat { padding: clamp(36px, 6vw, 72px) clamp(20px, 5vw, 64px) clamp(32px, 4vw, 48px); display: flex; flex-direction: column; align-items: center; gap: clamp(28px, 4vw, 40px); text-align: center; }
+  .plakat__kopf { width: 100%; display: flex; align-items: center; gap: 20px; }
+  .plakat__kopf .versal { color: var(--rot); letter-spacing: .34em; white-space: nowrap; }
+  .plakat__strich { flex: 1 1 0; height: 4px; border-top: 1px solid var(--blattgold); border-bottom: 1px solid var(--blattgold); }
+
+  .plakat__titel { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 18px 0; max-width: 1040px; }
+  .plakat__titel { --luft: clamp(12px, 1.8vw, 24px); }
+  .plakat__titel li { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; padding: 0 var(--luft); }
+  .plakat__titel li + li .plakat__werk::before { content: '◆'; position: absolute; left: calc(var(--luft) * -1); top: 52%; transform: translate(-50%, -50%); font-size: 9px; font-style: normal; color: var(--blattgold); transition: opacity .2s; }
+  .plakat__titel li.anfang .plakat__werk::before { opacity: 0; }
+  .plakat__werk { position: relative; font-family: var(--titel); font-weight: 500; line-height: 1.02; letter-spacing: -0.01em; transition: color .4s var(--weich), transform .4s var(--weich); }
+  .kursiv .plakat__werk { font-style: italic; font-weight: 400; }
+  .g3 .plakat__werk { font-size: clamp(36px, 5.6vw, 72px); }
+  .g2 .plakat__werk { font-size: clamp(30px, 3.8vw, 46px); }
+  .g1 .plakat__werk { font-size: clamp(22px, 2.5vw, 30px); }
+  .f-tinte .plakat__werk { color: var(--tinte); }
+  .f-rot .plakat__werk { color: var(--rot); }
+  .f-gold .plakat__werk { color: var(--gold); }
+  .plakat__komponist { font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--tinte-3); }
+  .plakat__titel li:hover .plakat__werk { color: var(--rot-leuchtend); transform: translateY(-2px); }
+
+  .plakat__rest { font-family: var(--titel); font-style: italic; font-size: clamp(20px, 2.2vw, 26px); color: var(--tinte-2); }
+  .plakat__gattungen { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 26px; padding-top: 18px; border-top: 1px solid var(--linie); width: 100%; }
+  .plakat__gattungen a { min-height: 44px; display: inline-flex; align-items: center; gap: 6px; color: var(--tinte); text-decoration: none; font-size: 18px; transition: color .35s var(--weich); }
+  .plakat__gattungen a:hover { color: var(--rot); }
+  .plakat__gattungen em { font-family: var(--titel); color: var(--rot); }
+</style>
+
+<script>
+  // Raute nur zwischen Titeln derselben Zeile, nicht am Zeilenanfang
+  document.querySelectorAll('.plakat__titel').forEach((liste) => {
+    const ordnen = () => {
+      let unten = -Infinity;
+      liste.querySelectorAll('li').forEach((li) => {
+        const neu = li.offsetTop >= unten - 4;
+        li.classList.toggle('anfang', neu);
+        unten = neu ? li.offsetTop + li.offsetHeight : Math.max(unten, li.offsetTop + li.offsetHeight);
+      });
+    };
+    new ResizeObserver(ordnen).observe(liste);
+    document.fonts?.ready.then(ordnen);
+  });
+</script>
