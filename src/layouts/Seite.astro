@@ -1,0 +1,135 @@
+---
+import '../styles/global.css';
+import { texte, url } from '../lib/daten.js';
+import schriftTitel from '../assets/fonts/libre-bodoni.woff2?url';
+import schriftText from '../assets/fonts/source-serif-4.woff2?url';
+
+const {
+  titel = 'Guido Mancusi – Dirigent und Komponist',
+  beschreibung = 'Guido Mancusi, österreichisch-italienischer Dirigent und Komponist: Termine, Werke, Repertoire, Hörbeispiele und Biografie.',
+  aktiv = '',
+  bild = 'bilder/guido-mancusi-taktstock.jpg',
+} = Astro.props;
+
+const kanonisch = new URL(Astro.url.pathname, Astro.site);
+const bildUrl = new URL(url(bild), Astro.site);
+const NAV = [
+  { href: 'termine/', text: 'Termine', key: 'termine' },
+  { href: 'werke/', text: 'Werke', key: 'werke' },
+  { href: 'repertoire/', text: 'Repertoire', key: 'repertoire' },
+  { href: '#hoeren', text: 'Hörbeispiele', key: 'hoeren', start: true },
+  { href: 'biografie/', text: 'Biografie', key: 'biografie' },
+];
+const navHref = (n) => (n.start ? url('') + n.href : url(n.href));
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Guido Mancusi',
+  jobTitle: ['Dirigent', 'Komponist'],
+  birthDate: '1966',
+  url: Astro.site?.toString(),
+  image: bildUrl.toString(),
+  email: `mailto:${texte.kontakt.email}`,
+  sameAs: Object.values(texte.social),
+};
+---
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{titel}</title>
+  <meta name="description" content={beschreibung} />
+  <link rel="canonical" href={kanonisch} />
+  <meta name="theme-color" content="#F3EADA" />
+  <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+  <link rel="preload" href={schriftTitel} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={schriftText} as="font" type="font/woff2" crossorigin />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_AT" />
+  <meta property="og:site_name" content="Guido Mancusi" />
+  <meta property="og:title" content={titel} />
+  <meta property="og:description" content={beschreibung} />
+  <meta property="og:url" content={kanonisch} />
+  <meta property="og:image" content={bildUrl} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json" set:html={JSON.stringify(person)} />
+</head>
+<body>
+  <a class="springe" href="#inhalt">Zum Inhalt springen</a>
+  <header class="kopf huelle">
+    <div class="kopf__leiste">
+      <a class="kopf__name" href={url('')}>Guido Mancusi</a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        {NAV.map((n) => <a href={navHref(n)} aria-current={aktiv === n.key ? 'page' : undefined}>{n.text}</a>)}
+        <a class="nav__shop" href={texte.shop}>Notenshop</a>
+      </nav>
+      <button type="button" class="menueknopf" aria-expanded="false" aria-controls="menue">
+        <span>Menü</span>
+        <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" style="overflow:visible"><path class="m1" d="M0 1h22" /><path class="m2" d="M0 7h22" /><path class="m3" d="M0 13h22" /></svg>
+      </button>
+    </div>
+    <div class="menue" id="menue">
+      <nav aria-label="Menü">
+        {NAV.map((n) => <a href={navHref(n)} tabindex="-1">{n.text}</a>)}
+        <a class="nav__shop" href={texte.shop} tabindex="-1">Notenshop</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inhalt">
+    <slot />
+  </main>
+
+  <div class="huelle">
+    <div class="fine" aria-hidden="true">
+      <span class="fine__wort">Fine</span>
+      <div class="fine__system"></div>
+    </div>
+  </div>
+
+  <footer class="fuss">
+    <div class="huelle fuss__innen">
+      <div class="fuss__spalten">
+        <div class="fuss__spalte">
+          <span class="fuss__name">Guido <em>Mancusi</em></span>
+          <span class="fuss__leise"><em>Dirigent und Komponist</em></span>
+        </div>
+        <div class="fuss__spalte">
+          <span class="versal">Kontakt</span>
+          <a href={`mailto:${texte.kontakt.email}`}>{texte.kontakt.email}</a>
+          <span class="fuss__leise">{texte.kontakt.adresse}</span>
+        </div>
+        <div class="fuss__spalte">
+          <span class="versal">Folgen</span>
+          <a href={texte.social.instagram} rel="me">Instagram</a>
+          <a href={texte.social.youtube} rel="me">YouTube</a>
+          <a href={texte.social.facebook} rel="me">Facebook</a>
+        </div>
+      </div>
+      <div class="fuss__unten">
+        <div class="fuss__links">
+          <a href={url('impressum/')}>Impressum</a>
+          <a href={url('datenschutz/')}>Datenschutz</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const knopf = document.querySelector('.menueknopf');
+    const menue = document.getElementById('menue');
+    if (knopf && menue) {
+      const links = menue.querySelectorAll('a');
+      const setze = (offen) => {
+        knopf.setAttribute('aria-expanded', String(offen));
+        menue.classList.toggle('offen', offen);
+        links.forEach((a) => a.setAttribute('tabindex', offen ? '0' : '-1'));
+      };
+      knopf.addEventListener('click', () => setze(knopf.getAttribute('aria-expanded') !== 'true'));
+      links.forEach((a) => a.addEventListener('click', () => setze(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menue.classList.contains('offen')) { setze(false); knopf.focus(); } });
+    }
+  </script>
+</body>
+</html>

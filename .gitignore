@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+notenpult/.dev.vars
+notenpult/.wrangler/
+notenpult/node_modules/
+notenpult/test/__pycache__/

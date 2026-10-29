@@ -1,0 +1,24 @@
+---
+import Seite from '../layouts/Seite.astro';
+import { texte } from '../lib/daten.js';
+const { angaben, abschnitte } = texte.impressum;
+---
+<Seite titel="Impressum – Guido Mancusi" aktiv="impressum">
+  <section class="abschnitt huelle">
+    <div class="abschnitt__kopf"><h1 class="titel seitentitel">Impressum</h1></div>
+    <div class="textseite">
+      <p><strong>Guido Mancusi</strong><br />{angaben.map((z, i) => <>{z}{i < angaben.length - 1 && <br />}</>)}</p>
+      {abschnitte.map((a) => (
+        <>
+          <h2>{a.titel}</h2>
+          <p>{a.text}</p>
+        </>
+      ))}
+    </div>
+  </section>
+</Seite>
+
+<style>
+  .seitentitel { font-size: clamp(40px, 5vw, 54px); }
+  .textseite { font-size: 18px; }
+</style>

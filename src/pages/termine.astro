@@ -1,0 +1,55 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Abschnittskopf from '../components/Abschnittskopf.astro';
+import TerminListe from '../components/TerminListe.astro';
+import { kommendeTermine, vergangeneTermine } from '../lib/daten.js';
+
+const kommend = kommendeTermine();
+const vergangen = vergangeneTermine();
+const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))];
+---
+<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi sowie das Archiv vergangener Termine." aktiv="termine">
+  <section class="abschnitt huelle">
+    <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" ebene="h1" />
+    <TerminListe termine={kommend} />
+  </section>
+
+  {vergangen.length > 0 && (
+    <section class="abschnitt huelle" aria-labelledby="archiv">
+      <div class="abschnitt__kopf">
+        <h2 id="archiv" class="titel archiv__titel">Archiv</h2>
+      </div>
+      <div class="archiv">
+        {jahre.map((j, i) => (
+          <details class="jahr" open={i === 0}>
+            <summary><span class="titel">{j}</span><span class="jahr__anzahl">{vergangen.filter((t) => t.von.startsWith(j)).length} Termine</span></summary>
+            <div class="jahr__inhalt">
+              <TerminListe termine={vergangen.filter((t) => t.von.startsWith(j))} vergangen />
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )}
+</Seite>
+
+<style>
+  .archiv__titel { font-size: clamp(32px, 4vw, 42px); }
+  .archiv { display: flex; flex-direction: column; border-top: 1.5px solid var(--tinte); }
+  .jahr { border-bottom: 1px solid var(--linie); }
+  .jahr summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 22px 0; min-height: 44px; }
+  .jahr summary::-webkit-details-marker { display: none; }
+  .jahr summary .titel { font-size: 34px; }
+  .jahr summary::after { content: ''; width: 12px; height: 12px; border-right: 1.5px solid var(--tinte); border-bottom: 1.5px solid var(--tinte); transform: rotate(45deg); transition: transform .45s var(--weich); align-self: center; }
+  .jahr[open] summary::after { transform: rotate(-135deg); }
+  .jahr__anzahl { margin-left: auto; font-style: italic; color: var(--tinte-2); }
+  .jahr__inhalt { padding-bottom: 28px; }
+  .jahr__inhalt :global(.liste) { border-top-width: 1px; border-top-color: var(--linie); }
+  .jahr__inhalt :global(.zeile__gross) { color: var(--tinte-3); font-size: 40px; }
+  /* weiches Auf- und Zuklappen, wo der Browser es kann */
+  @supports (interpolate-size: allow-keywords) {
+    .jahr { interpolate-size: allow-keywords; }
+    .jahr::details-content { block-size: 0; overflow: hidden; transition: block-size .55s var(--weich), content-visibility .55s allow-discrete; }
+    .jahr[open]::details-content { block-size: auto; }
+  }
+</style>

@@ -1,0 +1,27 @@
+{
+  // Notenpult für mancusi.at – Cloudflare Worker mit statischer Oberfläche.
+  "name": "mancusi-notenpult",
+  "main": "src/index.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    // Jede Anfrage – auch für die Oberfläche – geht zuerst durch die Anmeldeprüfung im Code.
+    "run_worker_first": true
+  },
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "GITHUB_REPO": "Purdbull/GuidoWanKenobi",
+    "GITHUB_BRANCH": "main",
+    // Bis die Domain umgestellt ist, zeigt „Zur Website“ hierhin; danach auf https://mancusi.at/ ändern.
+    "WEBSITE_URL": "https://purdbull.github.io/GuidoWanKenobi/",
+    // Nur nötig, falls Access als eigene Zero-Trust-Anwendung eingerichtet wird (Weg B in EINRICHTUNG.md).
+    // Bei Access direkt am Worker (Weg A, empfohlen) bleiben die Platzhalter einfach stehen.
+    "ACCESS_TEAM_DOMAIN": "https://TEAMNAME.cloudflareaccess.com",
+    "ACCESS_AUD": "AUD-TAG-AUS-CLOUDFLARE-ACCESS",
+    "ERLAUBTE_EMAILS": "gmancusi@icloud.com",
+    "VORNAMEN": "gmancusi@icloud.com:Guido"
+  }
+  // Geheimnis (nie hier eintragen!): npx wrangler secret put GITHUB_TOKEN
+}

@@ -1,0 +1,22 @@
+---
+import Seite from '../layouts/Seite.astro';
+import { url } from '../lib/daten.js';
+---
+<Seite titel="Seite nicht gefunden – Guido Mancusi">
+  <section class="abschnitt huelle leer">
+    <p class="note pause" aria-hidden="true">&#x1D13D;</p>
+    <h1 class="titel">Generalpause.</h1>
+    <p class="einleitung">Diese Seite gibt es nicht (mehr). Vielleicht finden Sie hier, was Sie suchen:</p>
+    <div class="knoepfe">
+      <a class="knopf knopf--rot" href={url('')}>Zur Startseite</a>
+      <a class="knopf knopf--linie" href={url('termine/')}>Termine</a>
+    </div>
+  </section>
+</Seite>
+
+<style>
+  .leer { align-items: flex-start; min-height: 50vh; }
+  .pause { font-size: 96px; line-height: 1; color: var(--rot); }
+  .leer h1 { font-size: clamp(48px, 7vw, 84px); }
+  .knoepfe { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

@@ -1,0 +1,58 @@
+---
+// Werke mit Gattungs-Filter. Ohne JavaScript ist einfach alles sichtbar.
+import { WERK_KATEGORIEN } from '../lib/daten.js';
+const { werke = [], max = 0, filter = true } = Astro.props;
+const vorhanden = WERK_KATEGORIEN.filter((k) => werke.some((w) => w.kat === k));
+---
+<div class="werkliste" data-werkliste data-max={max || undefined}>
+  {filter && vorhanden.length > 1 && (
+    <div class="chips" role="group" aria-label="Werke nach Gattung filtern">
+      <button type="button" class="chip" aria-pressed="true" data-kat="">Alle</button>
+      {vorhanden.map((k) => <button type="button" class="chip" aria-pressed="false" data-kat={k}>{k}</button>)}
+    </div>
+  )}
+  <div class="werke" aria-live="polite">
+    {werke.map((w, i) => (
+      <article class="werk" data-kat={w.kat} hidden={max && i >= max ? true : undefined}>
+        <span class="werk__jahr">{w.jahr}</span>
+        <div class="werk__inhalt">
+          <h3 class="werk__titel">{w.titel}</h3>
+          {w.text && <span class="werk__text">{w.text}</span>}
+          <span class="werk__kat">{w.kat}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<style>
+  .werkliste { display: flex; flex-direction: column; gap: 28px; }
+  .werke { transition: min-height .5s var(--weich); }
+</style>
+
+<script>
+  document.querySelectorAll('[data-werkliste]').forEach((liste) => {
+    const max = Number(liste.getAttribute('data-max') || 0);
+    const raster = liste.querySelector('.werke');
+    const werke = [...liste.querySelectorAll('.werk')];
+    liste.querySelectorAll('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        if (chip.getAttribute('aria-pressed') === 'true') return;
+        liste.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        const kat = chip.getAttribute('data-kat');
+        raster.style.minHeight = raster.offsetHeight + 'px';
+        let n = 0;
+        werke.forEach((w) => {
+          const passt = !kat || w.getAttribute('data-kat') === kat;
+          const zeigen = passt && (!max || n < max);
+          w.hidden = !zeigen;
+          w.classList.remove('neu');
+          if (zeigen) { w.style.setProperty('--i', String(n)); n += 1; }
+        });
+        void raster.offsetWidth;
+        werke.forEach((w) => { if (!w.hidden) w.classList.add('neu'); });
+        requestAnimationFrame(() => { raster.style.minHeight = '0px'; });
+      });
+    });
+  });
+</script>

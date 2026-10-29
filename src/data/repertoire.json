@@ -1,0 +1,1045 @@
+[
+  {
+    "id": "r-001",
+    "komponist": "Henry Purcell",
+    "werk": "Dido and Aeneas",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-002",
+    "komponist": "Henry Purcell",
+    "werk": "The Fairy Queen",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-003",
+    "komponist": "Georg Friedrich Händel",
+    "werk": "Rinaldo",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-004",
+    "komponist": "Georg Friedrich Händel",
+    "werk": "Alexander’s Feast",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-005",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Die Zauberflöte",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-006",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Le Nozze di Figaro",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-007",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Così fan tutte",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-008",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Die Entführung aus dem Serail",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-009",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Don Giovanni",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-010",
+    "komponist": "Joseph Haydn",
+    "werk": "Lo Speziale",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-011",
+    "komponist": "Joseph Haydn",
+    "werk": "Il Mondo della Luna",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-012",
+    "komponist": "Christoph Willibald Gluck",
+    "werk": "Alceste",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-013",
+    "komponist": "Gioachino Rossini",
+    "werk": "Il Barbiere di Siviglia",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-014",
+    "komponist": "Gioachino Rossini",
+    "werk": "La Cenerentola",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-015",
+    "komponist": "Gioachino Rossini",
+    "werk": "L’Italiana in Algeri",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-016",
+    "komponist": "Florian Leopold Gassmann",
+    "werk": "La Contessina",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-017",
+    "komponist": "Giuseppe Verdi",
+    "werk": "Un Ballo in Maschera",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-018",
+    "komponist": "Giuseppe Verdi",
+    "werk": "La Traviata",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-019",
+    "komponist": "Giuseppe Verdi",
+    "werk": "Aida",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-020",
+    "komponist": "Giuseppe Verdi",
+    "werk": "Otello",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-021",
+    "komponist": "Giuseppe Verdi",
+    "werk": "Rigoletto",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-022",
+    "komponist": "Giuseppe Verdi",
+    "werk": "Il Trovatore",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-023",
+    "komponist": "Vincenzo Bellini",
+    "werk": "Norma",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-024",
+    "komponist": "Gaetano Donizetti",
+    "werk": "Don Pasquale",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-025",
+    "komponist": "Gaetano Donizetti",
+    "werk": "Lucia di Lammermoor",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-026",
+    "komponist": "Gaetano Donizetti",
+    "werk": "L’Elisir d’Amore",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-027",
+    "komponist": "Georges Bizet",
+    "werk": "Carmen",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-028",
+    "komponist": "Ruggero Leoncavallo",
+    "werk": "I Pagliacci",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-029",
+    "komponist": "Pietro Mascagni",
+    "werk": "I Pagliacci",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-030",
+    "komponist": "Giacomo Puccini",
+    "werk": "Madama Butterfly",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-031",
+    "komponist": "Giacomo Puccini",
+    "werk": "Turandot",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-032",
+    "komponist": "Giacomo Puccini",
+    "werk": "La Bohème",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-033",
+    "komponist": "Giacomo Puccini",
+    "werk": "Tosca",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-034",
+    "komponist": "Richard Wagner",
+    "werk": "Lohengrin",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-035",
+    "komponist": "Richard Wagner",
+    "werk": "Holländer",
+    "kat": "Opern",
+    "notiz": "(Konzertant: Szenen aus Rheingold, Walküre, Tannhäuser und Holländer, Tristan-Vorspiel und Liebestod)"
+  },
+  {
+    "id": "r-036",
+    "komponist": "Otto Nicolai",
+    "werk": "Die Lustigen Weiber von Windsor",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-037",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Jewgenji Onegin",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-038",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Pique Dame",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-039",
+    "komponist": "Benjamin Britten",
+    "werk": "The Burning Fiery Furnace",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-040",
+    "komponist": "Benjamin Britten",
+    "werk": "The Prodigal Son",
+    "kat": "Opern",
+    "notiz": ""
+  },
+  {
+    "id": "r-041",
+    "komponist": "Johann Sebastian Strauss",
+    "werk": "Eine Nacht in Venedig",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-042",
+    "komponist": "Johann Sebastian Strauss",
+    "werk": "Wiener Blut",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-043",
+    "komponist": "Johann Sebastian Strauss",
+    "werk": "Die Fledermaus",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-044",
+    "komponist": "Johann Sebastian Strauss",
+    "werk": "Der Zigeunerbaron",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-045",
+    "komponist": "Franz Lehár",
+    "werk": "Das Land des Lächelns",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-046",
+    "komponist": "Franz Lehár",
+    "werk": "Die Lustige Witwe",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-047",
+    "komponist": "Franz Lehár",
+    "werk": "Der Graf von Luxemburg",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-048",
+    "komponist": "Emmerich Kálmán",
+    "werk": "Gräfin Mariza",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-049",
+    "komponist": "Emmerich Kálmán",
+    "werk": "Die Csardasfürstin",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-050",
+    "komponist": "Carl Zeller",
+    "werk": "Der Vogelhändler",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-051",
+    "komponist": "Leo Fall",
+    "werk": "Madame Pompadour",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-052",
+    "komponist": "Leo Fall",
+    "werk": "Der Fidele Bauer",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-053",
+    "komponist": "Carl Millöcker",
+    "werk": "Der Bettelstudent",
+    "kat": "Operetten",
+    "notiz": ""
+  },
+  {
+    "id": "r-054",
+    "komponist": "Frederick Loewe",
+    "werk": "My Fair Lady",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-055",
+    "komponist": "Cole Porter",
+    "werk": "Kiss Me Kate",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-056",
+    "komponist": "Cole Porter",
+    "werk": "Irma la Douce",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-057",
+    "komponist": "Cole Porter",
+    "werk": "Die Schöne und das Biest",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-058",
+    "komponist": "Sylvester Levay",
+    "werk": "Elisabeth",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-059",
+    "komponist": "John Kander",
+    "werk": "Cabaret",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-060",
+    "komponist": "John Kander",
+    "werk": "Chicago",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-061",
+    "komponist": "John Kander",
+    "werk": "Der Kuss der Spinnenfrau",
+    "kat": "Musicals",
+    "notiz": ""
+  },
+  {
+    "id": "r-062",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Der Nussknacker",
+    "kat": "Ballette",
+    "notiz": ""
+  },
+  {
+    "id": "r-063",
+    "komponist": "Sergei Sergejewitsch Prokofjew",
+    "werk": "Romeo und Julia",
+    "kat": "Ballette",
+    "notiz": ""
+  },
+  {
+    "id": "r-064",
+    "komponist": "Felix Mendelssohn Bartholdy",
+    "werk": "Ein Sommernachtstraum",
+    "kat": "Ballette",
+    "notiz": ""
+  },
+  {
+    "id": "r-065",
+    "komponist": "Rodion Konstantinowitsch Schtschedrin",
+    "werk": "Carmen Suite",
+    "kat": "Ballette",
+    "notiz": ""
+  },
+  {
+    "id": "r-066",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "Orchestersuiten # 1, 2, 3",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-067",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "Brandenburgische Konzerte # 1, 2, 3, 4, 6",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-068",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "Cembalo-, Flöten-, und Violinkonzerte",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-069",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "Passionen Johannes / Markus",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-070",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "ca. 30 geistliche und weltliche Kantaten",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-071",
+    "komponist": "Johann Sebastian Bach",
+    "werk": "Ein musikalisches Opfer",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-072",
+    "komponist": "Georg Philipp Telemann",
+    "werk": "Tafelmusiksuiten",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-073",
+    "komponist": "Georg Philipp Telemann",
+    "werk": "Flötenkonzerte",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-074",
+    "komponist": "Georg Friedrich Händel",
+    "werk": "Wassermusiksuiten",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-075",
+    "komponist": "Georg Friedrich Händel",
+    "werk": "Feuerwerksmusik",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-076",
+    "komponist": "Georg Friedrich Händel",
+    "werk": "aus Concerto grosso op.3 + op.6",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-077",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Freimaurermusiken",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-078",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Requiem",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-079",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "alle Messen (inkl. c-moll)",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-080",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Sinfonien KV183, 388",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-081",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Prager, Pariser, Linzer, Haffner, 440, Es-Dur, Jupiter",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-082",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Violinkonzerte A, D, G-Dur",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-083",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Klarinettenkonzert",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-084",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Sinfonia concertante Viol/Vla.",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-085",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Klavierkonzert 488",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-086",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Jeunehomme",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-087",
+    "komponist": "Wolfgang Amadeus Mozart",
+    "werk": "Krönungskonzert",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-088",
+    "komponist": "Joseph Haydn",
+    "werk": "alle Messen (ohne Theresien-, Nelson-, Schöpfungsmesse)",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-089",
+    "komponist": "Joseph Haydn",
+    "werk": "Die Schöpfung",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-090",
+    "komponist": "Joseph Haydn",
+    "werk": "Sinfonien KV183, 388, A",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-091",
+    "komponist": "Joseph Haydn",
+    "werk": "Sinfonien Nr. B, 5, 6, 7, 45, 60, 88, 92, 100, 101",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-092",
+    "komponist": "Joseph Haydn",
+    "werk": "Te Deum für Maria Theresia",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-093",
+    "komponist": "Gioachino Rossini",
+    "werk": "Stabat Mater",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-094",
+    "komponist": "Gioachino Rossini",
+    "werk": "einige Kantaten",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-095",
+    "komponist": "Gioachino Rossini",
+    "werk": "verschiedene Ouvertüren",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-096",
+    "komponist": "Franz Schubert",
+    "werk": "alle Messen",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-097",
+    "komponist": "Franz Schubert",
+    "werk": "Sinfonien Nr. 3, 4, 5, 7, 8",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-098",
+    "komponist": "Ludwig van Beethoven",
+    "werk": "C-Dur Messe",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-099",
+    "komponist": "Ludwig van Beethoven",
+    "werk": "Sinfonien Nr. 1, 4, 5, 6, 7",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-100",
+    "komponist": "Ludwig van Beethoven",
+    "werk": "Klavierkonzert Nr. 3",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-101",
+    "komponist": "Ludwig van Beethoven",
+    "werk": "Violinkonzert",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-102",
+    "komponist": "Robert Schumann",
+    "werk": "Sinfonie Nr. 4",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-103",
+    "komponist": "Anton Bruckner",
+    "werk": "alle 3 Messen",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-104",
+    "komponist": "Anton Bruckner",
+    "werk": "Sinfonien Nr. 1, 4",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-105",
+    "komponist": "Anton Bruckner",
+    "werk": "Te Deum",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-106",
+    "komponist": "Johannes Brahms",
+    "werk": "Haydn-Variationen",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-107",
+    "komponist": "Johannes Brahms",
+    "werk": "Sinfonie Nr. 1",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-108",
+    "komponist": "Johannes Brahms",
+    "werk": "Requiem",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-109",
+    "komponist": "Johannes Brahms",
+    "werk": "Serenade op.11",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-110",
+    "komponist": "Max Bruch",
+    "werk": "Violinkonzert Nr. 1",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-111",
+    "komponist": "Frédéric Chopin",
+    "werk": "Klavierkonzert Nr. 2",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-112",
+    "komponist": "Franz Liszt",
+    "werk": "Les Préludes",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-113",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Nussknackersuite",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-114",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Violinkonzert",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-115",
+    "komponist": "Pjotr Iljitsch Tschaikowski",
+    "werk": "Sinfonien Nr. 5, 6",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-116",
+    "komponist": "Modest Petrowitsch Mussorgski",
+    "werk": "Eine Nacht auf dem kahlen Berge",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-117",
+    "komponist": "Antonín Dvořák",
+    "werk": "Messe",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-118",
+    "komponist": "Antonín Dvořák",
+    "werk": "Violinkonzert",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-119",
+    "komponist": "Antonín Dvořák",
+    "werk": "Sinfonien Nr. 6, 8",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-120",
+    "komponist": "Gustav Mahler",
+    "werk": "Rückert Lieder",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-121",
+    "komponist": "Gustav Mahler",
+    "werk": "Lieder eines fahrenden Gesellen",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-122",
+    "komponist": "Gustav Mahler",
+    "werk": "Sinfonie Nr. 1",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-123",
+    "komponist": "Richard Strauss",
+    "werk": "Metamorphosen für 23 Solostreicher",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-124",
+    "komponist": "Richard Strauss",
+    "werk": "Don Juan",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-125",
+    "komponist": "Richard Strauss",
+    "werk": "Till Eulenspiegel",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-126",
+    "komponist": "Giacomo Puccini",
+    "werk": "Messa di Gloria",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-127",
+    "komponist": "Sergei Sergejewitsch Prokofjew",
+    "werk": "Sinfonie Nr. 5",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-128",
+    "komponist": "Sergei Sergejewitsch Prokofjew",
+    "werk": "Sinfonie classique",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-129",
+    "komponist": "Sergei Sergejewitsch Prokofjew",
+    "werk": "Sinfonia concertante (Violoncello-Konzert)",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-130",
+    "komponist": "Dmitri Dmitrijewitsch Schostakowitsch",
+    "werk": "Sinfonien Nr. 2, 5, 13",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-131",
+    "komponist": "Dmitri Dmitrijewitsch Schostakowitsch",
+    "werk": "Klavierkonzert Nr. 2",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-132",
+    "komponist": "Paul Dukas",
+    "werk": "Der Zauberlehrling",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-133",
+    "komponist": "Paul Hindemith",
+    "werk": "Sinfonische Metamorphosen",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-134",
+    "komponist": "Paul Hindemith",
+    "werk": "Sinfonietta",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-135",
+    "komponist": "Paul Hindemith",
+    "werk": "Konzert für Orchester",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-136",
+    "komponist": "Paul Hindemith",
+    "werk": "Kammermusik Nr. 1, 3",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-137",
+    "komponist": "Paul Hindemith",
+    "werk": "Mathis-Sinfonie",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-138",
+    "komponist": "Manuel de Falla",
+    "werk": "El Amor Brujo",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-139",
+    "komponist": "George Gershwin",
+    "werk": "An American in Paris",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-140",
+    "komponist": "Aaron Copland",
+    "werk": "Appalachian Spring",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-141",
+    "komponist": "Arnold Schönberg",
+    "werk": "Kammersinfonie",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-142",
+    "komponist": "Arnold Schönberg",
+    "werk": "Verklärte Nacht",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-143",
+    "komponist": "Igor Strawinsky",
+    "werk": "Psalmensinfonie",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-144",
+    "komponist": "Igor Strawinsky",
+    "werk": "Ragtime",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-145",
+    "komponist": "Igor Strawinsky",
+    "werk": "Dumbarton Oaks",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-146",
+    "komponist": "Igor Strawinsky",
+    "werk": "Agon",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-147",
+    "komponist": "Igor Strawinsky",
+    "werk": "Sinfonie in D",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-148",
+    "komponist": "Igor Strawinsky",
+    "werk": "Fairy Kiss Suite",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  },
+  {
+    "id": "r-149",
+    "komponist": "John Williams",
+    "werk": "Star Wars Suite",
+    "kat": "Konzerte und Kirchenmusik",
+    "notiz": ""
+  }
+]

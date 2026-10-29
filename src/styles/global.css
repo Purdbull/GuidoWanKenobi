@@ -1,0 +1,195 @@
+/* ============================================================
+   mancusi.at – Gestaltung „gestochene Partitur“
+   Altes Notenpapier, Sepia-Tinte, Rötel als Dirigierstift.
+   ============================================================ */
+
+@font-face { font-family: 'Libre Bodoni'; src: url('../assets/fonts/libre-bodoni.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Libre Bodoni'; src: url('../assets/fonts/libre-bodoni-italic.woff2') format('woff2'); font-weight: 400 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Source Serif 4'; src: url('../assets/fonts/source-serif-4.woff2') format('woff2'); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Source Serif 4'; src: url('../assets/fonts/source-serif-4-italic.woff2') format('woff2'); font-weight: 200 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Noto Music'; src: url('../assets/fonts/noto-music.woff2') format('woff2'); font-display: block; }
+
+:root {
+  --papier: #F3EADA;
+  --papier-hell: #F8F2E6;
+  --papier-weiss: #FFFDF8;
+  --band: #EADFC9;
+  --tinte: #2B2018;
+  --tinte-2: #5A4636;
+  --tinte-3: #6B5543;
+  --linie: #CDBB9C;
+  --linie-2: #B9A585;
+  --rahmen: #8C7660;
+  --rot: #8E2F22;
+  --rot-dunkel: #74251A;
+  --gold: #7A5A22;
+  --gold-hell: #9A6F2A;
+  --hell-auf-dunkel: #CDBB9C;
+
+  --titel: 'Libre Bodoni', Didot, 'Bodoni 72', Georgia, serif;
+  --text: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --noten: 'Noto Music', serif;
+
+  --breite: 1200px;
+  --rand: clamp(20px, 4vw, 32px);
+  --abstand: clamp(88px, 11vw, 120px);
+  --weich: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background-color: var(--papier);
+  background-image: url('../assets/papier.png');
+  background-size: 320px 320px;
+  color: var(--tinte);
+  font-family: var(--text);
+  font-size: 18px;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+[hidden] { display: none !important; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--rot); text-underline-offset: 4px; }
+a:hover { color: var(--rot-dunkel); }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--rot); outline-offset: 3px;
+}
+h1, h2, h3, p { margin: 0; }
+
+.huelle { max-width: var(--breite); margin: 0 auto; padding-inline: var(--rand); }
+.unsichtbar { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.springe { position: absolute; left: 12px; top: -60px; z-index: 10; background: var(--tinte); color: var(--papier-hell); padding: 10px 16px; transition: top .3s var(--weich); }
+.springe:focus { top: 12px; color: var(--papier-hell); }
+
+/* ---------- Typografie-Bausteine ---------- */
+.versal { font-size: 15px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; }
+.kursiv-leise { font-style: italic; color: var(--tinte-2); }
+.titel { font-family: var(--titel); font-weight: 500; letter-spacing: -0.015em; line-height: 1.05; }
+.note { font-family: var(--noten); font-weight: 400; }
+
+/* ---------- Kopf ---------- */
+.kopf { padding-top: 22px; }
+.kopf__leiste { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--tinte); }
+.kopf__name { font-family: var(--titel); font-size: 15px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--tinte); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
+.kopf__name:hover { color: var(--tinte); }
+.nav { display: flex; flex-wrap: wrap; gap: 0 26px; }
+.nav a { color: var(--tinte); text-decoration: none; font-size: 15px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; min-height: 44px; display: inline-flex; align-items: center; transition: color .35s var(--weich); }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--rot); }
+.nav a.nav__shop { color: var(--rot); }
+.menueknopf { display: none; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; border: 0; background: none; color: var(--tinte); font: 500 15px/1 var(--text); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+.menueknopf svg path { transition: transform .45s var(--weich), opacity .25s var(--weich); transform-box: view-box; transform-origin: 11px 7px; }
+.menueknopf[aria-expanded="true"] .m1 { transform: translateY(6px) rotate(45deg); }
+.menueknopf[aria-expanded="true"] .m2 { opacity: 0; }
+.menueknopf[aria-expanded="true"] .m3 { transform: translateY(-6px) rotate(-45deg); }
+.menue { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows .55s var(--weich), opacity .4s var(--weich), visibility 0s linear .55s; }
+.menue.offen { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition: grid-template-rows .55s var(--weich), opacity .4s var(--weich), visibility 0s; }
+.menue > nav { min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+.menue.offen > nav { padding: 8px 0 16px; border-bottom: 1px solid var(--tinte); }
+.menue a { font-family: var(--titel); font-size: 28px; color: var(--tinte); text-decoration: none; min-height: 52px; display: flex; align-items: center; }
+.menue a.nav__shop { color: var(--rot); font-style: italic; }
+@media (max-width: 860px) {
+  .nav { display: none; }
+  .menueknopf { display: inline-flex; }
+}
+
+/* ---------- Knöpfe ---------- */
+.knopf { min-height: 52px; padding: 0 28px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 500 15px/1 var(--text); letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background-color .35s var(--weich), color .35s var(--weich), border-color .35s var(--weich), transform .35s var(--weich); }
+.knopf:active { transform: scale(.98); }
+.knopf--rot { background: var(--rot); color: var(--papier-hell); }
+.knopf--rot:hover { background: var(--rot-dunkel); color: var(--papier-hell); transform: translateY(-1px); }
+.knopf--linie { border-color: var(--tinte); color: var(--tinte); background: transparent; }
+.knopf--linie:hover { background: var(--tinte); color: var(--papier-hell); transform: translateY(-1px); }
+.mehr { align-self: flex-start; color: var(--tinte); font-size: 15px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--tinte); padding-bottom: 2px; min-height: 44px; display: inline-flex; align-items: flex-end; transition: color .35s var(--weich), border-color .35s var(--weich); }
+.mehr:hover { color: var(--rot); border-color: var(--rot); }
+
+/* ---------- Abschnitte ---------- */
+.abschnitt { padding-top: var(--abstand); display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 24px; }
+.abschnitt__kopf { display: flex; flex-direction: column; gap: 12px; }
+.tempo { font-family: var(--titel); font-weight: 600; font-size: 19px; color: var(--tinte-2); }
+.tempo .note { font-size: 1.45em; line-height: 0; margin: 0 .05em; }
+.abschnitt__titel { display: flex; align-items: center; gap: 22px; }
+.ziffer { flex: 0 0 52px; width: 52px; height: 52px; border: 1.5px solid var(--tinte); display: inline-flex; align-items: center; justify-content: center; font-family: var(--titel); font-size: 28px; font-weight: 700; }
+.abschnitt__titel h1, .abschnitt__titel h2 { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.015em; }
+.einleitung { max-width: 760px; font-size: 22px; line-height: 1.5; text-wrap: pretty; }
+
+.trenner { display: flex; align-items: center; gap: 18px; }
+.trenner span { flex: 1 1 0; height: 1px; background: var(--linie-2); }
+
+/* sanftes Einblenden beim Scrollen (nur wo der Browser es kann) */
+@supports (animation-timeline: view()) {
+  @keyframes aufziehen { from { opacity: .001; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+  .aufziehen { animation: aufziehen linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+}
+@media (prefers-reduced-motion: reduce) { .aufziehen { animation: none !important; } }
+
+/* ---------- Fotos ---------- */
+.foto { margin: 0; padding: 14px; background: var(--papier-hell); border: 1px solid var(--linie); outline: 1px solid var(--linie); outline-offset: -7px; box-shadow: 0 34px 60px -34px rgba(43, 32, 24, .55), 0 2px 6px rgba(43, 32, 24, .08); overflow: hidden; }
+.foto img { width: 100%; transition: transform 1.2s var(--weich); }
+.foto:hover img { transform: scale(1.025); }
+
+/* ---------- Listen (Termine, Werke) ---------- */
+.liste { display: flex; flex-direction: column; border-top: 1.5px solid var(--tinte); }
+.zeile { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 40px; padding: 26px 0; border-bottom: 1px solid var(--linie); }
+.zeile__datum { flex: 0 0 230px; display: flex; flex-direction: column; gap: 4px; }
+.zeile__gross { font-family: var(--titel); font-weight: 500; font-size: 52px; line-height: 1; color: var(--rot); letter-spacing: -0.02em; font-variant-numeric: lining-nums; white-space: nowrap; }
+.zeile__klein { font-size: 14px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tinte-2); }
+.zeile__inhalt { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.zeile__titel { font-size: 25px; font-weight: 500; line-height: 1.25; text-wrap: pretty; }
+.zeile__zusatz { font-size: 18px; font-style: italic; color: var(--tinte-2); }
+.zeile__programm { font-size: 17px; color: var(--tinte-3); }
+
+.werke { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); column-gap: 64px; border-bottom: 1px solid var(--linie); }
+.werk { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 22px 0; border-top: 1px solid var(--linie); }
+.werk[hidden] { display: none; }
+.werk__jahr { flex: 0 0 100px; white-space: nowrap; font-family: var(--titel); font-weight: 500; font-size: 22px; line-height: 1.3; color: var(--rot); font-variant-numeric: lining-nums; }
+.werk__inhalt { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.werk__titel { font-size: 22px; font-weight: 500; line-height: 1.3; text-wrap: pretty; }
+.werk__text { font-size: 17px; font-style: italic; line-height: 1.45; color: var(--tinte-2); }
+.werk__kat { margin-top: 6px; font-size: 13px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tinte-3); }
+@keyframes hereingleiten { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.werk.neu { animation: hereingleiten .55s var(--weich) both; animation-delay: calc(var(--i, 0) * 60ms); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { min-height: 44px; padding: 0 18px; border: 1px solid var(--rahmen); background: transparent; color: var(--tinte); font: 400 17px/1 var(--text); cursor: pointer; transition: background-color .35s var(--weich), color .35s var(--weich), border-color .35s var(--weich); }
+.chip:hover { border-color: var(--tinte); }
+.chip[aria-pressed="true"] { background: var(--tinte); border-color: var(--tinte); color: var(--papier-hell); }
+
+/* ---------- Doppelstrich-Karten (Repertoire) ---------- */
+.karten { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px 32px; }
+.karte { border-top: 3px double var(--tinte); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.karte__nr { font-family: var(--titel); font-style: italic; font-size: 20px; color: var(--rot); }
+.karte h3 { font-family: var(--titel); font-weight: 500; font-size: 32px; line-height: 1.1; }
+.karte p { font-size: 18px; line-height: 1.55; color: var(--tinte-2); }
+
+/* ---------- Fuß ---------- */
+.fine { padding-top: 128px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.fine__wort { font-family: var(--titel); font-style: italic; font-size: 30px; line-height: 1; }
+.fine__system { width: 100%; height: 41px; position: relative; background-image: repeating-linear-gradient(to bottom, var(--linie-2) 0, var(--linie-2) 1px, transparent 1px, transparent 10px); background-size: 100% 41px; }
+.fine__system::before { content: ''; position: absolute; right: 12px; top: 0; bottom: 0; width: 2px; background: var(--tinte); }
+.fine__system::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 7px; background: var(--tinte); }
+.fuss { margin-top: 56px; background: var(--tinte); color: var(--papier); }
+.fuss__innen { padding-block: 64px 48px; display: flex; flex-direction: column; gap: 48px; }
+.fuss__spalten { display: flex; flex-wrap: wrap; gap: 40px 72px; }
+.fuss__spalte { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.fuss__name { font-family: var(--titel); font-size: 34px; font-weight: 500; line-height: 1.1; }
+.fuss .versal { font-size: 13px; color: var(--hell-auf-dunkel); margin-bottom: 6px; }
+.fuss a { color: var(--papier); min-height: 44px; display: inline-flex; align-items: center; }
+.fuss a:hover { color: #fff; }
+.fuss__leise { color: var(--hell-auf-dunkel); font-size: 17px; }
+.fuss__unten { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; padding-top: 22px; border-top: 1px solid var(--tinte-2); }
+.fuss__unten a { color: var(--hell-auf-dunkel); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; }
+.fuss__links { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+
+/* ---------- Fließtext-Seiten ---------- */
+.textseite { max-width: 780px; display: flex; flex-direction: column; gap: 20px; font-size: 20px; line-height: 1.65; }
+.textseite h2 { font-family: var(--titel); font-weight: 500; font-size: 28px; margin-top: 18px; }
+.textseite p { text-wrap: pretty; }

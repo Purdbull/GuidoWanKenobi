@@ -1,0 +1,38 @@
+[
+  {
+    "id": "h-1",
+    "komponist": "Pjotr Ilitsch Tschaikovsky",
+    "titel": "Tschaikovsky 4. Satz: Finale",
+    "datei": "tschaikovsky-p.i.-4.symphonie-4.satz_.mp3",
+    "quelle": "https://mancusi.at/wp-content/uploads/2024/09/tschaikovsky-p.i.-4.symphonie-4.satz_.mp3",
+    "tempo": "Allegro con fuoco",
+    "takt": "0.6s"
+  },
+  {
+    "id": "h-2",
+    "komponist": "Ludwig van Beethoven",
+    "titel": "Sinfonie Nr.4 B-Dur op.60 – 4.Satz Allegro ma non troppo",
+    "datei": "beethoven-l.v.-4.sinfonie-4.satz_.mp3",
+    "quelle": "https://mancusi.at/wp-content/uploads/2024/09/beethoven-l.v.-4.sinfonie-4.satz_.mp3",
+    "tempo": "Allegro ma non troppo",
+    "takt": "0.7s"
+  },
+  {
+    "id": "h-3",
+    "komponist": "Ludwig van Beethoven",
+    "titel": "Sinfonie Nr.1 op.21 – Adagio molto, Allegro con brio",
+    "datei": "beethoven-l.v.-1.sinfonie-1.satz_.mp3",
+    "quelle": "https://mancusi.at/wp-content/uploads/2024/09/beethoven-l.v.-1.sinfonie-1.satz_.mp3",
+    "tempo": "Allegro con brio",
+    "takt": "0.6s"
+  },
+  {
+    "id": "h-4",
+    "komponist": "Johannes Brahms",
+    "titel": "Haydn-Variationen – Var.5 u. 6",
+    "datei": "brahms-j.-haydn-variationen-var.5-u.-6.mp3",
+    "quelle": "https://mancusi.at/wp-content/uploads/2024/09/brahms-j.-haydn-variationen-var.5-u.-6.mp3",
+    "tempo": "Vivace",
+    "takt": "0.5s"
+  }
+]

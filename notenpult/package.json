@@ -1,0 +1,16 @@
+{
+  "name": "mancusi-notenpult",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "jose": "6.1.0"
+  },
+  "devDependencies": {
+    "wrangler": "4.42.0"
+  }
+}

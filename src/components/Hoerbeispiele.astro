@@ -1,0 +1,87 @@
+---
+// Hörbeispiele mit echtem Audio. Beim Abspielen schwingt der Taktstock im Tempo des Stücks.
+// Fehlt eine Datei in public/audio/, wird die Zeile als „Aufnahme folgt“ angezeigt.
+import fs from 'node:fs';
+import path from 'node:path';
+import { hoerbeispiele, url } from '../lib/daten.js';
+
+const vorhanden = (datei) => datei && fs.existsSync(path.join(process.cwd(), 'public', 'audio', datei));
+const spuren = hoerbeispiele.map((h) => ({ ...h, da: vorhanden(h.datei) }));
+---
+<div class="spuren" data-spuren>
+  {spuren.map((h) => (
+    <div class="spur" style={`--takt: ${h.takt || '0.7s'}`}>
+      <button type="button" class="spiel" aria-label={`Abspielen: ${h.titel}`} data-titel={h.titel} disabled={!h.da}>
+        <svg class="spiel__play" width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M5 2.5v13l11-6.5z" /></svg>
+        <svg class="spiel__pause" width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="4" height="14" /><rect x="11" y="2" width="4" height="14" /></svg>
+      </button>
+      <div class="spur__text">
+        <span class="spur__titel">{h.titel}</span>
+        <span class="spur__komponist">{h.komponist}{!h.da && ' · Aufnahme folgt'}</span>
+      </div>
+      <div class="dirigat" aria-hidden="true">
+        {h.tempo && <span class="dirigat__tempo">{h.tempo}</span>}
+        <svg class="stab" width="76" height="76" viewBox="0 0 90 92" fill="none">
+          <g class="stab__g">
+            <path d="M68.2 72.3 L14.8 7.4 L13.2 8.6 L63.8 75.7Z" fill="#FBF7EE" stroke="#2B2018" stroke-width="1.2" stroke-linejoin="round" />
+            <ellipse cx="70" cy="80" rx="7" ry="10.5" transform="rotate(-38.2 70 80)" fill="#7A5A22" />
+            <ellipse cx="67.5" cy="77" rx="2.4" ry="4.7" transform="rotate(-38.2 67.5 77)" fill="#B08A45" opacity="0.8" />
+          </g>
+        </svg>
+      </div>
+      {h.da && <audio preload="none" src={url(`audio/${h.datei}`)}></audio>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .spuren { display: flex; flex-direction: column; border-top: 1.5px solid var(--tinte); }
+  .spur { position: relative; display: flex; align-items: center; gap: 22px; padding: 18px 0; min-height: 96px; border-bottom: 1px solid var(--linie); }
+  .spiel { flex: 0 0 56px; width: 56px; height: 56px; padding: 0; border-radius: 28px; border: 1.5px solid var(--tinte); background-color: rgba(142, 47, 34, 0); color: var(--tinte); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color .35s var(--weich), color .35s var(--weich), border-color .35s var(--weich), transform .35s var(--weich); }
+  .spiel:hover:not(:disabled) { transform: scale(1.05); }
+  .spiel:disabled { opacity: .45; cursor: default; }
+  .spiel__pause { display: none; }
+  .spur.spielt .spiel { background-color: var(--rot); border-color: var(--rot); color: var(--papier-hell); }
+  .spur.spielt .spiel__play { display: none; }
+  .spur.spielt .spiel__pause { display: block; }
+  .spur__text { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-right: 250px; }
+  .spur__titel { font-size: 21px; font-weight: 500; line-height: 1.3; }
+  .spur__komponist { font-size: 17px; font-style: italic; color: var(--tinte-2); }
+  .dirigat { position: absolute; right: 0; top: 50%; display: flex; align-items: center; gap: 16px; pointer-events: none; opacity: 0; transform: translateY(-50%) translateX(14px); transition: opacity .5s var(--weich), transform .6s var(--weich); }
+  .spur.spielt .dirigat { opacity: 1; transform: translateY(-50%); }
+  .dirigat__tempo { font-size: 17px; font-style: italic; white-space: nowrap; color: var(--rot); animation: atmen 2.4s ease-in-out infinite paused; }
+  .stab__g { transform-box: view-box; transform-origin: 70px 80px; animation: schlagen var(--takt) linear infinite paused; }
+  .spur.spielt .stab__g, .spur.spielt .dirigat__tempo { animation-play-state: running; }
+  @keyframes schlagen { 0% { transform: rotate(14deg); animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.5); } 42% { transform: rotate(-22deg); animation-timing-function: cubic-bezier(0.15, 0.55, 0.35, 1); } 100% { transform: rotate(14deg); } }
+  @keyframes atmen { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  @media (max-width: 760px) {
+    .dirigat__tempo { display: none; }
+    .spur__text { padding-right: 70px; }
+    .stab { width: 60px; height: 60px; }
+  }
+</style>
+
+<script>
+  const spuren = [...document.querySelectorAll('[data-spuren] .spur')];
+  const stopAlle = (ausser) => spuren.forEach((s) => {
+    if (s === ausser) return;
+    const a = s.querySelector('audio');
+    if (a && !a.paused) a.pause();
+  });
+  spuren.forEach((spur) => {
+    const knopf = spur.querySelector('.spiel');
+    const audio = spur.querySelector('audio');
+    if (!audio || !knopf) return;
+    const titel = knopf.getAttribute('data-titel');
+    const zeige = (an) => {
+      spur.classList.toggle('spielt', an);
+      knopf.setAttribute('aria-label', `${an ? 'Anhalten' : 'Abspielen'}: ${titel}`);
+    };
+    knopf.addEventListener('click', () => {
+      if (audio.paused) { stopAlle(spur); audio.play(); } else { audio.pause(); }
+    });
+    audio.addEventListener('play', () => zeige(true));
+    audio.addEventListener('pause', () => zeige(false));
+    audio.addEventListener('ended', () => zeige(false));
+  });
+</script>

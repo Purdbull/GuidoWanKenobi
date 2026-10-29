@@ -1,0 +1,31 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Abschnittskopf from '../components/Abschnittskopf.astro';
+import { texte, url } from '../lib/daten.js';
+const [erster, ...rest] = texte.biografie;
+---
+<Seite titel="Biografie – Guido Mancusi" beschreibung="Biografie des österreichisch-italienischen Dirigenten und Komponisten Guido Mancusi." aktiv="biografie" bild="bilder/guido-mancusi-portraet.jpg">
+  <section class="abschnitt huelle">
+    <Abschnittskopf ziffer="E" tempo="Adagio espressivo" mm="60" titel="Biografie" ebene="h1" />
+    <div class="biografie">
+      <div class="biografie__bilder">
+        <figure class="foto"><img src={url('bilder/guido-mancusi-portraet.webp')} width="562" height="820" alt="Porträt Guido Mancusi" /></figure>
+        <figure class="foto"><img src={url('bilder/guido-mancusi-dirigat.webp')} width="1007" height="670" alt="Guido Mancusi beim Dirigieren" loading="lazy" /></figure>
+      </div>
+      <div class="textseite">
+        <p class="erster">{erster}</p>
+        {rest.map((a) => <p>{a}</p>)}
+        <p class="motto">„{texte.motto}“</p>
+      </div>
+    </div>
+  </section>
+</Seite>
+
+<style>
+  .biografie { display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start; }
+  .biografie__bilder { flex: 0 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 32px; position: sticky; top: 24px; }
+  .textseite { flex: 1 1 520px; }
+  .erster::first-letter { float: left; font-family: var(--titel); font-weight: 500; font-size: 96px; line-height: .82; padding: 8px 12px 0 0; color: var(--rot); }
+  .motto { font-family: var(--titel); font-style: italic; font-size: 30px; line-height: 1.25; margin-top: 16px; padding-top: 22px; border-top: 3px double var(--tinte); }
+  @media (max-width: 900px) { .biografie__bilder { position: static; } }
+</style>

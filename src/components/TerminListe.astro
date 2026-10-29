@@ -1,0 +1,41 @@
+---
+// Liste von Terminen. Jede Zeile kennt ihr Enddatum, damit das Skript unten
+// nach dem Build vergangene Termine ausblenden kann (die Seite wird zusätzlich täglich neu gebaut).
+import { datum, terminZeile, ende } from '../lib/daten.js';
+const { termine = [], max = 0, leer = 'Neue Termine folgen in Kürze.', vergangen = false } = Astro.props;
+---
+<div class="liste" data-terminliste data-max={max || undefined}>
+  {termine.map((t) => {
+    const d = datum(t.von, t.bis);
+    return (
+      <article class="zeile" data-ende={vergangen ? undefined : ende(t)}>
+        <div class="zeile__datum">
+          <span class="zeile__gross">{d.gross}</span>
+          <span class="zeile__klein">{d.klein}</span>
+        </div>
+        <div class="zeile__inhalt">
+          <h3 class="zeile__titel">{t.titel}</h3>
+          {terminZeile(t) && <span class="zeile__zusatz">{terminZeile(t)}</span>}
+          {t.programm && <span class="zeile__programm">{t.programm}</span>}
+        </div>
+      </article>
+    );
+  })}
+  <p class="zeile zeile__zusatz" data-leer hidden={termine.length > 0}>{leer}</p>
+</div>
+
+<script>
+  const tag = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(new Date());
+  document.querySelectorAll('[data-terminliste]').forEach((liste) => {
+    const max = Number(liste.getAttribute('data-max') || 0);
+    let sichtbar = 0;
+    liste.querySelectorAll('[data-ende]').forEach((z) => {
+      const vorbei = z.getAttribute('data-ende') < tag;
+      const zuviel = max && sichtbar >= max;
+      z.hidden = vorbei || zuviel;
+      if (!z.hidden) sichtbar += 1;
+    });
+    const leer = liste.querySelector('[data-leer]');
+    if (leer && liste.querySelector('[data-ende]')) leer.hidden = sichtbar > 0;
+  });
+</script>

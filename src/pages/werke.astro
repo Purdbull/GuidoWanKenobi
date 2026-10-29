@@ -1,0 +1,13 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Abschnittskopf from '../components/Abschnittskopf.astro';
+import WerkListe from '../components/WerkListe.astro';
+import { werkeNeuesteZuerst, werke } from '../lib/daten.js';
+---
+<Seite titel="Werkverzeichnis – Guido Mancusi" beschreibung={`Das Werkverzeichnis des Komponisten Guido Mancusi: ${werke.length} Werke von Bühnenwerken über Orchestermusik bis zu Bearbeitungen.`} aktiv="werke">
+  <section class="abschnitt huelle">
+    <Abschnittskopf ziffer="B" tempo="Andante cantabile" mm="72" titel="Werkverzeichnis" ebene="h1" />
+    <p class="einleitung">Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper. {werke.length} Werke, die neuesten zuerst.</p>
+    <WerkListe werke={werkeNeuesteZuerst()} />
+  </section>
+</Seite>

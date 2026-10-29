@@ -1,0 +1,49 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Abschnittskopf from '../components/Abschnittskopf.astro';
+import { repertoireNachKategorie } from '../lib/daten.js';
+const gruppen = repertoireNachKategorie();
+const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
+---
+<Seite titel="Repertoire – Guido Mancusi" beschreibung="Das Dirigier-Repertoire von Guido Mancusi: Opern, Operetten, Musicals, Ballette, Konzerte und Kirchenmusik." aktiv="repertoire">
+  <section class="abschnitt huelle">
+    <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" ebene="h1" />
+    <nav class="sprung" aria-label="Gattungen">
+      {gruppen.map((g, i) => <a href={`#g${i}`}><span class="karte__nr">{ROEMISCH[i]}</span> {g.kat}</a>)}
+    </nav>
+    {gruppen.map((g, i) => (
+      <section class="gattung" id={`g${i}`} aria-labelledby={`gt${i}`}>
+        <div class="gattung__kopf">
+          <span class="karte__nr">{ROEMISCH[i]}</span>
+          <h2 id={`gt${i}`} class="titel">{g.kat}</h2>
+        </div>
+        <div class="komponisten">
+          {g.komponisten.map((k) => (
+            <div class="komponist">
+              <h3>{k.name}</h3>
+              <ul>
+                {k.werke.map((r) => <li>{r.werk}{r.notiz && <span class="notiz"> {r.notiz}</span>}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </section>
+</Seite>
+
+<style>
+  .sprung { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+  .sprung a { color: var(--tinte); text-decoration: none; font-size: 19px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; transition: color .35s var(--weich); }
+  .sprung a:hover { color: var(--rot); }
+  .gattung { scroll-margin-top: 24px; display: flex; flex-direction: column; gap: 24px; padding-top: 32px; }
+  .gattung__kopf { display: flex; align-items: baseline; gap: 16px; border-top: 3px double var(--tinte); padding-top: 18px; }
+  .gattung__kopf h2 { font-size: clamp(30px, 3.6vw, 40px); }
+  .komponisten { columns: 3 280px; column-gap: 48px; }
+  .komponist { break-inside: avoid; padding-bottom: 22px; }
+  .komponist h3 { font-family: var(--titel); font-weight: 600; font-size: 21px; line-height: 1.25; margin-bottom: 6px; }
+  .komponist ul { margin: 0; padding: 0; list-style: none; }
+  .komponist li { font-size: 18px; line-height: 1.5; color: var(--tinte-2); padding-left: 1em; text-indent: -1em; }
+  .komponist li::before { content: '♩'; font-family: var(--noten); color: var(--linie-2); display: inline-block; width: 1em; text-indent: 0; }
+  .notiz { font-style: italic; }
+</style>

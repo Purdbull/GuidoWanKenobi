@@ -1,0 +1,60 @@
+# Baut die Website und stellt sie auf GitHub Pages.
+# Läuft bei jeder Änderung (auch jedem Speichern im Notenpult), täglich in der Nacht
+# (damit vergangene Termine ins Archiv wandern) und auf Knopfdruck.
+# Achtung: Das Notenpult fragt den Status genau dieser Datei ab – Dateinamen nicht ändern.
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'notenpult/**'
+      - 'docs/**'
+      - '**.md'
+  schedule:
+    - cron: '17 1 * * *'   # täglich ca. 02:17/03:17 Wiener Zeit
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - name: Daten prüfen
+        run: npm run pruefen
+      - name: Website bauen
+        run: npx astro build
+        env:
+          # Solange die Domain nicht verbunden ist: purdbull.github.io/GuidoWanKenobi.
+          # Sobald mancusi.at in den Pages-Einstellungen eingetragen ist, stellt sich das von selbst um.
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  veroeffentlichen:
+    needs: bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

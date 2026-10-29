@@ -1,0 +1,692 @@
+[
+  {
+    "id": "t-20231231-1",
+    "von": "2023-12-31",
+    "bis": "2024-01-10",
+    "zeit": "",
+    "titel": "Konzerte in Japan und Südkorea (Tournee)",
+    "ort": "",
+    "mit": "Symphonieorchester der Volksoper Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20240114-1",
+    "von": "2024-01-14",
+    "bis": "2024-01-21",
+    "zeit": "",
+    "titel": "Konzerte in Schweden, Estland und Deutschland (Tournee)",
+    "ort": "",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20240203-1",
+    "von": "2024-02-03",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "MüPa Budapest",
+    "mit": "Dohnány Sinfonie Orchester",
+    "programm": "„Gefährliche Liebschaften“, Drama mit Musik von W.A. Mozart"
+  },
+  {
+    "id": "t-20240210-1",
+    "von": "2024-02-10",
+    "bis": "",
+    "zeit": "",
+    "titel": "Arany és Ezüst Bál (Gold und Silber Ball)",
+    "ort": "Vigadó Budapest",
+    "mit": "Dohnányi Sinfonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20240223-1",
+    "von": "2024-02-23",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "Klauzal Center Budapest",
+    "mit": "Dohnány Sinfonie Orchester",
+    "programm": "Wagner, Ravel, Mahler"
+  },
+  {
+    "id": "t-20240503-1",
+    "von": "2024-05-03",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "F-Liszt Akademie",
+    "mit": "Dohnány Sinfonie Orchester",
+    "programm": "„Romeo & Julia“-Programm; Tchaikovsky, Prokofiev, Rota, Strauss"
+  },
+  {
+    "id": "t-20240727-1",
+    "von": "2024-07-27",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert beim Zemplén Festival",
+    "ort": "Sárospatak",
+    "mit": "Dohnány Sinfonie Orchester",
+    "programm": "„Gefährliche Liebschaften“, Drama mit Musik von W.A. Mozart"
+  },
+  {
+    "id": "t-20240922-1",
+    "von": "2024-09-22",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Nochmal „Seinerzeit“ – ein Treffen mit Sängern von damals und heute (11h Matinée)",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20240929-1",
+    "von": "2024-09-29",
+    "bis": "",
+    "zeit": "16:00",
+    "titel": "Konzert",
+    "ort": "F. Liszt Akademie Budapest",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20241015-1",
+    "von": "2024-10-15",
+    "bis": "",
+    "zeit": "20:00",
+    "titel": "Auftritt",
+    "ort": "Café Frauenhuber, Himmelpfortgasse, Wien I",
+    "mit": "Michael Havlicek",
+    "programm": "Wienerlieder Programm"
+  },
+  {
+    "id": "t-20241020-1",
+    "von": "2024-10-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "„Tosca“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20241103-1",
+    "von": "2024-11-03",
+    "bis": "",
+    "zeit": "",
+    "titel": "„Madama Butterfly“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20241109-1",
+    "von": "2024-11-09",
+    "bis": "",
+    "zeit": "19:30",
+    "titel": "Konzert",
+    "ort": "MÜPA Budapest",
+    "mit": "Dohnány Symphonie Orchester und Magdalena Anna Hofmann",
+    "programm": "R. Strauss: Orchesterlieder, „Ein Heldenleben“; R. Wagner: Vorspiel und Isoldes Liebestod"
+  },
+  {
+    "id": "t-20241110-1",
+    "von": "2024-11-10",
+    "bis": "",
+    "zeit": "19:00",
+    "titel": "Konzert",
+    "ort": "St. Pölten (Stadtsaal)",
+    "mit": "Salonorchester Wolfgang Ortner",
+    "programm": "Opern- und Operettenausschnitte mit Sängern der Volksoper Wien"
+  },
+  {
+    "id": "t-20241115-1",
+    "von": "2024-11-15",
+    "bis": "",
+    "zeit": "19:00",
+    "titel": "Konzert",
+    "ort": "Klauzal Center Budapest",
+    "mit": "Dohnány Sinfonie Orchester und Mitra Kotte",
+    "programm": "Schubert, Beethoven, Mozart"
+  },
+  {
+    "id": "t-20241117-1",
+    "von": "2024-11-17",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Nochmal „Seinerzeit“ – ein Treffen mit Sängern von damals und heute (11h Matinée)",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20241118-1",
+    "von": "2024-11-18",
+    "bis": "",
+    "zeit": "",
+    "titel": "Weihnachtskonzert",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20241120-1",
+    "von": "2024-11-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Weihnachtskonzert",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20241201-1",
+    "von": "2024-12-01",
+    "bis": "",
+    "zeit": "19:30",
+    "titel": "Konzert",
+    "ort": "Mariendom, Linz",
+    "mit": "Chor und Orchester der Anton Bruckner Uni Linz",
+    "programm": "UA der Weihnachts-Kantate (1899) von Mathilde Kralik; weitere Werke von Anton Bruckner"
+  },
+  {
+    "id": "t-20241211-1",
+    "von": "2024-12-11",
+    "bis": "",
+    "zeit": "19:00",
+    "titel": "Weihnachtskonzert des Chores der MUK",
+    "ort": "Franziskanerkirche Wien",
+    "mit": "",
+    "programm": "u.a. Bruckner, Reiter, Poulenc"
+  },
+  {
+    "id": "t-20250101-1",
+    "von": "2025-01-01",
+    "bis": "2025-01-24",
+    "zeit": "",
+    "titel": "Konzerte in Schweden, Finnland, Dänemark, Estland und Norwegen (Tournée)",
+    "ort": "",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20250126-1",
+    "von": "2025-01-26",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Matinée „Seinerzeit“ – ein Treffen mit Sängern von damals und heute",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20250214-1",
+    "von": "2025-02-14",
+    "bis": "",
+    "zeit": "",
+    "titel": "Galakonzert zum 200. Geburtstag von Johann Strauß Sohn",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20250220-1",
+    "von": "2025-02-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "Budapest",
+    "mit": "Dohnányi Symphonie Orchester",
+    "programm": "Gamer Music"
+  },
+  {
+    "id": "t-20250227-1",
+    "von": "2025-02-27",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "Krems, Kloster UND",
+    "mit": "Köchel-Gesellschaft",
+    "programm": "Werke von Johann Strauß in den Bearbeitungen von A.Schönberg, A.v.Weber, A.Berg und G.Mancusi"
+  },
+  {
+    "id": "t-20250329-1",
+    "von": "2025-03-29",
+    "bis": "",
+    "zeit": "",
+    "titel": "Premiere „Der Karneval in Rom“ von Johann Strauß",
+    "ort": "Aalto-Theater Essen",
+    "mit": "",
+    "programm": "in der Regie und Konzept von Nikolaus Habjan"
+  },
+  {
+    "id": "t-20250404-1",
+    "von": "2025-04-04",
+    "bis": "",
+    "zeit": "",
+    "titel": "Vorstellung „Der Karneval in Rom“ von Johann Strauß",
+    "ort": "Aalto-Theater Essen",
+    "mit": "",
+    "programm": "in der Regie und Konzept von Nikolaus Habjan"
+  },
+  {
+    "id": "t-20250405-1",
+    "von": "2025-04-05",
+    "bis": "",
+    "zeit": "",
+    "titel": "Galakonzert",
+    "ort": "Konzerthaus Thessaloniki",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": "Musik der Strauß-Dynastie"
+  },
+  {
+    "id": "t-20250412-1",
+    "von": "2025-04-12",
+    "bis": "",
+    "zeit": "",
+    "titel": "Vorstellung „Der Karneval in Rom“ von Johann Strauß",
+    "ort": "Aalto-Theater Essen",
+    "mit": "",
+    "programm": "in der Regie und Konzept von Nikolaus Habjan"
+  },
+  {
+    "id": "t-20250420-1",
+    "von": "2025-04-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Vorstellung „Der Karneval in Rom“ von Johann Strauß",
+    "ort": "Aalto-Theater Essen",
+    "mit": "",
+    "programm": "in der Regie und Konzept von Nikolaus Habjan"
+  },
+  {
+    "id": "t-20250427-1",
+    "von": "2025-04-27",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Matinée „Seinerzeit“ – ein Treffen mit Sängern von damals und heute",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20250509-1",
+    "von": "2025-05-09",
+    "bis": "",
+    "zeit": "",
+    "titel": "Vorstellung „Rigoletto“",
+    "ort": "Staatstheater Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20250516-1",
+    "von": "2025-05-16",
+    "bis": "",
+    "zeit": "",
+    "titel": "Vorstellung „Turandot“",
+    "ort": "Staatstheater Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20250524-1",
+    "von": "2025-05-24",
+    "bis": "",
+    "zeit": "",
+    "titel": "Operettengala",
+    "ort": "Stadtsäle, St.Pölten",
+    "mit": "Salonorchester Ortner; Jörg Schneider, Alexandra Reinprecht, Katrin Fuchs, Andreas Sauerzapf und Kurt Alois Kind",
+    "programm": "Musik von Johann Strauß"
+  },
+  {
+    "id": "t-20250525-1",
+    "von": "2025-05-25",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Matinée „Seinerzeit . SPEZIAL“ – EINE VORSTELLUNG MEINER DREI OPERETTEN „Der ideale Gatte“ – „Kowalski oder das Geschenk“ – „Hanna Glawari 2.0“",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Simona Eisinger, Mehrzad Montazeri und Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20250626-1",
+    "von": "2025-06-26",
+    "bis": "",
+    "zeit": "",
+    "titel": "Galakonzert",
+    "ort": "Schloss Hunyadi/Ma.Enzersdorf",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": "Musik von Johann Strauß"
+  },
+  {
+    "id": "t-20250815-1",
+    "von": "2025-08-15",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert beim Zemplén-Festival",
+    "ort": "Tokaj",
+    "mit": "Dohnányi Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20250816-1",
+    "von": "2025-08-16",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert beim Zemplén-Festival",
+    "ort": "Tokaj",
+    "mit": "Dohnányi Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20250830-1",
+    "von": "2025-08-30",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert beim Sommer-Konzert-Festival",
+    "ort": "Vaduz/Liechtenstein",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": "Musik der Strauß Dynastie"
+  },
+  {
+    "id": "t-20250905-1",
+    "von": "2025-09-05",
+    "bis": "",
+    "zeit": "",
+    "titel": "Wiederholung des Galakonzerts zum 200. Geburtstag von Johann Strauß Sohn",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20250928-1",
+    "von": "2025-09-28",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Matinée „Seinerzeit“ – ein Treffen mit Sängern von damals und heute",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20251018-1",
+    "von": "2025-10-18",
+    "bis": "",
+    "zeit": "17:00",
+    "titel": "Konzert",
+    "ort": "Stadtsäle, St.Pölten",
+    "mit": "Salonorchester Ortner gemeinsam mit der Musicalklasse der Musikschule St.Pölten",
+    "programm": ""
+  },
+  {
+    "id": "t-20251019-1",
+    "von": "2025-10-19",
+    "bis": "",
+    "zeit": "11:00",
+    "titel": "Konzert",
+    "ort": "Stadtsäle, St.Pölten",
+    "mit": "Salonorchester Ortner gemeinsam mit der Musicalklasse der Musikschule St.Pölten",
+    "programm": ""
+  },
+  {
+    "id": "t-20251118-1",
+    "von": "2025-11-18",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "MÜPA Budapest",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": "Richard und Johann, zwei Sträuße"
+  },
+  {
+    "id": "t-20251121-1",
+    "von": "2025-11-21",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufführung von „Tosca“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20251126-1",
+    "von": "2025-11-26",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufführung von „Madama Butterfly“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20251204-1",
+    "von": "2025-12-04",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufführung von „Otello“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20251212-1",
+    "von": "2025-12-12",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "Klauzal Center, Budafok/Budapest",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": "Hindemith Metamorphosen, Mancusi Violinkonzert UA, Beethoven 8.Sinfonie"
+  },
+  {
+    "id": "t-20260101-1",
+    "von": "2026-01-01",
+    "bis": "",
+    "zeit": "",
+    "titel": "Neujahrskonzert",
+    "ort": "",
+    "mit": "Philharmonisches Orchester Essen",
+    "programm": ""
+  },
+  {
+    "id": "t-20260103-1",
+    "von": "2026-01-03",
+    "bis": "2026-01-17",
+    "zeit": "",
+    "titel": "Skandinavientournee",
+    "ort": "",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20260125-1",
+    "von": "2026-01-25",
+    "bis": "",
+    "zeit": "",
+    "titel": "Matinée „Seinerzeit“ – ein Treffen mit Sängern von damals und heute",
+    "ort": "Neue Tribühne unterm Café Landtmann",
+    "mit": "Michael Havlicek",
+    "programm": ""
+  },
+  {
+    "id": "t-20260225-1",
+    "von": "2026-02-25",
+    "bis": "",
+    "zeit": "",
+    "titel": "Passionskonzert des Chores der MUK",
+    "ort": "Franziskanerkirche Wien",
+    "mit": "",
+    "programm": "Bernstein, Gjeilo, Messiaens, Pärt und Poulenc"
+  },
+  {
+    "id": "t-20260315-1",
+    "von": "2026-03-15",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufnahmen",
+    "ort": "Konzerthaus Wien",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20260330-1",
+    "von": "2026-03-30",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufführung von „Tosca“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20260416-1",
+    "von": "2026-04-16",
+    "bis": "",
+    "zeit": "",
+    "titel": "Festkonzert 30 Jahre Orangerie Schönbrunn",
+    "ort": "Orangerie",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20260510-1",
+    "von": "2026-05-10",
+    "bis": "",
+    "zeit": "",
+    "titel": "Messe",
+    "ort": "Jesuitenkirche Wien",
+    "mit": "",
+    "programm": "Franz Schubert Messe in C-Dur"
+  },
+  {
+    "id": "t-20260514-1",
+    "von": "2026-05-14",
+    "bis": "",
+    "zeit": "",
+    "titel": "Messe",
+    "ort": "Jesuitenkirche Wien",
+    "mit": "",
+    "programm": "W.A.Mozart Messe KV 194 in D-Dur"
+  },
+  {
+    "id": "t-20260520-1",
+    "von": "2026-05-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Aufführung von „Carmen“",
+    "ort": "Opernhaus Temesvár/Timișoara",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20260520-2",
+    "von": "2026-05-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "F. Liszt Musikakademie Budapest",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": "Brahms, Liszt, Tchaikovsky, Mancusi und Bartók"
+  },
+  {
+    "id": "t-20260524-1",
+    "von": "2026-05-24",
+    "bis": "",
+    "zeit": "",
+    "titel": "Messe",
+    "ort": "Dom von Temesvár/Timișoara",
+    "mit": "",
+    "programm": "W.A.Mozart Krönungsmesse"
+  },
+  {
+    "id": "t-20260613-1",
+    "von": "2026-06-13",
+    "bis": "",
+    "zeit": "",
+    "titel": "Open-Air Konzert mit Symphonic Rock",
+    "ort": "MArgitinsel in Budapest",
+    "mit": "Dohnány Symphonie Orchester und Chor",
+    "programm": ""
+  },
+  {
+    "id": "t-20260725-1",
+    "von": "2026-07-25",
+    "bis": "",
+    "zeit": "",
+    "titel": "Symphonie-Konzert",
+    "ort": "Konzerthaus Szeged",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20260807-1",
+    "von": "2026-08-07",
+    "bis": "2026-08-12",
+    "zeit": "",
+    "titel": "Tournee in Bulgarien",
+    "ort": "",
+    "mit": "Opernhaus von Stara-Zagora",
+    "programm": "Musik von G.Verdi"
+  },
+  {
+    "id": "t-20260927-1",
+    "von": "2026-09-27",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "F.Liszt Akademie in Budapest",
+    "mit": "Dohnány Symphonie Orchester",
+    "programm": ""
+  },
+  {
+    "id": "t-20260929-1",
+    "von": "2026-09-29",
+    "bis": "2026-10-04",
+    "zeit": "",
+    "titel": "Konzert und Wettbewerbjury mit dem dortigen Symphonieorchester",
+    "ort": "Bloemfontein (Südafrika)",
+    "mit": "",
+    "programm": ""
+  },
+  {
+    "id": "t-20261211-1",
+    "von": "2026-12-11",
+    "bis": "2026-12-19",
+    "zeit": "",
+    "titel": "Tournee in Bulgarien, Serbien, Kroatien und Mazedonien",
+    "ort": "",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20261220-1",
+    "von": "2026-12-20",
+    "bis": "",
+    "zeit": "",
+    "titel": "Weihnachtskonzert",
+    "ort": "Atheneum Bukarest",
+    "mit": "Schloss Schönbrunn Orchester Wien",
+    "programm": ""
+  },
+  {
+    "id": "t-20261227-1",
+    "von": "2026-12-27",
+    "bis": "",
+    "zeit": "",
+    "titel": "Konzert",
+    "ort": "Festsaal Oberschützen",
+    "mit": "Symphonieorchester der Wiener Volksoper",
+    "programm": ""
+  },
+  {
+    "id": "t-20261231-1",
+    "von": "2026-12-31",
+    "bis": "2027-01-01",
+    "zeit": "",
+    "titel": "Silvester und Neujahrskonzerte in Japan",
+    "ort": "",
+    "mit": "Symphonieorchester der Wiener Volksoper",
+    "programm": ""
+  }
+]

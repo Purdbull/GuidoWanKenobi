@@ -1,0 +1,181 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Auftakt from '../components/Auftakt.astro';
+import Abschnittskopf from '../components/Abschnittskopf.astro';
+import TerminListe from '../components/TerminListe.astro';
+import WerkListe from '../components/WerkListe.astro';
+import Hoerbeispiele from '../components/Hoerbeispiele.astro';
+import {
+  texte, url, kommendeTermine, datum, terminZeile, termineFuerClient,
+  werkeNeuesteZuerst, REPERTOIRE_KATEGORIEN, repertoireKurz,
+} from '../lib/daten.js';
+
+const kommend = kommendeTermine();
+const naechster = kommend[0];
+const nd = naechster ? datum(naechster.von, naechster.bis) : null;
+const KARTEN_NAMEN = { 'Konzerte und Kirchenmusik': 'Konzerte' };
+const ROEMISCH = ['I.', 'II.', 'III.', 'IV.', 'V.'];
+---
+<Seite aktiv="start">
+  <section class="held huelle" aria-label="Guido Mancusi">
+    <div class="held__text">
+      <p class="versal held__rolle">Dirigent · Komponist</p>
+      <Auftakt />
+      <h1 class="held__name"><span>Guido</span><span>Mancusi</span></h1>
+      <p class="held__orte">Neapel · Wien · Timișoara</p>
+      <div class="held__termin" data-naechster={JSON.stringify(termineFuerClient(kommend.slice(0, 12)))}>
+        <span class="versal held__label">Nächster Termin</span>
+        {naechster ? (
+          <>
+            <span class="held__datum" data-feld="d">{nd.lang}</span>
+            <span class="held__was" data-feld="t">{naechster.titel}</span>
+            <span class="held__wo" data-feld="z">{terminZeile(naechster)}</span>
+          </>
+        ) : (
+          <span class="held__was">Neue Termine folgen in Kürze.</span>
+        )}
+      </div>
+      <div class="held__knoepfe">
+        <a class="knopf knopf--rot" href={url('termine/')}>Alle Termine</a>
+        <a class="knopf knopf--linie" href="#hoeren">Reinhören</a>
+      </div>
+    </div>
+    <figure class="foto held__foto">
+      <img src={url('bilder/guido-mancusi-taktstock.webp')} width="533" height="809" alt="Guido Mancusi im Frack mit Taktstock" fetchpriority="high" />
+    </figure>
+  </section>
+
+  <div class="huelle trenner" aria-hidden="true">
+    <span></span>
+    <svg width="38" height="14" viewBox="0 0 38 14" fill="none"><path d="M19 1l6 6-6 6-6-6z" fill="#9A6F2A" /><path d="M0 7h9M29 7h9" stroke="#9A6F2A" /></svg>
+    <span></span>
+  </div>
+
+  <section id="termine" class="abschnitt huelle aufziehen">
+    <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" />
+    <TerminListe termine={kommend.slice(0, 8)} max={5} />
+    <a class="mehr" href={url('termine/')}>Alle Termine und Archiv</a>
+  </section>
+
+  <section id="werke" class="abschnitt huelle aufziehen">
+    <Abschnittskopf ziffer="B" tempo="Andante cantabile" mm="72" titel="Werke" />
+    <p class="einleitung">Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, zwei Operetten, ein Ballett und eine Oper.</p>
+    <WerkListe werke={werkeNeuesteZuerst()} max={6} />
+    <a class="mehr" href={url('werke/')}>Gesamtes Werkverzeichnis</a>
+  </section>
+
+  <section class="zitat huelle aufziehen" aria-label="Zitat">
+    <figure class="foto zitat__foto">
+      <img src={url('bilder/guido-mancusi-dirigat.webp')} width="1007" height="670" alt="Guido Mancusi beim Dirigieren vor Publikum" loading="lazy" />
+    </figure>
+    <blockquote class="zitat__text">
+      <span class="note zitat__fermate" aria-hidden="true">&#x1D110;</span>
+      <p>„{texte.zitat}.“</p>
+      <footer class="versal">Guido Mancusi</footer>
+    </blockquote>
+  </section>
+
+  <section id="repertoire" class="abschnitt huelle aufziehen">
+    <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" />
+    <div class="karten">
+      {REPERTOIRE_KATEGORIEN.map((kat, i) => (
+        <div class="karte">
+          <span class="karte__nr">{ROEMISCH[i]}</span>
+          <h3>{KARTEN_NAMEN[kat] || kat}</h3>
+          <p>{repertoireKurz(kat).slice(0, 9).join(', ')}</p>
+        </div>
+      ))}
+    </div>
+    <a class="mehr" href={url('repertoire/')}>Vollständiges Repertoire</a>
+  </section>
+
+  <section id="hoeren" class="abschnitt huelle aufziehen">
+    <Abschnittskopf ziffer="D" tempo="Andantino" mm="84" titel="Hörbeispiele" />
+    <div class="hoeren">
+      <div class="hoeren__spuren"><Hoerbeispiele /></div>
+      <aside class="cd">
+        <span class="versal cd__label">Neueste Aufnahme</span>
+        <h3>{texte.cd.titel}</h3>
+        <p>Orchesterwerke von Guido Mancusi, eingespielt auf CD.</p>
+        <div class="cd__links">
+          <a class="knopf knopf--rot" href={texte.cd.url}>Zur CD</a>
+          <a class="mehr" href={texte.cd.alle}>Alle Aufnahmen</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="biografie" class="abschnitt huelle aufziehen">
+    <Abschnittskopf ziffer="E" tempo="Adagio espressivo" mm="60" titel="Biografie" />
+    <div class="bio">
+      <figure class="foto bio__foto">
+        <img src={url('bilder/guido-mancusi-portraet.webp')} width="562" height="820" alt="Porträt Guido Mancusi" loading="lazy" />
+      </figure>
+      <div class="bio__text">
+        <p class="bio__absatz bio__erster">{texte.biografie[0]}</p>
+        <div class="bio__zahlen">
+          <div><span>1966</span><em>geboren in Neapel</em></div>
+          <div><span>2011–22</span><em>Volksoper Wien</em></div>
+          <div><span>seit 2021</span><em>Oper Timișoara</em></div>
+        </div>
+        <a class="mehr" href={url('biografie/')}>Ganze Biografie lesen</a>
+      </div>
+    </div>
+  </section>
+</Seite>
+
+<style>
+  .held { padding-top: 56px; padding-bottom: 80px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px 72px; }
+  .held__text { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+  .held__rolle { color: var(--tinte-2); letter-spacing: .3em; animation: fade .8s ease-out .1s both; }
+  .held__name { font-family: var(--titel); font-weight: 500; font-size: clamp(64px, 10.4vw, 138px); line-height: .9; letter-spacing: -0.025em; display: flex; flex-direction: column; animation: steigen .8s var(--weich) .35s both; }
+  .held__name span + span { font-style: italic; font-weight: 400; padding-left: .42em; }
+  .held__orte { font-style: italic; font-size: 23px; color: var(--tinte-2); animation: steigen .8s var(--weich) .55s both; }
+  .held__termin { margin-top: 10px; border-top: 3px double var(--tinte); padding-top: 18px; display: flex; flex-direction: column; gap: 4px; animation: steigen .8s var(--weich) .75s both; }
+  .held__label { color: var(--rot); font-size: 14px; }
+  .held__datum { font-family: var(--titel); font-size: 30px; font-weight: 500; line-height: 1.25; }
+  .held__was { font-size: 21px; line-height: 1.35; }
+  .held__wo { font-size: 18px; font-style: italic; color: var(--tinte-2); }
+  .held__knoepfe { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; animation: steigen .8s var(--weich) .95s both; }
+  .held__foto { flex: 0 1 420px; min-width: 0; animation: fade 1.4s ease-out .6s both; }
+  @keyframes steigen { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  .zitat { padding-top: var(--abstand); display: flex; flex-direction: column; align-items: center; gap: 44px; }
+  .zitat__foto { width: 100%; max-width: 1040px; }
+  .zitat__foto img { aspect-ratio: 1007 / 520; object-fit: cover; object-position: 50% 30%; }
+  .zitat__text { margin: 0; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+  .zitat__fermate { font-size: 104px; line-height: .7; color: var(--rot); }
+  .zitat__text p { font-family: var(--titel); font-style: italic; font-size: clamp(38px, 5.4vw, 68px); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
+  .zitat__text footer { color: var(--tinte-2); letter-spacing: .3em; }
+
+  .hoeren { display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start; }
+  .hoeren__spuren { flex: 2 1 520px; min-width: 0; }
+  .cd { flex: 1 1 300px; min-width: 0; padding: 34px 32px; background-color: var(--band); border: 1px solid var(--linie); outline: 1px solid var(--linie); outline-offset: -8px; display: flex; flex-direction: column; gap: 14px; }
+  .cd__label { color: var(--rot); font-size: 14px; }
+  .cd h3 { font-family: var(--titel); font-style: italic; font-weight: 400; font-size: 34px; line-height: 1.12; }
+  .cd p { color: var(--tinte-2); }
+  .cd__links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
+
+  .bio { display: flex; flex-wrap: wrap; gap: 48px 72px; align-items: flex-start; }
+  .bio__foto { flex: 0 1 360px; min-width: 0; }
+  .bio__text { flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+  .bio__absatz { font-size: 21px; line-height: 1.65; text-wrap: pretty; }
+  .bio__erster::first-letter { float: left; font-family: var(--titel); font-weight: 500; font-size: 96px; line-height: .82; padding: 8px 12px 0 0; color: var(--rot); }
+  .bio__zahlen { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 20px 28px; margin-top: 10px; border-top: 3px double var(--tinte); padding-top: 20px; }
+  .bio__zahlen div { display: flex; flex-direction: column; gap: 4px; }
+  .bio__zahlen span { font-family: var(--titel); font-weight: 500; font-size: 34px; line-height: 1; }
+  .bio__zahlen em { font-size: 17px; color: var(--tinte-2); }
+  @media (max-width: 760px) { .bio__absatz { font-size: 19px; } }
+</style>
+
+<script>
+  // Nächsten Termin aktuell halten, falls seit dem letzten Build einer vorbei ist.
+  const kasten = document.querySelector('[data-naechster]');
+  if (kasten) {
+    const tag = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(new Date());
+    const liste = JSON.parse(kasten.getAttribute('data-naechster') || '[]');
+    const n = liste.find((t) => t.e >= tag);
+    const setze = (f, v) => { const el = kasten.querySelector(`[data-feld="${f}"]`); if (el) el.textContent = v; };
+    if (n && liste[0] && n !== liste[0]) { setze('d', n.d); setze('t', n.t); setze('z', n.z); }
+  }
+</script>

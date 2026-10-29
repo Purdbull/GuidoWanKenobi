@@ -1,0 +1,12 @@
+---
+// Kopf eines Abschnitts wie in einer Partitur: Tempoangabe mit Metronomzahl und Studierziffer.
+const { ziffer, tempo, mm, titel, ebene = 'h2' } = Astro.props;
+const Tag = ebene;
+---
+<div class="abschnitt__kopf">
+  <p class="tempo">{tempo} <span class="note" aria-hidden="true">&#x2669;</span><span class="unsichtbar">Viertel</span> = {mm}</p>
+  <div class="abschnitt__titel">
+    <span class="ziffer" aria-hidden="true">{ziffer}</span>
+    <Tag>{titel}</Tag>
+  </div>
+</div>

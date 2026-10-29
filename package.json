@@ -1,0 +1,16 @@
+{
+  "name": "mancusi-website",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Website von Guido Mancusi – Dirigent und Komponist",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "pruefen": "node scripts/daten-pruefen.mjs"
+  },
+  "dependencies": {
+    "astro": "5.18.2"
+  }
+}
