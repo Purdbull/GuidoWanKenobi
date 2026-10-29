@@ -2,54 +2,193 @@
 import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
 import TerminListe from '../components/TerminListe.astro';
-import { kommendeTermine, vergangeneTermine } from '../lib/daten.js';
+import {
+  kommendeTermine, vergangeneTermine, termineNachMonat, chronik, datum, wochentag, monatKurz, url,
+} from '../lib/daten.js';
 
 const kommend = kommendeTermine();
+const naechster = kommend[0];
+const weitere = kommend.slice(1);
+const monate = termineNachMonat(weitere);
 const vergangen = vergangeneTermine();
-const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))];
+const c = chronik(vergangen);
+const hoechst = Math.max(1, ...c.proJahr.map((j) => j.anzahl));
+const letztesJahr = c.proJahr[c.proJahr.length - 1]?.jahr;
+const nd = naechster ? datum(naechster.von, naechster.bis) : null;
+const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 ---
-<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi sowie das Archiv vergangener Termine." aktiv="termine">
+<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi sowie die Chronik vergangener Auftritte." aktiv="termine">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" ebene="h1" />
-    <TerminListe termine={kommend} />
+
+    {naechster ? (
+      <article class="ticket" data-ende={naechster.bis || naechster.von}>
+        <div class="ticket__haupt">
+          <p class="versal ticket__oben">Nächster Auftritt <span class="ticket__countdown" data-von={naechster.von} data-bis={naechster.bis || naechster.von}></span></p>
+          <p class="ticket__datum">{!naechster.bis && <span>{wochentag(naechster.von)}, </span>}{nd.lang}{naechster.zeit && <span> · {naechster.zeit} Uhr</span>}</p>
+          <h2 class="ticket__titel">{naechster.titel}</h2>
+          {naechster.ort && <p class="ticket__ort">{naechster.ort}</p>}
+          {naechster.mit && <p class="ticket__mit">{naechster.mit}</p>}
+          {naechster.programm && <p class="ticket__programm">{naechster.programm}</p>}
+          <a class="knopf knopf--rot ticket__knopf" href={url(`termine/${naechster.id}.ics`)} download={`${naechster.id}.ics`}>
+            <svg width="18" height="18" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2.5" y="4" width="17" height="15.5" /><path d="M2.5 8.5h17M7 2v4M15 2v4M11 11.5v5M8.5 14h5" /></svg>
+            In den Kalender
+          </a>
+        </div>
+        <div class="ticket__abriss" aria-hidden="true">
+          <span class="ticket__tag">{tagZahl}</span>
+          <span class="ticket__monat">{monatKurz(naechster.von)}</span>
+          <span class="ticket__jahr">{naechster.von.slice(0, 4)}</span>
+          <span class="ticket__fuss">Guido Mancusi<br />dirigiert</span>
+        </div>
+      </article>
+    ) : (
+      <p class="einleitung">Neue Termine folgen in Kürze.</p>
+    )}
+
+    {monate.length > 0 && (
+      <div class="spielzeit">
+        <p class="versal spielzeit__label">Weitere Termine</p>
+        {monate.map((m) => (
+          <section class="monat" aria-label={m.name} data-monat>
+            <h2 class="monat__name">{m.name.split(' ')[0]} <span>{m.name.split(' ')[1]}</span></h2>
+            <TerminListe termine={m.termine} kalender />
+          </section>
+        ))}
+      </div>
+    )}
   </section>
 
   {vergangen.length > 0 && (
-    <section class="abschnitt huelle" aria-labelledby="archiv">
-      <div class="abschnitt__kopf">
-        <h2 id="archiv" class="titel archiv__titel">Archiv</h2>
+    <section class="buehne chronik" aria-labelledby="chronik-titel">
+      <div class="huelle chronik__innen">
+        <div class="chronik__kopf">
+          <p class="versal chronik__label">Chronik</p>
+          <h2 id="chronik-titel">Die letzten Spielzeiten</h2>
+        </div>
+        <dl class="chronik__zahlen" data-sichtbar>
+          <div class="gestaffelt" style="--i:0"><dd>{c.gesamt}</dd><dt>Auftritte</dt></div>
+          <div class="gestaffelt" style="--i:1"><dd>{c.orte}</dd><dt>Spielorte</dt></div>
+          <div class="gestaffelt" style="--i:2"><dd>{c.ensembles}</dd><dt>Ensembles &amp; Partner</dt></div>
+        </dl>
+        <div class="saeulen" role="group" aria-label="Auftritte nach Jahr – Jahr wählen" data-sichtbar>
+          {c.proJahr.map((j, i) => (
+            <button type="button" class="saeule gestaffelt" style={`--h:${(j.anzahl / hoechst) * 100}%; --i:${i}`} data-jahr={j.jahr} aria-pressed={j.jahr === letztesJahr ? 'true' : 'false'} aria-controls="jahrgaenge" aria-label={`${j.jahr}: ${j.anzahl} Auftritte`}>
+              <span class="saeule__zahl">{j.anzahl}</span>
+              <span class="saeule__balken"></span>
+              <span class="saeule__jahr">{j.jahr}</span>
+            </button>
+          ))}
+        </div>
       </div>
-      <div class="archiv">
-        {jahre.map((j, i) => (
-          <details class="jahr" open={i === 0}>
-            <summary><span class="titel">{j}</span><span class="jahr__anzahl">{vergangen.filter((t) => t.von.startsWith(j)).length} Termine</span></summary>
-            <div class="jahr__inhalt">
-              <TerminListe termine={vergangen.filter((t) => t.von.startsWith(j))} vergangen />
-            </div>
-          </details>
-        ))}
-      </div>
+    </section>
+
+    <section class="abschnitt huelle jahrgaenge" id="jahrgaenge" aria-label="Vergangene Termine" aria-live="polite">
+      {c.proJahr.slice().reverse().map((j) => (
+        <div class="jahrgang" data-jahr={j.jahr} hidden={j.jahr !== letztesJahr}>
+          <h2 class="jahrgang__titel">{j.jahr} <span>{j.anzahl} {j.anzahl === 1 ? 'Auftritt' : 'Auftritte'}</span></h2>
+          <TerminListe termine={vergangen.filter((t) => t.von.startsWith(j.jahr))} vergangen />
+        </div>
+      ))}
     </section>
   )}
 </Seite>
 
 <style>
-  .archiv__titel { font-size: clamp(32px, 4vw, 42px); }
-  .archiv { display: flex; flex-direction: column; border-top: 1.5px solid var(--tinte); }
-  .jahr { border-bottom: 1px solid var(--linie); }
-  .jahr summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 22px 0; min-height: 44px; }
-  .jahr summary::-webkit-details-marker { display: none; }
-  .jahr summary .titel { font-size: 34px; }
-  .jahr summary::after { content: ''; width: 12px; height: 12px; border-right: 1.5px solid var(--tinte); border-bottom: 1.5px solid var(--tinte); transform: rotate(45deg); transition: transform .45s var(--weich); align-self: center; }
-  .jahr[open] summary::after { transform: rotate(-135deg); }
-  .jahr__anzahl { margin-left: auto; font-style: italic; color: var(--tinte-2); }
-  .jahr__inhalt { padding-bottom: 28px; }
-  .jahr__inhalt :global(.liste) { border-top-width: 1px; border-top-color: var(--linie); }
-  .jahr__inhalt :global(.zeile__gross) { color: var(--tinte-3); font-size: 40px; }
-  /* weiches Auf- und Zuklappen, wo der Browser es kann */
-  @supports (interpolate-size: allow-keywords) {
-    .jahr { interpolate-size: allow-keywords; }
-    .jahr::details-content { block-size: 0; overflow: hidden; transition: block-size .55s var(--weich), content-visibility .55s allow-discrete; }
-    .jahr[open]::details-content { block-size: auto; }
+  /* ---------- Eintrittskarte ---------- */
+  .ticket { display: grid; grid-template-columns: minmax(0, 1fr) 220px; background: var(--elfenbein); box-shadow: 0 34px 70px -40px rgba(43, 32, 24, .55), 0 2px 8px rgba(43, 32, 24, .06); position: relative; animation: hereingleiten .8s var(--weich) .15s both; }
+  .ticket__haupt { padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--blattgold); border-right: 0; outline: 1px solid var(--blattgold); outline-offset: -9px; }
+  .ticket__oben { color: var(--rot); display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin-bottom: 6px; }
+  .ticket__countdown { font-family: var(--titel); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 19px; color: var(--gold); }
+  .ticket__datum { font-family: var(--titel); font-size: clamp(22px, 2.6vw, 28px); color: var(--tinte-2); }
+  .ticket__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(36px, 5vw, 60px); line-height: 1.04; letter-spacing: -0.015em; text-wrap: balance; }
+  .ticket__ort { font-size: 22px; margin-top: 6px; }
+  .ticket__mit { font-size: 19px; font-style: italic; color: var(--tinte-2); }
+  .ticket__programm { font-size: 17px; color: var(--tinte-3); }
+  .ticket__knopf { align-self: flex-start; margin-top: 18px; }
+  .ticket__abriss { position: relative; background: var(--rot); color: var(--elfenbein); padding: 28px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; border-left: 2px dashed rgba(255, 252, 245, .55); background-image: radial-gradient(ellipse 120% 70% at 50% 0%, rgba(201, 164, 92, .25), transparent 70%); }
+  .ticket__abriss::before, .ticket__abriss::after { content: ''; position: absolute; left: -15px; width: 28px; height: 28px; border-radius: 50%; background: var(--papier); }
+  .ticket__abriss::before { top: -14px; }
+  .ticket__abriss::after { bottom: -14px; }
+  .ticket__tag { font-family: var(--titel); font-weight: 500; font-size: 96px; line-height: .9; }
+  .ticket__monat { font-size: 15px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--blattgold-hell); }
+  .ticket__jahr { font-family: var(--titel); font-style: italic; font-size: 20px; }
+  .ticket__fuss { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(201, 164, 92, .6); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; line-height: 1.6; color: var(--blattgold-hell); }
+  @media (max-width: 640px) {
+    .ticket { grid-template-columns: 1fr; }
+    .ticket__haupt { border-right: 1px solid var(--blattgold); border-bottom: 0; }
+    .ticket__abriss { flex-direction: row; flex-wrap: wrap; gap: 4px 12px; padding: 18px 20px; border-left: 0; border-top: 2px dashed rgba(255, 252, 245, .55); }
+    .ticket__abriss::before, .ticket__abriss::after { top: -15px; left: auto; }
+    .ticket__abriss::before { left: -14px; }
+    .ticket__abriss::after { right: -14px; bottom: auto; }
+    .ticket__tag { font-size: 44px; }
+    .ticket__fuss { display: none; }
   }
+
+  /* ---------- Weitere Termine nach Monaten ---------- */
+  .spielzeit { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+  .spielzeit__label { color: var(--rot); }
+  .monat { padding-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .monat[hidden] { display: none; }
+  .monat__name { font-family: var(--titel); font-style: italic; font-weight: 400; font-size: clamp(34px, 4.4vw, 48px); line-height: 1; color: var(--tinte); }
+  .monat__name span { font-style: normal; font-size: .5em; color: var(--gold); letter-spacing: .08em; vertical-align: .35em; }
+
+  /* ---------- Chronik ---------- */
+  .chronik__innen { padding-block: clamp(72px, 9vw, 104px); display: flex; flex-direction: column; gap: 44px; }
+  .chronik__label { color: var(--blattgold); }
+  .chronik__kopf h2 { margin-top: 10px; font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5.4vw, 64px); line-height: 1.05; color: var(--elfenbein); letter-spacing: -0.015em; }
+  .chronik__zahlen { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px; }
+  .chronik__zahlen div { padding-left: 20px; border-left: 1px solid rgba(201, 164, 92, .6); display: flex; flex-direction: column; gap: 6px; }
+  .chronik__zahlen dd { margin: 0; font-family: var(--titel); font-weight: 500; font-size: clamp(52px, 6vw, 76px); line-height: .95; color: var(--blattgold); font-variant-numeric: lining-nums; }
+  @media (max-width: 560px) { .chronik__zahlen { grid-template-columns: repeat(3, 1fr); gap: 12px; } .chronik__zahlen div { padding-left: 10px; } .chronik__zahlen dd { font-size: 40px; } .chronik__zahlen dt { font-size: 11px !important; letter-spacing: .12em !important; } }
+  .chronik__zahlen dt { font-size: 14px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--hell-auf-dunkel); }
+
+  .saeulen { display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 3vw, 48px); height: 240px; padding-top: 10px; border-bottom: 1px solid rgba(201, 164, 92, .5); }
+  .saeule { flex: 1 1 0; min-width: 0; max-width: 150px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--hell-auf-dunkel); cursor: pointer; position: relative; }
+  .saeule__zahl { font-family: var(--titel); font-size: 20px; color: var(--blattgold); transition: color .35s var(--weich); }
+  .saeule__balken { width: 100%; height: calc(var(--h) * 0.72); min-height: 6px; background: linear-gradient(180deg, var(--blattgold-hell), var(--blattgold) 40%, #8F6D2E); opacity: .55; transform-origin: bottom; transition: opacity .4s var(--weich), box-shadow .4s var(--weich); }
+  .saeule__jahr { position: absolute; top: 100%; margin-top: 12px; font-size: 15px; letter-spacing: .1em; font-variant-numeric: lining-nums; transition: color .35s var(--weich); }
+  .saeule:hover .saeule__balken { opacity: .8; }
+  .saeule[aria-pressed="true"] .saeule__balken { opacity: 1; box-shadow: 0 0 28px 2px rgba(226, 200, 142, .35); }
+  .saeule[aria-pressed="true"] .saeule__jahr { color: var(--elfenbein); }
+  .saeule[aria-pressed="true"] .saeule__zahl { color: var(--elfenbein); }
+  .saeule:focus-visible { outline: 2px solid var(--blattgold); outline-offset: 4px; }
+  .chronik__innen { padding-bottom: clamp(100px, 11vw, 130px); }
+  [data-sichtbar] .saeule.gestaffelt { opacity: 1; transform: none; }
+  [data-sichtbar] .saeule.gestaffelt .saeule__balken { transform: scaleY(0); }
+  [data-sichtbar].ist-sichtbar .saeule.gestaffelt { animation: none; }
+  [data-sichtbar].ist-sichtbar .saeule.gestaffelt .saeule__balken { animation: wachsen .9s var(--weich) both; animation-delay: calc(150ms + var(--i, 0) * 70ms); }
+  @keyframes wachsen { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+  .jahrgaenge { padding-top: 64px; }
+  .jahrgang { display: flex; flex-direction: column; gap: 20px; animation: hereingleiten .55s var(--weich) both; }
+  .jahrgang__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5vw, 56px); line-height: 1; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+  .jahrgang__titel span { font-family: var(--text); font-style: italic; font-weight: 400; font-size: 20px; color: var(--tinte-2); }
+  .jahrgang :global(.zeile__gross) { color: var(--tinte-3); font-size: 40px; }
 </style>
+
+<script>
+  // Countdown bis zum nächsten Auftritt (Wiener Zeit)
+  const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(new Date());
+  const tageBis = (iso) => Math.round((Date.parse(iso + 'T00:00:00Z') - Date.parse(heute + 'T00:00:00Z')) / 86400000);
+  document.querySelectorAll('.ticket__countdown').forEach((el) => {
+    const n = tageBis(el.dataset.von);
+    const laeuft = el.dataset.von <= heute && el.dataset.bis >= heute;
+    el.textContent = laeuft ? '· läuft gerade' : n === 1 ? '· morgen' : n === 0 ? '· heute' : n > 1 ? `· in ${n} Tagen` : '';
+  });
+
+  // Monate ohne sichtbare Termine ausblenden (falls seit dem Build etwas vorbei ist)
+  document.querySelectorAll('[data-monat]').forEach((m) => {
+    m.hidden = !m.querySelector('.zeile[data-ende]:not([hidden])');
+  });
+
+  // Chronik: Jahr wählen
+  const saeulen = [...document.querySelectorAll('.saeule')];
+  const jahrgaenge = [...document.querySelectorAll('.jahrgang')];
+  saeulen.forEach((s) => s.addEventListener('click', () => {
+    saeulen.forEach((x) => x.setAttribute('aria-pressed', String(x === s)));
+    jahrgaenge.forEach((j) => { j.hidden = j.dataset.jahr !== s.dataset.jahr; });
+    const ziel = document.getElementById('jahrgaenge');
+    if (ziel && ziel.getBoundingClientRect().top > innerHeight * 0.75) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+</script>

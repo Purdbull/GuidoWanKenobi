@@ -158,7 +158,7 @@ h1, h2, h3, p { margin: 0; }
 .tempo .note { font-size: 1.45em; line-height: 0; margin: 0 .05em; }
 .abschnitt__titel { display: flex; align-items: center; gap: 22px; }
 .ziffer { flex: 0 0 52px; width: 52px; height: 52px; background: var(--rot); color: var(--elfenbein); box-shadow: inset 0 0 0 4px var(--rot), inset 0 0 0 5px rgba(255, 252, 245, .55); display: inline-flex; align-items: center; justify-content: center; font-family: var(--titel); font-size: 28px; font-weight: 700; }
-.abschnitt__titel h1, .abschnitt__titel h2 { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.015em; }
+.abschnitt__titel h1, .abschnitt__titel h2 { min-width: 0; hyphens: auto; overflow-wrap: break-word; font-family: var(--titel); font-weight: 500; font-size: clamp(36px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.015em; }
 .einleitung { max-width: 760px; font-size: 22px; line-height: 1.5; text-wrap: pretty; }
 
 .trenner { display: flex; align-items: center; gap: 18px; }

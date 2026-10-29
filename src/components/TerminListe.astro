@@ -1,8 +1,8 @@
 ---
 // Liste von Terminen. Jede Zeile kennt ihr Enddatum, damit das Skript unten
 // nach dem Build vergangene Termine ausblenden kann (die Seite wird zusätzlich täglich neu gebaut).
-import { datum, terminZeile, ende } from '../lib/daten.js';
-const { termine = [], max = 0, leer = 'Neue Termine folgen in Kürze.', vergangen = false } = Astro.props;
+import { datum, terminZeile, ende, wochentag, url } from '../lib/daten.js';
+const { termine = [], max = 0, leer = 'Neue Termine folgen in Kürze.', vergangen = false, kalender = false } = Astro.props;
 ---
 <div class="liste" data-terminliste data-max={max || undefined}>
   {termine.map((t) => {
@@ -12,17 +12,31 @@ const { termine = [], max = 0, leer = 'Neue Termine folgen in Kürze.', vergange
         <div class="zeile__datum">
           <span class="zeile__gross">{d.gross}</span>
           <span class="zeile__klein">{d.klein}</span>
+          {kalender && !t.bis && <span class="zeile__wochentag">{wochentag(t.von)}</span>}
         </div>
         <div class="zeile__inhalt">
           <h3 class="zeile__titel">{t.titel}</h3>
           {terminZeile(t) && <span class="zeile__zusatz">{terminZeile(t)}</span>}
           {t.programm && <span class="zeile__programm">{t.programm}</span>}
         </div>
+        {kalender && (
+          <a class="zeile__kalender" href={url(`termine/${t.id}.ics`)} download={`${t.id}.ics`} aria-label={`${t.titel} in den Kalender eintragen`}>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="2.5" y="4" width="17" height="15.5" /><path d="M2.5 8.5h17M7 2v4M15 2v4M11 11.5v5M8.5 14h5" /></svg>
+            <span>Kalender</span>
+          </a>
+        )}
       </article>
     );
   })}
   <p class="zeile zeile__zusatz" data-leer hidden={termine.length > 0}>{leer}</p>
 </div>
+
+<style>
+  .zeile__wochentag { font-style: italic; font-size: 16px; color: var(--tinte-2); }
+  .zeile__kalender { align-self: center; margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--linie-2); color: var(--tinte-2); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; background: var(--elfenbein); transition: color .35s var(--weich), border-color .35s var(--weich), transform .35s var(--weich); }
+  .zeile__kalender:hover { color: var(--rot); border-color: var(--rot); transform: translateY(-1px); }
+  @media (max-width: 640px) { .zeile__kalender { margin-left: 0; } }
+</style>
 
 <script>
   const tag = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(new Date());

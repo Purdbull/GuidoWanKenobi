@@ -5,7 +5,7 @@ import werkeRoh from '../data/werke.json';
 import repertoireRoh from '../data/repertoire.json';
 import hoerbeispiele from '../data/hoerbeispiele.json';
 import texte from '../data/texte.json';
-import { LEBENSDATEN, lebenszeit, kurzname } from './komponisten.js';
+import { LEBENSDATEN, kurzname } from './komponisten.js';
 
 export { hoerbeispiele, texte };
 
@@ -126,38 +126,6 @@ export function repertoireZahlen() {
   };
 }
 
-/**
- * Komponisten als Noten auf einem Notensystem: waagrecht nach Geburtsjahr,
- * senkrecht so verteilt, dass sich keine Noten überdecken.
- */
-export const ZEITSTRAHL = { von: 1640, bis: 1960, breite: 1100, stufe: 13 };
-export function zeitstrahl() {
-  const { von, bis, breite } = ZEITSTRAHL;
-  const namen = [...new Set(repertoire.map((r) => r.komponist))].filter((n) => LEBENSDATEN[n]);
-  namen.sort((a, b) => LEBENSDATEN[a][0] - LEBENSDATEN[b][0] || a.localeCompare(b));
-  // Positionen 0 (oberste Linie) bis 8 (unterste Linie); -2/-1 und 9/10 sind Hilfslinien
-  const VORLIEBE = [4, 2, 6, 3, 5, 1, 7, 0, 8, -1, 9, -2, 10];
-  const gesetzt = [];
-  return namen.map((name, i) => {
-    const [geb, gest] = LEBENSDATEN[name];
-    const x = ((geb - von) / (bis - von)) * breite;
-    const pos = VORLIEBE.find((p) => gesetzt.every((g) => {
-      const dx = Math.abs(g.x - x);
-      if (g.pos === p) return dx >= 26;
-      if (Math.abs(g.pos - p) === 1) return dx >= 13;
-      return true;
-    })) ?? 4;
-    gesetzt.push({ x, pos });
-    const werke = repertoire.filter((r) => r.komponist === name);
-    return {
-      i, name, kurz: kurzname(name), geb, gest, zeit: lebenszeit(name),
-      links: (x / breite) * 100, pos,
-      werke: REPERTOIRE_KATEGORIEN.map((kat) => ({ kat, werke: werke.filter((w) => w.kat === kat) })).filter((g) => g.werke.length),
-      anzahl: werke.length,
-    };
-  });
-}
-
 /** Hauptwerke für das Plakat auf der Startseite – erscheinen nur, solange sie im Repertoire stehen. */
 const PLAKAT = [
   ['Die Zauberflöte', 3], ['Carmen', 2], ['La Traviata', 1], ['Die Fledermaus', 3], ['Tosca', 2],
@@ -171,4 +139,80 @@ export function plakat() {
     const r = repertoire.find((x) => x.werk === titel && (!komponist || x.komponist === komponist));
     return r ? { titel: r.werk, groesse, komponist: kurzname(r.komponist) } : null;
   }).filter(Boolean);
+}
+
+// ---------- Termine: Wochentag, Monate, Chronik, Kalenderdatei ----------
+
+const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+export function wochentag(iso) {
+  const [j, m, t] = String(iso || '').split('-').map(Number);
+  if (!j || !m || !t) return '';
+  return WOCHENTAGE[new Date(Date.UTC(j, m - 1, t)).getUTCDay()];
+}
+export function monatsname(iso) {
+  const [j, m] = String(iso || '').split('-').map(Number);
+  return m ? `${MONATE[m - 1]} ${j}` : '';
+}
+export function monatKurz(iso) {
+  const m = Number(String(iso || '').split('-')[1]);
+  return m ? MONATE_KURZ[m - 1] : '';
+}
+
+/** Kommende Termine nach Monaten gruppiert: [{ schluessel: '2026-12', name: 'Dezember 2026', termine }] */
+export function termineNachMonat(liste) {
+  const gruppen = [];
+  for (const t of liste) {
+    const schluessel = t.von.slice(0, 7);
+    let g = gruppen.find((x) => x.schluessel === schluessel);
+    if (!g) { g = { schluessel, name: monatsname(t.von), termine: [] }; gruppen.push(g); }
+    g.termine.push(t);
+  }
+  return gruppen;
+}
+
+/** Zahlen für die Chronik vergangener Termine. */
+export function chronik(vergangen) {
+  const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))].sort();
+  const proJahr = jahre.map((j) => ({ jahr: j, anzahl: vergangen.filter((t) => t.von.startsWith(j)).length }));
+  const zaehle = (feld) => new Set(vergangen.map((t) => (t[feld] || '').trim()).filter(Boolean)).size;
+  return { gesamt: vergangen.length, orte: zaehle('ort'), ensembles: zaehle('mit'), seit: jahre[0] || '', proJahr };
+}
+
+/** Inhalt einer .ics-Kalenderdatei für einen Termin. */
+export function kalenderDatei(t) {
+  const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+  const tag = (iso) => iso.replace(/-/g, '');
+  const folgetag = (iso) => { const [j, m, d] = iso.split('-').map(Number); return new Date(Date.UTC(j, m - 1, d + 1)).toISOString().slice(0, 10); };
+  const zeilen = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//mancusi.at//Termine//DE', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+    `UID:${t.id}@mancusi.at`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`];
+  if (t.zeit && !t.bis) {
+    const [h, mi] = t.zeit.split(':').map(Number);
+    const endeH = String(Math.min(h + 2, 23)).padStart(2, '0');
+    zeilen.push(`DTSTART;TZID=Europe/Vienna:${tag(t.von)}T${t.zeit.replace(':', '')}00`, `DTEND;TZID=Europe/Vienna:${tag(t.von)}T${endeH}${String(mi).padStart(2, '0')}00`);
+  } else {
+    zeilen.push(`DTSTART;VALUE=DATE:${tag(t.von)}`, `DTEND;VALUE=DATE:${tag(folgetag(t.bis || t.von))}`);
+  }
+  zeilen.push(`SUMMARY:${esc(`${t.titel} – Guido Mancusi`)}`);
+  if (t.ort) zeilen.push(`LOCATION:${esc(t.ort)}`);
+  const text = [t.mit, t.programm].filter(Boolean).join('\n');
+  if (text) zeilen.push(`DESCRIPTION:${esc(text)}`);
+  zeilen.push('URL:https://mancusi.at/termine/', 'END:VEVENT', 'END:VCALENDAR');
+  return zeilen.join('\r\n') + '\r\n';
+}
+
+// ---------- Werke: Notenregal ----------
+
+/** Werke nach Jahrzehnt für das Notenregal, je Fach chronologisch. */
+export function notenregal() {
+  const faecher = [];
+  const sortiert = [...werke].sort((a, b) => jahrZahl(a.jahr) - jahrZahl(b.jahr) || a._i - b._i);
+  for (const w of sortiert) {
+    const erstes = Number((String(w.jahr).match(/\d{4}/) || ['0'])[0]);
+    const dekade = Math.floor(erstes / 10) * 10;
+    let f = faecher.find((x) => x.dekade === dekade);
+    if (!f) { f = { dekade, werke: [] }; faecher.push(f); }
+    f.werke.push(w);
+  }
+  faecher.sort((a, b) => a.dekade - b.dekade);
+  return faecher.map((f) => ({ ...f, name: f.dekade ? `${f.dekade}er` : 'Ohne Jahr' }));
 }

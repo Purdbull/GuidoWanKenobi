@@ -1,13 +1,229 @@
 ---
 import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
-import WerkListe from '../components/WerkListe.astro';
-import { werkeNeuesteZuerst, werke } from '../lib/daten.js';
+import { werkeNeuesteZuerst, werke, notenregal, WERK_KATEGORIEN, texte } from '../lib/daten.js';
+
+const faecher = notenregal();
+const kategorien = WERK_KATEGORIEN.filter((k) => werke.some((w) => w.kat === k));
+const farbe = (kat) => Math.max(0, WERK_KATEGORIEN.indexOf(kat));
+// Format der Notenrücken: Bühnenwerke dick und hoch, Lieder schmal – mit etwas Zufall wie im echten Regal
+const DICKE = { 'Bühnenwerke': 1.7, 'Chor und Orchesterwerke': 1.5, 'Orchestermusik': 1.25, 'Filmmusik': 1.15, 'Bearbeitungen': 1, 'Kammermusik': 1, 'Chormusik': .9, 'Schulmusik': .85, 'Lieder': .8 };
+const zufall = (s) => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 1000) / 1000; };
+const hoehe = (w) => Math.round(68 + zufall(w.id) * 24 + (DICKE[w.kat] || 1) * 6);
+const neueste = werkeNeuesteZuerst();
+const start = neueste[0];
 ---
 <Seite titel="Werkverzeichnis – Guido Mancusi" beschreibung={`Das Werkverzeichnis des Komponisten Guido Mancusi: ${werke.length} Werke von Bühnenwerken über Orchestermusik bis zu Bearbeitungen.`} aktiv="werke">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="B" tempo="Andante cantabile" mm="72" titel="Werkverzeichnis" ebene="h1" />
-    <p class="einleitung">Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper. {werke.length} Werke, die neuesten zuerst.</p>
-    <WerkListe werke={werkeNeuesteZuerst()} />
+    <p class="einleitung">Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper – {werke.length} Werke, eingeräumt ins Notenregal. Jeder Rücken ist ein Werk.</p>
+
+    <div class="legende" role="group" aria-label="Nach Gattung filtern">
+      <button type="button" class="legende__knopf" aria-pressed="true" data-kat="">Alle <span>{werke.length}</span></button>
+      {kategorien.map((k) => (
+        <button type="button" class="legende__knopf" aria-pressed="false" data-kat={k} style={`--f: var(--k${farbe(k)})`}>
+          <i aria-hidden="true"></i>{k} <span>{werke.filter((w) => w.kat === k).length}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="regal-bereich">
+      <div class="regal" data-sichtbar>
+        {faecher.map((f, fi) => (
+          <div class="fach" data-fach>
+            <div class="fach__reihe">
+              {f.werke.map((w, i) => (
+                <button type="button" class="ruecken gestaffelt" data-id={w.id} data-kat={w.kat}
+                  style={`--f: var(--k${farbe(w.kat)}); --g: ${DICKE[w.kat] || 1}; --h: ${hoehe(w)}%; --i: ${fi * 4 + i * 0.35}`}
+                  aria-pressed={w === start ? 'true' : 'false'} aria-controls="titelblatt" aria-label={`${w.titel.replace(/[„“"]/g, '')}, ${w.jahr}, ${w.kat}`}>
+                </button>
+              ))}
+            </div>
+            <div class="fach__brett"><span>{f.name}</span><span>{f.werke.length} Werke</span></div>
+          </div>
+        ))}
+      </div>
+
+      <aside class="titelblatt-platz">
+        <div class="titelblatt" id="titelblatt" aria-live="polite">
+          {werke.map((w) => (
+            <article class="tb" data-id={w.id} hidden={w !== start} style={`--f: var(--k${farbe(w.kat)})`}>
+              <p class="versal tb__kat"><i aria-hidden="true"></i>{w.kat}</p>
+              <h2 class="tb__titel">{w.titel}</h2>
+              {w.text && <p class="tb__text">{w.text}</p>}
+              <p class="tb__jahr">{w.jahr}</p>
+              <div class="tb__fuss">
+                <span class="tb__autor">Guido Mancusi</span>
+                <a class="mehr" href={texte.shop}>Zum Notenshop</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="abschnitt huelle" aria-labelledby="verzeichnis">
+    <div class="verzeichnis__kopf">
+      <h2 id="verzeichnis" class="verzeichnis__titel">Verzeichnis</h2>
+      <div class="suche__feld">
+        <svg width="22" height="22" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="M17 17l7 7" /></svg>
+        <input id="werksuche" type="search" placeholder="Titel suchen …" autocomplete="off" spellcheck="false" aria-label="Werke durchsuchen" />
+      </div>
+    </div>
+    <p class="suche__info" aria-live="polite"></p>
+    <div class="werke">
+      {neueste.map((w) => (
+        <article class="werk" data-kat={w.kat} data-id={w.id} style={`--f: var(--k${farbe(w.kat)})`}>
+          <span class="werk__jahr">{w.jahr}</span>
+          <div class="werk__inhalt">
+            <h3 class="werk__titel">{w.titel}</h3>
+            {w.text && <span class="werk__text">{w.text}</span>}
+            <span class="werk__kat"><i aria-hidden="true"></i>{w.kat}</span>
+          </div>
+        </article>
+      ))}
+    </div>
   </section>
 </Seite>
+
+<style>
+  :root {
+    --k0: #6E1C1A; /* Bühnenwerke – Samtrot */
+    --k1: #A8392A; /* Chor und Orchester – Rot */
+    --k2: #A86A2C; /* Chormusik – Kupfer */
+    --k3: #33475B; /* Kammermusik – Tintenblau */
+    --k4: #2B2018; /* Orchestermusik – Sepia-Schwarz */
+    --k5: #56603C; /* Filmmusik – Oliv */
+    --k6: #C9A45C; /* Lieder – Blattgold */
+    --k7: #6B4A66; /* Schulmusik – Pflaume */
+    --k8: #8C7660; /* Bearbeitungen – Leder */
+  }
+
+  /* ---------- Legende / Filter ---------- */
+  .legende { display: flex; flex-wrap: wrap; gap: 8px; }
+  .legende__knopf { min-height: 44px; padding: 0 14px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--linie-2); background: var(--elfenbein); color: var(--tinte); font: 400 16px/1 var(--text); cursor: pointer; transition: background-color .35s var(--weich), color .35s var(--weich), border-color .35s var(--weich); }
+  .legende__knopf i { width: 10px; height: 18px; background: var(--f); box-shadow: inset 2px 0 0 rgba(255, 255, 255, .18); }
+  .legende__knopf span { font-size: 13px; color: var(--gold); }
+  .legende__knopf:hover { border-color: var(--tinte); }
+  .legende__knopf[aria-pressed="true"] { background: var(--tinte); border-color: var(--tinte); color: var(--elfenbein); }
+  .legende__knopf[aria-pressed="true"] span { color: var(--blattgold); }
+
+  /* ---------- Regal ---------- */
+  .regal-bereich { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 40px; align-items: start; }
+  .regal { padding: 26px clamp(14px, 2vw, 24px) 18px; background: linear-gradient(180deg, #3A2A20, #2A1E17); box-shadow: inset 0 0 0 1px rgba(201, 164, 92, .35), inset 0 18px 30px -12px rgba(0, 0, 0, .6), 0 30px 60px -36px rgba(43, 32, 24, .7); display: flex; flex-direction: column; gap: 22px; }
+  .fach { display: flex; flex-direction: column; }
+  .fach__reihe { height: 150px; display: flex; align-items: flex-end; gap: 2px; padding: 0 4px; background: radial-gradient(ellipse 80% 100% at 50% 100%, rgba(0, 0, 0, .35), transparent 70%); }
+  .fach__brett { height: 26px; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; background: linear-gradient(180deg, #6A4B33, #4A3324 60%, #3A281C); box-shadow: 0 6px 10px -4px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(226, 200, 142, .35); font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--blattgold-hell); }
+  .fach__brett span:first-child { font-family: var(--titel); font-style: italic; text-transform: none; letter-spacing: .02em; font-size: 16px; }
+
+  .ruecken { flex: var(--g) 1 0; min-width: 3px; max-width: calc(var(--g) * 20px); height: var(--h); padding: 0; border: 0; cursor: pointer; position: relative; border-radius: 1px 1px 0 0;
+    background-color: var(--f);
+    background-image:
+      linear-gradient(90deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .04) 35%, rgba(0, 0, 0, .22)),
+      linear-gradient(180deg, transparent 9%, rgba(226, 200, 142, .8) 9%, rgba(226, 200, 142, .8) 10.5%, transparent 10.5%, transparent 13%, rgba(226, 200, 142, .55) 13%, rgba(226, 200, 142, .55) 14%, transparent 14%, transparent 86%, rgba(226, 200, 142, .55) 86%, rgba(226, 200, 142, .55) 87%, transparent 87%);
+    transition: transform .4s var(--weich), opacity .45s var(--weich), filter .4s var(--weich); transform-origin: bottom; }
+  .ruecken:hover { transform: translateY(-8px); }
+  .ruecken:focus-visible { outline: 2px solid var(--blattgold-hell); outline-offset: 2px; }
+  .ruecken[aria-pressed="true"] { transform: translateY(-14px); filter: brightness(1.25) drop-shadow(0 0 8px rgba(226, 200, 142, .7)); z-index: 1; }
+  .regal.gefiltert .ruecken:not(.passt) { filter: grayscale(.85) brightness(.32); }
+  .regal.gefiltert .ruecken.passt:not([aria-pressed="true"]) { filter: brightness(1.12); }
+  [data-sichtbar] .ruecken.gestaffelt { opacity: 0; transform: translateY(-24px); }
+  [data-sichtbar].ist-sichtbar .ruecken.gestaffelt { animation: einraeumen .7s var(--weich) both; animation-delay: calc(var(--i, 0) * 22ms); }
+  @keyframes einraeumen { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Titelblatt ---------- */
+  .titelblatt-platz { position: sticky; top: 24px; }
+  .titelblatt { min-height: 300px; }
+  .tb { background: var(--elfenbein); border: 1px solid var(--blattgold); outline: 1px solid var(--blattgold); outline-offset: -9px; padding: 34px 30px 26px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 30px 60px -36px rgba(43, 32, 24, .55); position: relative; animation: tafel .5s var(--weich) both; }
+  .tb::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--f); }
+  @keyframes tafel { from { opacity: 0; transform: translateY(10px) rotate(-.4deg); } to { opacity: 1; transform: none; } }
+  .tb__kat { display: flex; align-items: center; gap: 8px; color: var(--tinte-2); font-size: 13px; }
+  .tb__kat i { width: 8px; height: 14px; background: var(--f); }
+  .tb__titel { font-family: var(--titel); font-weight: 500; font-style: italic; font-size: 32px; line-height: 1.1; text-wrap: balance; }
+  .tb__text { font-size: 18px; line-height: 1.45; color: var(--tinte-2); }
+  .tb__jahr { font-family: var(--titel); font-size: 40px; line-height: 1; color: var(--rot); margin-top: 6px; font-variant-numeric: lining-nums; }
+  .tb__fuss { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--linie); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 8px 16px; }
+  .tb__autor { font-size: 13px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--tinte-3); }
+
+  @media (max-width: 960px) {
+    .regal-bereich { grid-template-columns: 1fr; gap: 24px; }
+    .titelblatt-platz { position: static; }
+    .titelblatt { min-height: 0; }
+  }
+  @media (max-width: 560px) {
+    .fach__reihe { height: 120px; gap: 1px; padding: 0 2px; }
+    .regal { padding-inline: 8px; }
+  }
+
+  /* ---------- Verzeichnis ---------- */
+  .verzeichnis__kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 40px; border-bottom: 3px double var(--blattgold); padding-bottom: 16px; }
+  .verzeichnis__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(34px, 4.4vw, 48px); line-height: 1; }
+  .suche__feld { flex: 0 1 420px; display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid var(--tinte); transition: border-color .35s var(--weich); }
+  .suche__feld:focus-within { border-color: var(--rot); }
+  .suche__feld svg { color: var(--tinte-2); flex: 0 0 auto; }
+  .suche__feld input { flex: 1 1 auto; min-width: 0; min-height: 48px; border: 0; background: transparent; color: var(--tinte); font-family: var(--titel); font-style: italic; font-size: 22px; outline: none; }
+  .suche__feld input::placeholder { color: var(--tinte-3); opacity: .6; }
+  .suche__feld input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; cursor: pointer; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22' fill='none' stroke='%238E2F22' stroke-width='1.6'%3E%3Cpath d='M5 5l12 12M17 5L5 17'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .suche__info { min-height: 1.4em; margin-top: -18px; font-size: 17px; color: var(--tinte-2); }
+  .werk { position: relative; }
+  .werk__kat { display: inline-flex; align-items: center; gap: 8px; }
+  .werk__kat i { width: 7px; height: 13px; background: var(--f); }
+  .werk.leuchtet { animation: leuchten 1.6s var(--weich); }
+  @keyframes leuchten { 0%, 40% { background: rgba(201, 164, 92, .22); } 100% { background: transparent; } }
+</style>
+
+<script>
+  const ruecken = [...document.querySelectorAll('.ruecken')];
+  const blaetter = [...document.querySelectorAll('.tb')];
+  const regal = document.querySelector('.regal');
+  const zeilen = [...document.querySelectorAll('.werke .werk')];
+  const eingabe = document.getElementById('werksuche');
+  const info = document.querySelector('.suche__info');
+  let kategorie = '';
+
+  // Notenrücken wählen → Titelblatt zeigen
+  const waehle = (r) => {
+    ruecken.forEach((x) => x.setAttribute('aria-pressed', String(x === r)));
+    blaetter.forEach((b) => { b.hidden = b.dataset.id !== r.dataset.id; });
+    const platz = document.querySelector('.titelblatt-platz');
+    if (platz && getComputedStyle(platz).position !== 'sticky') {
+      const oben = platz.getBoundingClientRect().top;
+      if (oben > innerHeight * 0.7) platz.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+  ruecken.forEach((r, i) => {
+    r.addEventListener('click', () => waehle(r));
+    r.addEventListener('keydown', (e) => {
+      const z = e.key === 'ArrowRight' ? ruecken[i + 1] : e.key === 'ArrowLeft' ? ruecken[i - 1] : null;
+      if (z) { e.preventDefault(); z.focus(); waehle(z); }
+    });
+  });
+
+  // Filter nach Gattung + Suche – wirkt auf Regal und Verzeichnis
+  const ohneAkzent = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const suchtext = new Map(zeilen.map((z) => [z, ohneAkzent(z.textContent)]));
+  const anwenden = () => {
+    const woerter = ohneAkzent(eingabe?.value.trim() || '').split(/\s+/).filter(Boolean);
+    const passendeIds = new Set();
+    let n = 0;
+    zeilen.forEach((z) => {
+      const passt = (!kategorie || z.dataset.kat === kategorie) && woerter.every((w) => suchtext.get(z).includes(w));
+      const vorher = z.hidden;
+      z.hidden = !passt;
+      if (passt) { passendeIds.add(z.dataset.id); if (vorher) { z.classList.remove('neu'); z.style.setProperty('--i', String(Math.min(n, 12))); void z.offsetWidth; z.classList.add('neu'); } n++; }
+    });
+    const aktiv = !!kategorie || woerter.length > 0;
+    regal.classList.toggle('gefiltert', aktiv);
+    ruecken.forEach((r) => r.classList.toggle('passt', passendeIds.has(r.dataset.id)));
+    info.textContent = woerter.length ? (n ? `${n} ${n === 1 ? 'Werk' : 'Werke'} gefunden` : 'Kein Werk gefunden') : '';
+  };
+  document.querySelectorAll('.legende__knopf').forEach((k, _, alle) => k.addEventListener('click', () => {
+    alle.forEach((x) => x.setAttribute('aria-pressed', String(x === k)));
+    kategorie = k.dataset.kat;
+    anwenden();
+  }));
+  let timer;
+  eingabe?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(anwenden, 140); });
+  eingabe?.addEventListener('keydown', (e) => { if (e.key === 'Escape') { eingabe.value = ''; anwenden(); } });
+</script>
