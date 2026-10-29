@@ -12,6 +12,8 @@ const {
 } = Astro.props;
 
 const kanonisch = new URL(Astro.url.pathname, Astro.site);
+// Solange die Seite nur unter github.io läuft: nicht bei Google aufnehmen (sonst doppelte Inhalte zu mancusi.at)
+const vorschau = Astro.site?.hostname !== 'mancusi.at';
 const bildUrl = new URL(url(bild), Astro.site);
 const NAV = [
   { href: 'termine/', text: 'Termine', key: 'termine' },
@@ -38,6 +40,7 @@ const person = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {vorschau && <meta name="robots" content="noindex, nofollow" />}
   <title>{titel}</title>
   <meta name="description" content={beschreibung} />
   <link rel="canonical" href={kanonisch} />
