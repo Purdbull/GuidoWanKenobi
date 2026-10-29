@@ -170,14 +170,6 @@ export function termineNachMonat(liste) {
   return gruppen;
 }
 
-/** Zahlen für die Chronik vergangener Termine. */
-export function chronik(vergangen) {
-  const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))].sort();
-  const proJahr = jahre.map((j) => ({ jahr: j, anzahl: vergangen.filter((t) => t.von.startsWith(j)).length }));
-  const zaehle = (feld) => new Set(vergangen.map((t) => (t[feld] || '').trim()).filter(Boolean)).size;
-  return { gesamt: vergangen.length, orte: zaehle('ort'), ensembles: zaehle('mit'), seit: jahre[0] || '', proJahr };
-}
-
 /** Inhalt einer .ics-Kalenderdatei für einen Termin. */
 export function kalenderDatei(t) {
   const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');

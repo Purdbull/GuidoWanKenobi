@@ -3,7 +3,7 @@ import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
 import TerminListe from '../components/TerminListe.astro';
 import {
-  kommendeTermine, vergangeneTermine, termineNachMonat, chronik, datum, wochentag, monatKurz, url,
+  kommendeTermine, vergangeneTermine, termineNachMonat, datum, wochentag, monatKurz, url,
 } from '../lib/daten.js';
 
 const kommend = kommendeTermine();
@@ -11,13 +11,11 @@ const naechster = kommend[0];
 const weitere = kommend.slice(1);
 const monate = termineNachMonat(weitere);
 const vergangen = vergangeneTermine();
-const c = chronik(vergangen);
-const hoechst = Math.max(1, ...c.proJahr.map((j) => j.anzahl));
-const letztesJahr = c.proJahr[c.proJahr.length - 1]?.jahr;
+const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))];
 const nd = naechster ? datum(naechster.von, naechster.bis) : null;
 const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 ---
-<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi sowie die Chronik vergangener Auftritte." aktiv="termine">
+<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi." aktiv="termine">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" ebene="h1" />
 
@@ -60,36 +58,18 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
   </section>
 
   {vergangen.length > 0 && (
-    <section class="buehne chronik" aria-labelledby="chronik-titel">
-      <div class="huelle chronik__innen">
-        <div class="chronik__kopf">
-          <p class="versal chronik__label">Chronik</p>
-          <h2 id="chronik-titel">Die letzten Spielzeiten</h2>
-        </div>
-        <dl class="chronik__zahlen" data-sichtbar>
-          <div class="gestaffelt" style="--i:0"><dd>{c.gesamt}</dd><dt>Auftritte</dt></div>
-          <div class="gestaffelt" style="--i:1"><dd>{c.orte}</dd><dt>Spielorte</dt></div>
-          <div class="gestaffelt" style="--i:2"><dd>{c.ensembles}</dd><dt>Ensembles &amp; Partner</dt></div>
-        </dl>
-        <div class="saeulen" role="group" aria-label="Auftritte nach Jahr – Jahr wählen" data-sichtbar>
-          {c.proJahr.map((j, i) => (
-            <button type="button" class="saeule gestaffelt" style={`--h:${(j.anzahl / hoechst) * 100}%; --i:${i}`} data-jahr={j.jahr} aria-pressed={j.jahr === letztesJahr ? 'true' : 'false'} aria-controls="jahrgaenge" aria-label={`${j.jahr}: ${j.anzahl} Auftritte`}>
-              <span class="saeule__zahl">{j.anzahl}</span>
-              <span class="saeule__balken"></span>
-              <span class="saeule__jahr">{j.jahr}</span>
-            </button>
-          ))}
-        </div>
+    <section class="abschnitt huelle" aria-labelledby="archiv">
+      <h2 id="archiv" class="archiv__titel">Vergangene Termine</h2>
+      <div class="archiv">
+        {jahre.map((j) => (
+          <details class="jahr">
+            <summary><span class="jahr__zahl">{j}</span><span class="jahr__anzahl">{vergangen.filter((t) => t.von.startsWith(j)).length} Termine</span></summary>
+            <div class="jahr__inhalt">
+              <TerminListe termine={vergangen.filter((t) => t.von.startsWith(j))} vergangen />
+            </div>
+          </details>
+        ))}
       </div>
-    </section>
-
-    <section class="abschnitt huelle jahrgaenge" id="jahrgaenge" aria-label="Vergangene Termine" aria-live="polite">
-      {c.proJahr.slice().reverse().map((j) => (
-        <div class="jahrgang" data-jahr={j.jahr} hidden={j.jahr !== letztesJahr}>
-          <h2 class="jahrgang__titel">{j.jahr} <span>{j.anzahl} {j.anzahl === 1 ? 'Auftritt' : 'Auftritte'}</span></h2>
-          <TerminListe termine={vergangen.filter((t) => t.von.startsWith(j.jahr))} vergangen />
-        </div>
-      ))}
     </section>
   )}
 </Seite>
@@ -133,38 +113,25 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
   .monat__name { font-family: var(--titel); font-style: italic; font-weight: 400; font-size: clamp(34px, 4.4vw, 48px); line-height: 1; color: var(--tinte); }
   .monat__name span { font-style: normal; font-size: .5em; color: var(--gold); letter-spacing: .08em; vertical-align: .35em; }
 
-  /* ---------- Chronik ---------- */
-  .chronik__innen { padding-block: clamp(72px, 9vw, 104px); display: flex; flex-direction: column; gap: 44px; }
-  .chronik__label { color: var(--blattgold); }
-  .chronik__kopf h2 { margin-top: 10px; font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5.4vw, 64px); line-height: 1.05; color: var(--elfenbein); letter-spacing: -0.015em; }
-  .chronik__zahlen { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 24px; }
-  .chronik__zahlen div { padding-left: 20px; border-left: 1px solid rgba(201, 164, 92, .6); display: flex; flex-direction: column; gap: 6px; }
-  .chronik__zahlen dd { margin: 0; font-family: var(--titel); font-weight: 500; font-size: clamp(52px, 6vw, 76px); line-height: .95; color: var(--blattgold); font-variant-numeric: lining-nums; }
-  @media (max-width: 560px) { .chronik__zahlen { grid-template-columns: repeat(3, 1fr); gap: 12px; } .chronik__zahlen div { padding-left: 10px; } .chronik__zahlen dd { font-size: 40px; } .chronik__zahlen dt { font-size: 11px !important; letter-spacing: .12em !important; } }
-  .chronik__zahlen dt { font-size: 14px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--hell-auf-dunkel); }
-
-  .saeulen { display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 3vw, 48px); height: 240px; padding-top: 10px; border-bottom: 1px solid rgba(201, 164, 92, .5); }
-  .saeule { flex: 1 1 0; min-width: 0; max-width: 150px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--hell-auf-dunkel); cursor: pointer; position: relative; }
-  .saeule__zahl { font-family: var(--titel); font-size: 20px; color: var(--blattgold); transition: color .35s var(--weich); }
-  .saeule__balken { width: 100%; height: calc(var(--h) * 0.72); min-height: 6px; background: linear-gradient(180deg, var(--blattgold-hell), var(--blattgold) 40%, #8F6D2E); opacity: .55; transform-origin: bottom; transition: opacity .4s var(--weich), box-shadow .4s var(--weich); }
-  .saeule__jahr { position: absolute; top: 100%; margin-top: 12px; font-size: 15px; letter-spacing: .1em; font-variant-numeric: lining-nums; transition: color .35s var(--weich); }
-  .saeule:hover .saeule__balken { opacity: .8; }
-  .saeule[aria-pressed="true"] .saeule__balken { opacity: 1; box-shadow: 0 0 28px 2px rgba(226, 200, 142, .35); }
-  .saeule[aria-pressed="true"] .saeule__jahr { color: var(--elfenbein); }
-  .saeule[aria-pressed="true"] .saeule__zahl { color: var(--elfenbein); }
-  .saeule:focus-visible { outline: 2px solid var(--blattgold); outline-offset: 4px; }
-  .chronik__innen { padding-bottom: clamp(100px, 11vw, 130px); }
-  [data-sichtbar] .saeule.gestaffelt { opacity: 1; transform: none; }
-  [data-sichtbar] .saeule.gestaffelt .saeule__balken { transform: scaleY(0); }
-  [data-sichtbar].ist-sichtbar .saeule.gestaffelt { animation: none; }
-  [data-sichtbar].ist-sichtbar .saeule.gestaffelt .saeule__balken { animation: wachsen .9s var(--weich) both; animation-delay: calc(150ms + var(--i, 0) * 70ms); }
-  @keyframes wachsen { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-
-  .jahrgaenge { padding-top: 64px; }
-  .jahrgang { display: flex; flex-direction: column; gap: 20px; animation: hereingleiten .55s var(--weich) both; }
-  .jahrgang__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(40px, 5vw, 56px); line-height: 1; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
-  .jahrgang__titel span { font-family: var(--text); font-style: italic; font-weight: 400; font-size: 20px; color: var(--tinte-2); }
-  .jahrgang :global(.zeile__gross) { color: var(--tinte-3); font-size: 40px; }
+  /* ---------- Archiv (zugeklappt) ---------- */
+  .archiv__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(30px, 3.8vw, 40px); }
+  .archiv { display: flex; flex-direction: column; border-top: 1.5px solid var(--tinte); }
+  .jahr { border-bottom: 1px solid var(--linie); }
+  .jahr summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 16px; padding: 20px 0; min-height: 44px; }
+  .jahr summary::-webkit-details-marker { display: none; }
+  .jahr__zahl { font-family: var(--titel); font-weight: 500; font-size: 32px; transition: color .35s var(--weich); }
+  .jahr summary:hover .jahr__zahl { color: var(--rot); }
+  .jahr summary::after { content: ''; width: 11px; height: 11px; border-right: 1.5px solid var(--tinte); border-bottom: 1.5px solid var(--tinte); transform: rotate(45deg); transition: transform .45s var(--weich); align-self: center; }
+  .jahr[open] summary::after { transform: rotate(-135deg); }
+  .jahr__anzahl { margin-left: auto; font-style: italic; color: var(--tinte-2); }
+  .jahr__inhalt { padding-bottom: 28px; }
+  .jahr__inhalt :global(.liste) { border-top-width: 1px; border-top-color: var(--linie); }
+  .jahr__inhalt :global(.zeile__gross) { color: var(--tinte-3); font-size: 40px; }
+  @supports (interpolate-size: allow-keywords) {
+    .jahr { interpolate-size: allow-keywords; }
+    .jahr::details-content { block-size: 0; overflow: hidden; transition: block-size .55s var(--weich), content-visibility .55s allow-discrete; }
+    .jahr[open]::details-content { block-size: auto; }
+  }
 </style>
 
 <script>
@@ -182,13 +149,4 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
     m.hidden = !m.querySelector('.zeile[data-ende]:not([hidden])');
   });
 
-  // Chronik: Jahr wählen
-  const saeulen = [...document.querySelectorAll('.saeule')];
-  const jahrgaenge = [...document.querySelectorAll('.jahrgang')];
-  saeulen.forEach((s) => s.addEventListener('click', () => {
-    saeulen.forEach((x) => x.setAttribute('aria-pressed', String(x === s)));
-    jahrgaenge.forEach((j) => { j.hidden = j.dataset.jahr !== s.dataset.jahr; });
-    const ziel = document.getElementById('jahrgaenge');
-    if (ziel && ziel.getBoundingClientRect().top > innerHeight * 0.75) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }));
 </script>
