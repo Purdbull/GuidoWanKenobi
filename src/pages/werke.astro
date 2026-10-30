@@ -140,7 +140,9 @@ const start = neueste[0];
   @keyframes tafel { from { opacity: 0; transform: translateY(10px) rotate(-.4deg); } to { opacity: 1; transform: none; } }
   .tb__kat { display: flex; align-items: center; gap: 8px; color: var(--tinte-2); font-size: 13px; }
   .tb__kat i { width: 8px; height: 14px; background: var(--f); }
-  .tb__titel { font-family: var(--titel); font-weight: 500; font-style: italic; font-size: 32px; line-height: 1.1; text-wrap: balance; }
+  .tb { min-width: 0; }
+  .tb__titel { font-family: var(--titel); font-weight: 500; font-style: italic; font-size: clamp(26px, 2.4vw, 30px); line-height: 1.12; text-wrap: balance; hyphens: auto; overflow-wrap: break-word; }
+  .tb__text { hyphens: auto; overflow-wrap: break-word; }
   .tb__text { font-size: 18px; line-height: 1.45; color: var(--tinte-2); }
   .tb__jahr { font-family: var(--titel); font-size: 40px; line-height: 1; color: var(--rot); margin-top: 6px; font-variant-numeric: lining-nums; }
   .tb__fuss { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--linie); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 8px 16px; }

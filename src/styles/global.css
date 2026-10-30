@@ -192,7 +192,7 @@ h1, h2, h3, p { margin: 0; }
 .werk[hidden] { display: none; }
 .werk__jahr { flex: 0 0 100px; white-space: nowrap; font-family: var(--titel); font-weight: 500; font-size: 22px; line-height: 1.3; color: var(--rot); font-variant-numeric: lining-nums; }
 .werk__inhalt { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.werk__titel { font-size: 22px; font-weight: 500; line-height: 1.3; text-wrap: pretty; }
+.werk__titel { font-size: 22px; font-weight: 500; line-height: 1.3; text-wrap: pretty; hyphens: auto; overflow-wrap: break-word; }
 .werk__text { font-size: 17px; font-style: italic; line-height: 1.45; color: var(--tinte-2); }
 .werk__kat { margin-top: 6px; font-size: 13px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tinte-3); }
 @keyframes hereingleiten { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
