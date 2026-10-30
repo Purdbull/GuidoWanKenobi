@@ -5,8 +5,8 @@ import schriftTitel from '../assets/fonts/libre-bodoni.woff2?url';
 import schriftText from '../assets/fonts/source-serif-4.woff2?url';
 
 const {
-  titel = 'Guido Mancusi – Dirigent und Komponist',
-  beschreibung = 'Guido Mancusi, österreichisch-italienischer Dirigent und Komponist: Termine, Werke, Repertoire, Hörbeispiele und Biografie.',
+  titel = 'Guido Mancusi – Komponist und Dirigent',
+  beschreibung = 'Guido Mancusi, österreichisch-italienischer Komponist und Dirigent: Termine, Werke, Repertoire, Hörbeispiele und Biografie.',
   aktiv = '',
   bild = 'bilder/guido-mancusi-taktstock.jpg',
 } = Astro.props;
@@ -28,7 +28,7 @@ const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Guido Mancusi',
-  jobTitle: ['Dirigent', 'Komponist'],
+  jobTitle: ['Composer', 'Conductor', 'Komponist', 'Dirigent'],
   birthDate: '1966',
   url: Astro.site?.toString(),
   image: bildUrl.toString(),
@@ -100,7 +100,7 @@ const person = {
       <div class="fuss__spalten">
         <div class="fuss__spalte">
           <span class="fuss__name">Guido <em>Mancusi</em></span>
-          <span class="fuss__leise"><em>Dirigent und Komponist</em></span>
+          <span class="fuss__leise"><em>Composer · Conductor</em></span>
         </div>
         <div class="fuss__spalte">
           <span class="versal">Kontakt</span>

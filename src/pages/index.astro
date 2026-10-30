@@ -18,10 +18,10 @@ const nd = naechster ? datum(naechster.von, naechster.bis) : null;
 <Seite aktiv="start">
   <section class="held huelle" aria-label="Guido Mancusi">
     <div class="held__text">
-      <p class="versal held__rolle">Dirigent · Komponist</p>
+      <p class="versal held__rolle">Composer · Conductor</p>
       <Auftakt />
       <h1 class="held__name"><span>Guido</span><span>Mancusi</span></h1>
-      <p class="held__orte">Neapel · Wien · Timișoara</p>
+      <p class="held__orte">Neapel · Wien</p>
       <div class="held__termin" data-naechster={JSON.stringify(termineFuerClient(kommend.slice(0, 12)))}>
         <span class="versal held__label">Nächster Termin</span>
         {naechster ? (
@@ -108,7 +108,7 @@ const nd = naechster ? datum(naechster.von, naechster.bis) : null;
         <div class="bio__zahlen">
           <div><span>1966</span><em>geboren in Neapel</em></div>
           <div><span>2011–22</span><em>Volksoper Wien</em></div>
-          <div><span>seit 2021</span><em>Oper Timișoara</em></div>
+          <div><span>2021–26</span><em>Oper Timișoara</em></div>
         </div>
         <a class="mehr" href={url('biografie/')}>Ganze Biografie lesen</a>
       </div>
