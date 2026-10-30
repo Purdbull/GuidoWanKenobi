@@ -18,6 +18,9 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 <Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi." aktiv="termine">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" ebene="h1" />
+    <figure class="foto buehnenfoto">
+      <img src={url('bilder/guido-mancusi-applaus.webp')} width="1800" height="889" alt="Guido Mancusi mit Orchester beim Schlussapplaus in einem Konzertsaal" fetchpriority="high" />
+    </figure>
 
     {naechster ? (
       <article class="ticket" data-ende={naechster.bis || naechster.von}>
@@ -75,6 +78,11 @@ const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 </Seite>
 
 <style>
+  /* ---------- Bühnenfoto, darüber die Eintrittskarte ---------- */
+  .buehnenfoto img { aspect-ratio: 16 / 7; object-fit: cover; object-position: 55% 62%; }
+  .buehnenfoto + .ticket { margin: -110px clamp(12px, 5vw, 64px) 0; position: relative; z-index: 1; }
+  @media (max-width: 640px) { .buehnenfoto img { aspect-ratio: 4 / 3; object-position: 62% 60%; } .buehnenfoto + .ticket { margin-top: -44px; margin-inline: 8px; } }
+
   /* ---------- Eintrittskarte ---------- */
   .ticket { display: grid; grid-template-columns: minmax(0, 1fr) 220px; filter: drop-shadow(0 22px 26px rgba(43, 32, 24, .2)) drop-shadow(0 2px 3px rgba(43, 32, 24, .08)); position: relative; animation: hereingleiten .8s var(--weich) .15s both; }
   .ticket__haupt { background: var(--elfenbein); padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--blattgold); border-right: 0; outline: 1px solid var(--blattgold); outline-offset: -9px; }
