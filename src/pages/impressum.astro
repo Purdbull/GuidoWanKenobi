@@ -1,19 +1,43 @@
 ---
 import Seite from '../layouts/Seite.astro';
-import { texte } from '../lib/daten.js';
-const { angaben, abschnitte } = texte.impressum;
+import { texte, url } from '../lib/daten.js';
+const { titel, angaben, abschnitte, bildnachweis } = texte.impressum;
+const istMail = (w) => /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(w);
+const istTelefon = (w) => /^\+?[\d\s()/-]{6,}$/.test(w);
 ---
-<Seite titel="Impressum – Guido Mancusi" aktiv="impressum">
+<Seite titel="Impressum – Guido Mancusi" beschreibung="Impressum und Offenlegung der Website von Guido Mancusi." aktiv="impressum">
   <section class="abschnitt huelle">
     <div class="abschnitt__kopf"><h1 class="titel seitentitel">Impressum</h1></div>
     <div class="textseite">
-      <p><strong>Guido Mancusi</strong><br />{angaben.map((z, i) => <>{z}{i < angaben.length - 1 && <br />}</>)}</p>
+      <p class="untertitel">{titel}</p>
+      <dl class="angaben">
+        {angaben.map((a) => (
+          <div>
+            <dt>{a.feld}</dt>
+            <dd>{istMail(a.wert) ? <a href={`mailto:${a.wert}`}>{a.wert}</a> : istTelefon(a.wert) ? <a href={`tel:${a.wert.replace(/[^\d+]/g, '')}`}>{a.wert}</a> : a.wert}</dd>
+          </div>
+        ))}
+      </dl>
+
       {abschnitte.map((a) => (
         <>
           <h2>{a.titel}</h2>
           <p>{a.text}</p>
         </>
       ))}
+
+      {bildnachweis && (
+        <>
+          <h2>Bildnachweis</h2>
+          <p>{bildnachweis}</p>
+        </>
+      )}
+
+      <h2>Schriften</h2>
+      <p>Verwendet werden die Schriften <a href={url('lizenzen/OFL-LibreBodoni.txt')}>Libre Bodoni</a>, <a href={url('lizenzen/OFL-SourceSerif4.txt')}>Source Serif 4</a> und <a href={url('lizenzen/OFL-NotoMusic.txt')}>Noto Music</a>, jeweils unter der SIL Open Font License. Sie werden direkt von dieser Website geladen.</p>
+
+      <h2>Datenschutz</h2>
+      <p>Informationen zur Verarbeitung personenbezogener Daten finden Sie in der <a href={url('datenschutz/')}>Datenschutzerklärung</a>.</p>
     </div>
   </section>
 </Seite>
@@ -21,4 +45,10 @@ const { angaben, abschnitte } = texte.impressum;
 <style>
   .seitentitel { font-size: clamp(40px, 5vw, 54px); }
   .textseite { font-size: 18px; }
+  .untertitel { font-style: italic; color: var(--tinte-2); }
+  .angaben { margin: 8px 0 12px; border-top: 3px double var(--blattgold); }
+  .angaben div { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 4px 24px; padding: 12px 0; border-bottom: 1px solid var(--linie); }
+  .angaben dt { font-size: 13px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--tinte-2); padding-top: 4px; }
+  .angaben dd { margin: 0; }
+  @media (max-width: 560px) { .angaben div { grid-template-columns: 1fr; } }
 </style>
