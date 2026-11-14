@@ -79,7 +79,7 @@ async function api(request, env, url, nutzer) {
   if (request.method === 'GET' && pfad === '/api/daten') {
     const daten = {};
     await Promise.all(Object.keys(BESTAENDE).map(async (art) => { daten[art] = await lesen(env, art); }));
-    const vornamen = Object.fromEntries(String(env.VORNAMEN || '').split(',').map((x) => x.split(':').map((y) => y.trim())).filter((x) => x.length === 2).map(([e, n]) => [e.toLowerCase(), n]));
+    const vornamen = vornamenAus(env);
     return antwort({ daten, nutzer: nutzer.email, vorname: vornamen[nutzer.email] || '', website: env.WEBSITE_URL || 'https://mancusi.at/' });
   }
 
@@ -106,7 +106,9 @@ async function api(request, env, url, nutzer) {
       return antwort({ fehler: 'Versionsangabe fehlt. Bitte Seite neu laden.' }, 400);
     }
     const anlass = String(koerper.anlass || 'Änderung').slice(0, 120).replace(/[\r\n]/g, ' ');
-    const ergebnis = await schreiben(env, art, geprueft.eintraege, koerper.sha, `${anlass} (Notenpult, ${nutzer.email})`);
+    // Im öffentlichen Repo nur der Vorname, nie die E-Mail-Adresse
+    const wer = vornamenAus(env)[nutzer.email];
+    const ergebnis = await schreiben(env, art, geprueft.eintraege, koerper.sha, `${anlass} (Notenpult${wer ? `, ${wer}` : ''})`);
     if (ergebnis.konflikt) {
       return antwort({ fehler: 'In der Zwischenzeit wurde etwas anderes gespeichert. Die Liste wird neu geladen.', konflikt: true }, 409);
     }
@@ -185,6 +187,10 @@ async function letzterBuild(env) {
 }
 
 // ---------- Hilfen ----------
+
+function vornamenAus(env) {
+  return Object.fromEntries(String(env.VORNAMEN || '').split(',').map((x) => x.split(':').map((y) => y.trim())).filter((x) => x.length === 2).map(([e, n]) => [e.toLowerCase(), n]));
+}
 
 function antwort(daten, status = 200) {
   return new Response(JSON.stringify(daten), {

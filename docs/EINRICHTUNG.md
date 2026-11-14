@@ -53,8 +53,8 @@ Ab jetzt ist das Notenpult online – **aber noch für niemanden nutzbar**: Ohne
 
 1. Cloudflare-Dashboard → **Workers & Pages** → `mancusi-notenpult` → Tab **Access**.
 2. **Protect this Worker behind Access** → Umfang **All traffic**.
-3. Wer sich anmelden darf: **E-Mail-Adresse** `gmancusi@icloud.com`.
-   Falls dort nur „Cloudflare account“ und „Email domain“ angeboten werden: zunächst „Cloudflare account“ wählen, anwenden, dann über **Edit in Zero Trust** die Regel öffnen und unter *Include → Emails* `gmancusi@icloud.com` eintragen (die Konto-Regel danach entfernen oder für dich behalten).
+3. Wer sich anmelden darf: **Guidos E-Mail-Adresse**.
+   Falls dort nur „Cloudflare account“ und „Email domain“ angeboten werden: zunächst „Cloudflare account“ wählen, anwenden, dann über **Edit in Zero Trust** die Regel öffnen und unter *Include → Emails* Guidos E-Mail-Adresse eintragen (die Konto-Regel danach entfernen oder für dich behalten).
 4. **Apply Access**.
 5. Beim ersten Mal fragt Cloudflare nach einem Namen für das „Zero Trust“-Team und dem Tarif → **Free** wählen.
 6. Unter **Zero Trust → Settings → Authentication** prüfen, dass **One-time PIN** als Anmeldemethode aktiv ist.
@@ -64,13 +64,20 @@ In `wrangler.jsonc` muss bei Weg A nichts geändert werden.
 ### Weg B – falls der Access-Tab fehlt: klassische Access-Anwendung
 
 1. **Zero Trust → Access → Applications → Add an application → Self-hosted**.
-2. Domain: `mancusi-notenpult.<name>.workers.dev`, Policy *Allow* → *Include → Emails* → `gmancusi@icloud.com`, Login-Methode **One-time PIN**.
+2. Domain: `mancusi-notenpult.<name>.workers.dev`, Policy *Allow* → *Include → Emails* → Guidos E-Mail-Adresse, Login-Methode **One-time PIN**.
 3. In der Anwendung den **Application Audience (AUD) Tag** kopieren, unter **Zero Trust → Settings → Custom Pages** die **Team domain** (`<team>.cloudflareaccess.com`) ablesen.
 4. Beides in `notenpult/wrangler.jsonc` eintragen (`ACCESS_TEAM_DOMAIN` mit `https://` davor, `ACCESS_AUD`), dann `npx wrangler deploy`.
 
 ### Doppelte Absicherung
 
-Der Worker prüft selbst noch einmal, ob die angemeldete Adresse in `ERLAUBTE_EMAILS` steht. Wer zusätzlich Zugang braucht (z. B. du), muss an **beiden** Stellen eingetragen werden: in der Access-Regel und in `ERLAUBTE_EMAILS` (kommagetrennt), danach `npx wrangler deploy`. Anzeigename für die Begrüßung: `VORNAMEN`, Format `adresse:Name,adresse:Name`.
+Der Worker prüft selbst noch einmal, ob die angemeldete Adresse in `ERLAUBTE_EMAILS` steht. Weil das Repo öffentlich ist, stehen die Adressen nicht in `wrangler.jsonc`, sondern als Secret:
+
+```bash
+npx wrangler secret put ERLAUBTE_EMAILS   # z. B. guido@example.com  (mehrere kommagetrennt)
+npx wrangler secret put VORNAMEN          # z. B. guido@example.com:Guido
+```
+
+Wer zusätzlich Zugang braucht (z. B. du), muss an **beiden** Stellen eingetragen werden: in der Access-Regel und in `ERLAUBTE_EMAILS`. Ein Secret-Befehl ersetzt den ganzen Wert, also immer alle Adressen auf einmal eingeben. In den Commits im Repo erscheint nur der Vorname aus `VORNAMEN`, nie die Adresse.
 
 ## 5. Ausprobieren
 
@@ -79,7 +86,7 @@ Der Worker prüft selbst noch einmal, ob die angemeldete Adresse in `ERLAUBTE_EM
 3. Auf **https://purdbull.github.io/GuidoWanKenobi/termine/** nachsehen, dann den Test-Termin wieder löschen.
 4. Auf dem iPhone ebenso, und dort **Teilen → Zum Home-Bildschirm** – dann hat Guido das Notenpult als App-Symbol.
 
-Jede Änderung ist ein Commit im Repo („Termin hinzugefügt … (Notenpult, gmancusi@icloud.com)“). Alles ist damit jederzeit nachvollziehbar und zurückholbar.
+Jede Änderung ist ein Commit im Repo („Termin hinzugefügt … (Notenpult, Guido)“). Alles ist damit jederzeit nachvollziehbar und zurückholbar.
 
 ## 6. Domain umstellen (erst wenn Guido zufrieden ist)
 

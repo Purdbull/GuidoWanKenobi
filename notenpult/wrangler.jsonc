@@ -19,9 +19,9 @@
     // Nur nötig, falls Access als eigene Zero-Trust-Anwendung eingerichtet wird (Weg B in EINRICHTUNG.md).
     // Bei Access direkt am Worker (Weg A, empfohlen) bleiben die Platzhalter einfach stehen.
     "ACCESS_TEAM_DOMAIN": "https://TEAMNAME.cloudflareaccess.com",
-    "ACCESS_AUD": "AUD-TAG-AUS-CLOUDFLARE-ACCESS",
-    "ERLAUBTE_EMAILS": "gmancusi@icloud.com",
-    "VORNAMEN": "gmancusi@icloud.com:Guido"
+    "ACCESS_AUD": "AUD-TAG-AUS-CLOUDFLARE-ACCESS"
+    // ERLAUBTE_EMAILS und VORNAMEN stehen bewusst NICHT hier (Repo ist öffentlich),
+    // sondern als Secret: npx wrangler secret put ERLAUBTE_EMAILS / VORNAMEN
   }
   // Geheimnis (nie hier eintragen!): npx wrangler secret put GITHUB_TOKEN
 }
