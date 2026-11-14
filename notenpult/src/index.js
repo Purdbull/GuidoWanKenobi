@@ -22,7 +22,10 @@ export default {
     const url = new URL(request.url);
     try {
       const nutzer = await anmeldungPruefen(request, env, url, ctx);
-      if (!nutzer) return antwort({ fehler: 'Nicht angemeldet.' }, 401);
+      if (!nutzer.email) {
+        console.error('Anmeldung abgelehnt:', nutzer.grund);
+        return antwort({ fehler: 'Nicht angemeldet.', grund: nutzer.grund }, 401);
+      }
 
       if (url.pathname.startsWith('/api/')) {
         return await api(request, env, url, nutzer);
@@ -43,10 +46,12 @@ async function anmeldungPruefen(request, env, url, ctx) {
   if (env.NUR_LOKAL_OHNE_ANMELDUNG === 'ja' && ['localhost', '127.0.0.1'].includes(url.hostname)) {
     return { email: 'lokal@test' };
   }
-  const email = (await emailAusAccess(request, env, ctx)).toLowerCase();
+  const email = (await emailAusAccess(request, env, ctx)).trim().toLowerCase();
+  if (!email) return { grund: 'keine-anmeldung-erkannt' };
   // Zusätzlich zur Access-Regel: nur ausdrücklich freigegebene Adressen
   const erlaubt = String(env.ERLAUBTE_EMAILS || '').toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
-  if (!email || !erlaubt.includes(email)) return null;
+  if (!erlaubt.length) return { grund: 'keine-adressen-hinterlegt' };
+  if (!erlaubt.includes(email)) return { grund: 'adresse-nicht-freigegeben' };
   return { email };
 }
 
@@ -58,15 +63,18 @@ async function emailAusAccess(request, env, ctx) {
       if (identitaet?.email) return String(identitaet.email);
     } catch (e) { console.error('Access-Identität', e); }
   }
-  // Weg 2: klassische Access-Anwendung – Token selbst prüfen (Team-Domain und AUD in wrangler.jsonc).
+  // Weg 2: Access-Token selbst prüfen – signiert vom eigenen Zero-Trust-Team (Team-Domain in wrangler.jsonc).
+  // Mit AUD-Tag wird zusätzlich geprüft, dass das Token genau für diese Anwendung ausgestellt wurde.
   const token = request.headers.get('Cf-Access-Jwt-Assertion');
-  if (!token || !env.ACCESS_TEAM_DOMAIN || !env.ACCESS_AUD || env.ACCESS_TEAM_DOMAIN.includes('TEAMNAME')) return '';
+  if (!token || !env.ACCESS_TEAM_DOMAIN || env.ACCESS_TEAM_DOMAIN.includes('TEAMNAME')) return '';
   const team = env.ACCESS_TEAM_DOMAIN.replace(/\/$/, '');
+  const aud = env.ACCESS_AUD && !env.ACCESS_AUD.includes('AUD-TAG') ? env.ACCESS_AUD : undefined;
   jwks ||= createRemoteJWKSet(new URL(`${team}/cdn-cgi/access/certs`));
   try {
-    const { payload } = await jwtVerify(token, jwks, { issuer: team, audience: env.ACCESS_AUD });
+    const { payload } = await jwtVerify(token, jwks, aud ? { issuer: team, audience: aud } : { issuer: team });
     return String(payload.email || '');
-  } catch {
+  } catch (e) {
+    console.error('Access-Token ungültig', e?.code || e?.message);
     return '';
   }
 }

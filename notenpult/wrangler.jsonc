@@ -16,9 +16,9 @@
     "GITHUB_BRANCH": "main",
     // Bis die Domain umgestellt ist, zeigt „Zur Website“ hierhin; danach auf https://mancusi.at/ ändern.
     "WEBSITE_URL": "https://purdbull.github.io/GuidoWanKenobi/",
-    // Nur nötig, falls Access als eigene Zero-Trust-Anwendung eingerichtet wird (Weg B in EINRICHTUNG.md).
-    // Bei Access direkt am Worker (Weg A, empfohlen) bleiben die Platzhalter einfach stehen.
-    "ACCESS_TEAM_DOMAIN": "https://TEAMNAME.cloudflareaccess.com",
+    // Zero-Trust-Team, das die Anmeldung ausstellt (Cloudflare One → Settings → Team domain).
+    // ACCESS_AUD: „Application Audience (AUD) Tag“ der Access-Anwendung – macht die Prüfung noch enger.
+    "ACCESS_TEAM_DOMAIN": "https://plain-grass-da31.cloudflareaccess.com",
     "ACCESS_AUD": "AUD-TAG-AUS-CLOUDFLARE-ACCESS"
     // ERLAUBTE_EMAILS und VORNAMEN stehen bewusst NICHT hier (Repo ist öffentlich),
     // sondern als Secret: npx wrangler secret put ERLAUBTE_EMAILS / VORNAMEN
