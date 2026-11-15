@@ -3,7 +3,7 @@
 // aus der Einleitung zum 3. Akt von „Lohengrin“ (Posaune I, ab Ziffer 2).
 // Erzeugt mit scripts/auftakt/notensatz.py – dort Noten und Timing ändern, nicht hier.
 ---
-<button type="button" class="auftakt" aria-label="Auftakt noch einmal abspielen">
+<div class="auftakt" data-nosnippet>
 <svg class="noten-lang" viewBox="0 -6 870 176" width="100%" fill="none" aria-hidden="true" style="display: block; overflow: visible">
 <g style="animation: fade 0.6s ease-out both"><path d="M0 112.0H702M0 94.0H702M0 76.0H702M0 58.0H702M0 40.0H702" stroke="#B9A585" stroke-width="1.1"></path><text x="4" y="105.0" font-family="'Noto Music'" font-size="72" fill="#7A5A22">&#x1D122;</text><text x="67" y="66.0" font-family="'Noto Music'" font-size="50" fill="#2B2018">&#x266F;</text><text x="93" y="111.0" font-family="'Noto Music'" font-size="72" fill="#2B2018">&#x1D135;</text><path d="M226 40V112" stroke="#2B2018" stroke-width="1.3"></path><path d="M364 40V112" stroke="#2B2018" stroke-width="1.3"></path><path d="M512 40V112" stroke="#2B2018" stroke-width="1.3"></path><path d="M584 40V112" stroke="#2B2018" stroke-width="1.3"></path><path d="M691 40V112" stroke="#2B2018" stroke-width="1.4"></path><rect x="696" y="40" width="6" height="72" fill="#2B2018"></rect></g>
 <text x="136" y="152" font-family="'Libre Bodoni', Georgia, serif" font-style="italic" font-weight="700" font-size="26" fill="#2B2018" style="transform-box: fill-box; transform-origin: center; animation: erschein 0.3s cubic-bezier(0.22, 0.75, 0.3, 1) 1.54s both">ff</text>
@@ -47,10 +47,13 @@
 <path d="M326 72.25L338.4 70.5L338.4 64.5L326 66.25Z" fill="#2B2018" style="transform-box: fill-box; transform-origin: center; animation: erschein 0.2s cubic-bezier(0.22, 0.75, 0.3, 1) 3.25s both"></path>
 <g style="transform-box: view-box; transform-origin: 506px 138px; animation: fuchteln 7.62s linear 0s both"><path d="M502.6 127.0 L422.9 27.3 L421.1 28.7 L497.4 131.0Z" fill="#FBF7EE" stroke="#2B2018" stroke-width="1.2" stroke-linejoin="round"></path><ellipse cx="506" cy="138" rx="9.5" ry="14" transform="rotate(-37.7 506 138)" fill="#7A5A22"></ellipse><ellipse cx="503.5" cy="135" rx="3.3" ry="6.3" transform="rotate(-37.7 503.5 135)" fill="#B08A45" opacity="0.8"></ellipse></g>
 </svg>
-</button>
+  <button type="button" class="auftakt__knopf" aria-label="Auftakt noch einmal abspielen"></button>
+</div>
 
 <style is:global>
-.auftakt { width: 100%; max-width: 680px; padding: 0; margin: 4px 0 -2px; border: 0; background: none; cursor: pointer; display: block; }
+.auftakt { position: relative; width: 100%; max-width: 680px; margin: 4px 0 -2px; display: block; }
+.auftakt__knopf { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: pointer; }
+.auftakt__knopf:focus-visible { outline: 2px solid var(--rot); outline-offset: 4px; }
 .auftakt svg { width: 100%; height: auto; }
 @media (max-width: 560px) { .auftakt .noten-lang { display: none !important; } .auftakt .noten-kurz { display: block !important; } }
 @keyframes fuchteln{0.00%{transform:rotate(-5deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}7.22%{transform:rotate(-5deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}11.81%{transform:rotate(-11deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}19.42%{transform:rotate(26deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}24.93%{transform:rotate(-22deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}29.19%{transform:rotate(8deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}34.38%{transform:rotate(-10deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}38.64%{transform:rotate(22deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}43.83%{transform:rotate(-22deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}48.08%{transform:rotate(8deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}53.28%{transform:rotate(-10deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}57.53%{transform:rotate(22deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}62.73%{transform:rotate(-22deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}66.98%{transform:rotate(8deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}72.18%{transform:rotate(-10deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}76.43%{transform:rotate(22deg);animation-timing-function:cubic-bezier(0.55, 0, 0.85, 0.5)}81.63%{transform:rotate(-22deg);animation-timing-function:cubic-bezier(0.15, 0.55, 0.35, 1)}87.53%{transform:rotate(4deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}94.75%{transform:rotate(-5deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}100.00%{transform:rotate(-5deg);animation-timing-function:cubic-bezier(0.45, 0, 0.55, 1)}}
@@ -59,9 +62,9 @@
 </style>
 
 <script>
-  document.querySelectorAll('.auftakt').forEach((knopf) => {
-    const neuStarten = () => knopf.querySelectorAll('svg').forEach((svg) => { const neu = svg.cloneNode(true); svg.replaceWith(neu); });
-    knopf.addEventListener('click', neuStarten);
+  document.querySelectorAll('.auftakt').forEach((huelle) => {
+    const neuStarten = () => huelle.querySelectorAll('svg').forEach((svg) => { const neu = svg.cloneNode(true); svg.replaceWith(neu); });
+    huelle.querySelector('.auftakt__knopf')?.addEventListener('click', neuStarten);
     // Falls die Seite im Hintergrund vorgeladen wurde: Auftakt erst beim tatsächlichen Öffnen spielen
     if (document.prerendering) document.addEventListener('prerenderingchange', neuStarten, { once: true });
   });

@@ -15,7 +15,7 @@ const kommend = kommendeTermine();
 const naechster = kommend[0];
 const nd = naechster ? datum(naechster.von, naechster.bis) : null;
 ---
-<Seite aktiv="start">
+<Seite aktiv="start" fassungen={{ de: '', en: 'en/' }}>
   <section class="held huelle" aria-label="Guido Mancusi">
     <div class="held__text">
       <p class="versal held__rolle">Composer · Conductor</p>

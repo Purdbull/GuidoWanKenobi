@@ -1,14 +1,20 @@
 ---
 import '../styles/global.css';
 import { texte, url } from '../lib/daten.js';
+import { graph, person, website } from '../lib/seo.js';
 import schriftTitel from '../assets/fonts/libre-bodoni.woff2?url';
 import schriftText from '../assets/fonts/source-serif-4.woff2?url';
 
 const {
-  titel = 'Guido Mancusi – Komponist und Dirigent',
-  beschreibung = 'Guido Mancusi, österreichisch-italienischer Komponist und Dirigent: Termine, Werke, Repertoire, Hörbeispiele und Biografie.',
+  titel = 'Guido Mancusi – Komponist und Dirigent in Wien',
+  beschreibung = 'Guido Mancusi, Komponist und Dirigent in Wien: Operetten, Opern und Kirchenmusik – und Dirigate von Oper bis Wiener Operette. Termine, Werke, Hörbeispiele.',
   aktiv = '',
   bild = 'bilder/guido-mancusi-taktstock.jpg',
+  sprache = 'de',
+  // Seitenspezifische strukturierte Daten (schema.org-Knoten), werden an Person und Website angehängt
+  daten = [],
+  // Sprachfassungen derselben Seite: { de: 'pfad/', en: 'en/' }
+  fassungen = null,
 } = Astro.props;
 
 const kanonisch = new URL(Astro.url.pathname, Astro.site);
@@ -24,20 +30,12 @@ const NAV = [
   { href: 'biografie/', text: 'Biografie', key: 'biografie' },
 ];
 const navHref = (n) => (n.start ? url('') + n.href : url(n.href));
-const person = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Guido Mancusi',
-  jobTitle: ['Composer', 'Conductor', 'Komponist', 'Dirigent'],
-  birthDate: '1966',
-  url: Astro.site?.toString(),
-  image: bildUrl.toString(),
-  email: `mailto:${texte.kontakt.email}`,
-  sameAs: Object.values(texte.social),
-};
+const site = new URL(url(''), Astro.site);
+const strukturiert = graph(website(site), person(site), daten);
+const fassungsUrl = (pfad) => new URL(url(pfad), Astro.site).toString();
 ---
 <!doctype html>
-<html lang="de">
+<html lang={sprache}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,7 +48,9 @@ const person = {
   <link rel="preload" href={schriftTitel} as="font" type="font/woff2" crossorigin />
   <link rel="preload" href={schriftText} as="font" type="font/woff2" crossorigin />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="de_AT" />
+  <meta property="og:locale" content={sprache === 'en' ? 'en_GB' : 'de_AT'} />
+  {fassungen && Object.entries(fassungen).map(([l, p]) => <link rel="alternate" hreflang={l} href={fassungsUrl(p)} />)}
+  {fassungen?.de && <link rel="alternate" hreflang="x-default" href={fassungsUrl(fassungen.de)} />}
   <meta property="og:site_name" content="Guido Mancusi" />
   <meta property="og:title" content={titel} />
   <meta property="og:description" content={beschreibung} />
@@ -58,7 +58,7 @@ const person = {
   <meta property="og:image" content={bildUrl} />
   <meta name="twitter:card" content="summary_large_image" />
   <noscript><style>[data-sichtbar] .gestaffelt { opacity: 1 !important; transform: none !important; }</style></noscript>
-  <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  <script type="application/ld+json" set:html={JSON.stringify(strukturiert)} />
   {/* Unterseiten schon beim Draufzeigen vorladen – der Wechsel wirkt dann sofort (Chrome/Edge) */}
   <script type="speculationrules" set:html={JSON.stringify({ prerender: [{ where: { and: [{ href_matches: `${BASIS}*` }, { not: { href_matches: '*.mp3' } }, { not: { href_matches: BASIS } }, { not: { href_matches: `${BASIS}#*` } }] }, eagerness: 'moderate' }] })} />
 </head>

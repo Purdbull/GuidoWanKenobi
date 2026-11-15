@@ -112,7 +112,11 @@ Am Tag vorher beim DNS-Anbieter die TTL der Einträge `mancusi.at` und `www` auf
 4. Workflow **Website** einmal per **Run workflow** starten – Adressen und Vorschaubilder stellen sich dabei von selbst auf `https://mancusi.at` um.
 5. In `notenpult/wrangler.jsonc` `WEBSITE_URL` auf `https://mancusi.at/` setzen → `npx wrangler deploy`.
 6. Prüfen: Startseite, Unterseiten, Hörbeispiele, Impressum, eine Test-Mail an office@mancusi.at.
-7. **Erst danach** WordPress-Hosting kündigen. Vorher ein vollständiges Backup (Dateien + Datenbank) ziehen.
+7. **Bei Google und Bing anmelden** (je 5 Minuten, kostenlos):
+   - [Google Search Console](https://search.google.com/search-console): Property `mancusi.at` als Domain hinzufügen (TXT-Eintrag beim DNS-Anbieter), dann unter *Sitemaps* `https://mancusi.at/sitemap.xml` einreichen.
+   - [Bing Webmaster Tools](https://www.bing.com/webmasters): Website aus der Search Console importieren. Bing liefert auch Ergebnisse für KI-Suchen (z. B. Copilot, teils ChatGPT).
+   - Danach zeigt die Search Console, für welche Suchbegriffe die Seite erscheint – die beste Grundlage, Texte später nachzuschärfen.
+8. **Erst danach** WordPress-Hosting kündigen. Vorher ein vollständiges Backup (Dateien + Datenbank) ziehen.
 
 Alte WordPress-Adressen (`/termine-2/`, `/?p=123` …) führen danach auf die eigene 404-Seite „Generalpause“, die auf alle Bereiche verlinkt.
 

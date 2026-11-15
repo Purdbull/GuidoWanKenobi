@@ -1,7 +1,8 @@
 ---
 import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
-import { werkeNeuesteZuerst, werke, notenregal, WERK_KATEGORIEN, texte } from '../lib/daten.js';
+import { werkeNeuesteZuerst, werke, notenregal, WERK_KATEGORIEN, texte, url } from '../lib/daten.js';
+import { kompositionen, personId } from '../lib/seo.js';
 
 const faecher = notenregal();
 const kategorien = WERK_KATEGORIEN.filter((k) => werke.some((w) => w.kat === k));
@@ -12,11 +13,23 @@ const zufall = (s) => { let h = 2166136261; for (const c of s) { h ^= c.charCode
 const hoehe = (w) => Math.round(68 + zufall(w.id) * 24 + (DICKE[w.kat] || 1) * 6);
 const neueste = werkeNeuesteZuerst();
 const start = neueste[0];
+
+// Bühnenwerke eigens hervorheben – danach suchen Theater und Festivals
+const GENRES = [[/musical/i, 'Musical'], [/kinderop|für kinder/i, 'Kinderoper'], [/operette/i, 'Operette'], [/\boper\b/i, 'Oper'], [/ballett/i, 'Ballett'], [/schauspiel|stück/i, 'Schauspielmusik']];
+const genre = (w) => (GENRES.find(([re]) => re.test(`${w.text} ${w.titel}`)) || [null, 'Bühnenwerk'])[1];
+const buehne = neueste.filter((w) => w.kat === 'Bühnenwerke');
+const site = new URL(url(''), Astro.site);
+const verzeichnisDaten = {
+  '@type': 'CollectionPage',
+  name: 'Werkverzeichnis Guido Mancusi',
+  about: { '@id': personId(site) },
+  mainEntity: { '@type': 'ItemList', numberOfItems: werke.length, itemListElement: kompositionen(site).map((k, i) => ({ '@type': 'ListItem', position: i + 1, item: k })) },
+};
 ---
-<Seite titel="Werkverzeichnis – Guido Mancusi" beschreibung={`Das Werkverzeichnis des Komponisten Guido Mancusi: ${werke.length} Werke von Bühnenwerken über Orchestermusik bis zu Bearbeitungen.`} aktiv="werke">
+<Seite titel="Werkverzeichnis – Kompositionen von Guido Mancusi" beschreibung={`Alle ${werke.length} Werke des Komponisten Guido Mancusi: Operetten, Opern, Kinderopern, Ballett, Messen und Passionen, Orchesterwerke, Filmmusik und Lieder.`} aktiv="werke" daten={[verzeichnisDaten]}>
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="B" tempo="Andante cantabile" mm="72" titel="Werkverzeichnis" ebene="h1" />
-    <p class="einleitung">Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper – {werke.length} Werke, eingeräumt ins Notenregal. Jeder Rücken ist ein Werk.</p>
+    <p class="einleitung">Das Werkverzeichnis des Komponisten Guido Mancusi: Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper – {werke.length} Werke, eingeräumt ins Notenregal. Jeder Rücken ist ein Werk.</p>
 
     <div class="legende" role="group" aria-label="Nach Gattung filtern">
       <button type="button" class="legende__knopf" aria-pressed="true" data-kat="">Alle <span>{werke.length}</span></button>
@@ -46,22 +59,41 @@ const start = neueste[0];
 
       <aside class="titelblatt-platz">
         <div class="titelblatt" id="titelblatt" aria-live="polite">
-          {werke.map((w) => (
-            <article class="tb" data-id={w.id} hidden={w !== start} style={`--f: var(--k${farbe(w.kat)})`}>
-              <p class="versal tb__kat"><i aria-hidden="true"></i>{w.kat}</p>
-              <h2 class="tb__titel">{w.titel}</h2>
-              {w.text && <p class="tb__text">{w.text}</p>}
-              <p class="tb__jahr">{w.jahr}</p>
-              <div class="tb__fuss">
-                <span class="tb__autor">Guido Mancusi</span>
-                <a class="mehr" href={texte.shop}>Zum Notenshop</a>
-              </div>
-            </article>
-          ))}
+          {/* Ein Titelblatt; beim Klick auf einen Rücken füllt es das Skript mit den Angaben aus #werkdaten */}
+          <article class="tb" data-id={start.id} style={`--f: var(--k${farbe(start.kat)})`}>
+            <p class="versal tb__kat"><i aria-hidden="true"></i><span>{start.kat}</span></p>
+            <p class="tb__titel">{start.titel}</p>
+            <p class="tb__text" hidden={!start.text}>{start.text}</p>
+            <p class="tb__jahr">{start.jahr}</p>
+            <div class="tb__fuss">
+              <span class="tb__autor">Guido Mancusi</span>
+              <a class="mehr" href={texte.shop}>Zum Notenshop</a>
+            </div>
+          </article>
         </div>
+        <script type="application/json" id="werkdaten" set:html={JSON.stringify(Object.fromEntries(werke.map((w) => [w.id, [w.titel, w.text, w.jahr, w.kat, farbe(w.kat)]])))} />
       </aside>
     </div>
   </section>
+
+  {buehne.length > 0 && (
+    <section class="abschnitt huelle buehnenwerke" aria-labelledby="buehnenwerke">
+      <div class="bw__kopf">
+        <p class="versal bw__label">Für Theater und Festivals</p>
+        <h2 id="buehnenwerke" class="bw__titel">Bühnenwerke</h2>
+        <p class="bw__lead">Operetten, Opern, Kinderopern, Ballett und Musik zum Schauspiel – {buehne.length} Werke für die Bühne. Anfragen zu Aufführungen und Notenmaterial an <a href={`mailto:${texte.kontakt.email}`}>{texte.kontakt.email}</a>.</p>
+      </div>
+      <ol class="bw__liste" data-sichtbar>
+        {buehne.map((w, i) => (
+          <li class="bw gestaffelt" style={`--i:${i}`}>
+            <p class="bw__meta"><span class="bw__jahr">{w.jahr}</span><span class="bw__genre">{genre(w)}</span></p>
+            <h3 class="bw__name">{w.titel}</h3>
+            {w.text && <p class="bw__text">{w.text}</p>}
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
 
   <section class="abschnitt huelle" aria-labelledby="verzeichnis">
     <div class="verzeichnis__kopf">
@@ -158,6 +190,19 @@ const start = neueste[0];
     .regal { padding-inline: 8px; }
   }
 
+  /* ---------- Bühnenwerke ---------- */
+  .bw__kopf { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+  .bw__label { color: var(--rot); }
+  .bw__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(38px, 5vw, 56px); line-height: 1.02; letter-spacing: -0.015em; }
+  .bw__lead { font-size: 20px; line-height: 1.55; color: var(--tinte-2); }
+  .bw__liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr)); gap: 0 56px; border-top: 3px double var(--blattgold); }
+  .bw { display: flex; flex-direction: column; gap: 6px; padding: 24px 0 22px; border-bottom: 1px solid var(--linie); min-width: 0; }
+  .bw__meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+  .bw__jahr { font-family: var(--titel); font-size: 20px; line-height: 1.2; color: var(--rot); font-variant-numeric: lining-nums; }
+  .bw__genre { font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+  .bw__name { font-family: var(--titel); font-style: italic; font-weight: 500; font-size: clamp(24px, 2.4vw, 28px); line-height: 1.15; hyphens: auto; overflow-wrap: break-word; }
+  .bw__text { font-size: 17px; line-height: 1.5; color: var(--tinte-2); hyphens: auto; overflow-wrap: break-word; max-width: 46ch; }
+
   /* ---------- Verzeichnis ---------- */
   .verzeichnis__kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 40px; border-bottom: 3px double var(--blattgold); padding-bottom: 16px; }
   .verzeichnis__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(34px, 4.4vw, 48px); line-height: 1; }
@@ -177,7 +222,8 @@ const start = neueste[0];
 
 <script>
   const ruecken = [...document.querySelectorAll('.ruecken')];
-  const blaetter = [...document.querySelectorAll('.tb')];
+  const blatt = document.querySelector('.tb');
+  const werkdaten = JSON.parse(document.getElementById('werkdaten')?.textContent || '{}');
   const regal = document.querySelector('.regal');
   const zeilen = [...document.querySelectorAll('.werke .werk')];
   const eingabe = document.getElementById('werksuche');
@@ -187,7 +233,17 @@ const start = neueste[0];
   // Notenrücken wählen → Titelblatt zeigen
   const waehle = (r) => {
     ruecken.forEach((x) => x.setAttribute('aria-pressed', String(x === r)));
-    blaetter.forEach((b) => { b.hidden = b.dataset.id !== r.dataset.id; });
+    const d = werkdaten[r.dataset.id];
+    if (blatt && d && blatt.dataset.id !== r.dataset.id) {
+      const [titel, text, jahr, kat, f] = d;
+      blatt.dataset.id = r.dataset.id;
+      blatt.style.setProperty('--f', `var(--k${f})`);
+      blatt.querySelector('.tb__kat span').textContent = kat;
+      blatt.querySelector('.tb__titel').textContent = titel;
+      const t = blatt.querySelector('.tb__text'); t.textContent = text; t.hidden = !text;
+      blatt.querySelector('.tb__jahr').textContent = jahr;
+      blatt.style.animation = 'none'; void blatt.offsetWidth; blatt.style.animation = '';
+    }
     const platz = document.querySelector('.titelblatt-platz');
     if (platz && getComputedStyle(platz).position !== 'sticky') {
       const oben = platz.getBoundingClientRect().top;

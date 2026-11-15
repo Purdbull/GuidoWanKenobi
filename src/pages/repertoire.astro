@@ -10,10 +10,10 @@ const ROEMISCH = ['I', 'II', 'III', 'IV', 'V'];
 const PARTE = ['Parte prima', 'Parte seconda', 'Parte terza', 'Parte quarta', 'Parte quinta'];
 const mehrzahl = (n, eins, viele) => `${n} ${n === 1 ? eins : viele}`;
 ---
-<Seite titel="Repertoire – Guido Mancusi" beschreibung="Das Dirigier-Repertoire von Guido Mancusi: Opern, Operetten, Musicals, Ballette, Konzerte und Kirchenmusik." aktiv="repertoire">
+<Seite titel="Repertoire – Guido Mancusi dirigiert Oper, Operette und Musical" beschreibung={`${z.werke} Werke, die Guido Mancusi dirigiert: Opern von Mozart bis Puccini, Operetten von Strauss bis Lehár, Musicals, Ballette, Konzerte und Kirchenmusik.`} aktiv="repertoire">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" ebene="h1" />
-    <p class="einleitung">Musiktheater und Konzert aus mehr als drei Jahrhunderten – von {z.aeltester?.name ?? 'Purcell'} bis zum Broadway.</p>
+    <p class="einleitung">Was Guido Mancusi als Dirigent auf dem Pult hat: Musiktheater und Konzert aus mehr als drei Jahrhunderten – von {z.aeltester?.name ?? 'Purcell'} bis zum Broadway.</p>
     <dl class="zahlen blatt" data-sichtbar>
       <div class="gestaffelt" style="--i:0"><dd data-zaehlen={z.werke}>{z.werke}</dd><dt>Werke</dt></div>
       <div class="gestaffelt" style="--i:1"><dd data-zaehlen={z.komponisten}>{z.komponisten}</dd><dt>Komponisten</dt></div>

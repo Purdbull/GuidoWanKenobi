@@ -8,7 +8,7 @@ const { termine = [], max = 0, leer = 'Neue Termine folgen in Kürze.', vergange
   {termine.map((t) => {
     const d = datum(t.von, t.bis);
     return (
-      <article class="zeile" data-ende={vergangen ? undefined : ende(t)}>
+      <article class="zeile" id={t.id} data-ende={vergangen ? undefined : ende(t)}>
         <div class="zeile__datum">
           <span class="zeile__gross">{d.gross}</span>
           <span class="zeile__klein">{d.klein}</span>

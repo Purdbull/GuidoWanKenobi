@@ -28,6 +28,13 @@ notenpult/         Worker (src/) und Oberfläche (public/)
 
 Der GitHub-Token liegt ausschließlich als Secret im Worker (`wrangler secret put GITHUB_TOKEN`), nie im Browser und nie im Repo.
 
+## Suchmaschinen und KI
+
+- Seitentitel und Beschreibungen je Seite, strukturierte Daten (schema.org) aus `src/lib/seo.js`: Person, Werkverzeichnis, Termine als Veranstaltungen
+- `robots.txt`, `sitemap.xml` und `llms.txt` werden beim Bauen aus den Daten erzeugt (`src/pages/*.js`); in der github.io-Vorschau ist alles auf `noindex`
+- Englische Kurzfassung unter `/en/`
+- Weitere Profile (Wikipedia, Datenbanken) in `PROFILE` in `src/lib/seo.js` eintragen
+
 ## Lokal
 
 ```bash

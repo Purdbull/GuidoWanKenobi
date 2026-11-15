@@ -1,0 +1,89 @@
+---
+// Englische Kurzfassung für internationale Theater, Veranstalter und KI-Assistenten.
+// Die Fakten stammen aus der deutschen Biografie und den gepflegten Daten.
+import Seite from '../../layouts/Seite.astro';
+import { texte, werkeNeuesteZuerst, kommendeTermine, repertoire, url } from '../../lib/daten.js';
+import { personId } from '../../lib/seo.js';
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const date = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+const GENRES = [[/musical/i, 'Musical play'], [/kinderop|für kinder/i, "Children's opera"], [/kirchenoperette/i, 'Church operetta'], [/operette/i, 'Operetta'], [/\boper\b/i, 'Opera'], [/ballett/i, 'Ballet'], [/schauspiel|stück/i, 'Incidental music']];
+const genre = (w) => (GENRES.find(([re]) => re.test(`${w.text} ${w.titel}`)) || [null, 'Stage work'])[1];
+const stage = werkeNeuesteZuerst().filter((w) => w.kat === 'Bühnenwerke');
+const upcoming = kommendeTermine().slice(0, 4);
+const count = (k) => repertoire.filter((r) => r.kat === k).length;
+const site = new URL(url(''), Astro.site);
+const page = { '@type': 'ProfilePage', name: 'Guido Mancusi – Composer and Conductor', inLanguage: 'en', mainEntity: { '@id': personId(site) } };
+---
+<Seite sprache="en" titel="Guido Mancusi – Composer and Conductor, Vienna" beschreibung="Guido Mancusi, Austrian-Italian composer and conductor in Vienna: operettas, operas and sacred music; conducting opera, Viennese operetta and concerts." fassungen={{ de: '', en: 'en/' }} daten={[page]}>
+  <section class="abschnitt huelle en">
+    <div class="en__kopf">
+      <p class="versal en__label">Composer · Conductor</p>
+      <h1 class="en__titel">Guido Mancusi</h1>
+      <p class="en__lead">Austrian-Italian composer and conductor, based in Vienna. Born in Naples in 1966, he writes operettas, operas, children's operas, masses and orchestral works – and conducts opera, Viennese operetta, musicals and symphonic concerts across Europe and beyond.</p>
+      <p class="en__de"><a href={url('')} hreflang="de" lang="de">Deutsche Website</a></p>
+    </div>
+
+    <div class="en__spalten">
+      <div class="textseite">
+        <h2>Conductor</h2>
+        <p>Guido Mancusi grew up in a musical family; his first piano lessons were with Nino Rota. After moving to Vienna he was a soprano soloist with the Vienna Boys' Choir, then studied bassoon and voice at the Vienna City Conservatory and composition and conducting at the Vienna University of Music, graduating with distinction. He assisted Riccardo Muti at La Scala, worked as an assistant in Bayreuth and with Adam Fischer.</p>
+        <p>After first engagements as Kapellmeister and chorus director in Coburg, at the Theater an der Wien, the Raimundtheater and in St. Pölten, he spent five years as chief conductor in Klagenfurt. In Vienna he became chief conductor of the Schloss Schönbrunn Orchestra and founded the Kammeroper Schönbrunn. Tours have taken him to Moscow, Tel Aviv, Helsinki, Stockholm, Rome, Toronto, the USA, South America and festivals in Japan and South Korea.</p>
+        <p>He was a permanent guest conductor at the Vienna Volksoper from 2011 to 2022, Principal Guest Conductor of the Dohnányi Orchestra Budapest from 2017, music director of the Mörbisch Lake Festival in 2018 and 2021, and Principal Conductor of the Timișoara Opera from 2021 to 2026.</p>
+        <p>His conducting repertoire spans {repertoire.length} works: {count('Opern')} operas, {count('Operetten')} operettas, {count('Musicals')} musicals, {count('Ballette')} ballets and {count('Konzerte und Kirchenmusik')} concert and sacred works – from Mozart, Haydn and Verdi to Johann Strauss, Puccini and Stravinsky. <a href={url('repertoire/')} hreflang="de">Full repertoire (German)</a>.</p>
+
+        <h2>Composer</h2>
+        <p>Composing has accompanied Guido Mancusi all his life. His catalogue includes masses, passions, cantatas, orchestral works, film scores, operettas, a ballet and an opera, as well as commissions such as a bassoon concerto, two children's operas, a St John Passion and solo sonatas for strings. With Werner Schneyder he wrote the operetta <i lang="de">Der Traummann</i> (after Oscar Wilde) for Munich; with Marcus Everding the opera <i lang="de">In Gottes Namen</i> for Gießen, the quasi-operetta <i lang="de">Kowalski oder das Geschenk</i> and the church opera <i lang="de">Der Hauptmann</i>. He is currently writing the musical play <i lang="de">Hanna Glawari – Die lustige Witwe 2.0</i>.</p>
+        <p><a href={url('werke/')} hreflang="de">Complete catalogue of works (German)</a></p>
+      </div>
+
+      <aside class="en__seite">
+        <section class="blatt en__box" aria-labelledby="stage">
+          <h2 id="stage" class="versal">Stage works</h2>
+          <ul>
+            {stage.map((w) => <li><span class="en__jahr">{w.jahr}</span><span><i lang="de">{w.titel}</i><small>{genre(w)}</small></span></li>)}
+          </ul>
+          <p class="en__hinweis">Enquiries about performances and performance material: <a href={`mailto:${texte.kontakt.email}`}>{texte.kontakt.email}</a></p>
+        </section>
+
+        {upcoming.length > 0 && (
+          <section class="en__box en__box--hell" aria-labelledby="dates">
+            <h2 id="dates" class="versal">Upcoming</h2>
+            <ul>
+              {upcoming.map((t) => <li><span class="en__jahr">{date(t.von)}</span><span lang="de">{t.titel}{t.ort && <small>{t.ort}</small>}</span></li>)}
+            </ul>
+            <p class="en__hinweis"><a href={url('termine/')} hreflang="de">All dates</a></p>
+          </section>
+        )}
+
+        <section class="en__box en__box--hell" aria-labelledby="contact">
+          <h2 id="contact" class="versal">Contact</h2>
+          <p><a href={`mailto:${texte.kontakt.email}`}>{texte.kontakt.email}</a><br />{texte.kontakt.adresse}</p>
+        </section>
+      </aside>
+    </div>
+  </section>
+</Seite>
+
+<style>
+  .en { gap: 48px; }
+  .en__kopf { display: flex; flex-direction: column; gap: 14px; max-width: 820px; }
+  .en__label { color: var(--rot); }
+  .en__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(48px, 7vw, 84px); line-height: .98; letter-spacing: -0.02em; }
+  .en__lead { font-family: var(--titel); font-style: italic; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.4; color: var(--tinte-2); text-wrap: pretty; }
+  .en__de { font-size: 16px; }
+  .en__spalten { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 48px 72px; align-items: start; }
+  .en__spalten h2:not(.versal) { font-family: var(--titel); font-weight: 500; font-size: clamp(28px, 3.2vw, 36px); margin-top: 8px; }
+  .en__seite { display: flex; flex-direction: column; gap: 28px; }
+  .en__box { padding: 28px 28px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .en__box--hell { border-top: 3px double var(--blattgold); padding: 18px 0 0; }
+  .en__box .versal { color: var(--rot); font-size: 14px; }
+  .en__box ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .en__box li { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--linie); font-size: 17px; line-height: 1.35; }
+  .en__box li:last-child { border-bottom: 0; }
+  .en__box li > span:last-child { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+  .en__box small { display: block; font-size: 13px; letter-spacing: .08em; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
+  .en__jahr { font-family: var(--titel); color: var(--rot); font-variant-numeric: lining-nums; }
+  .en__hinweis { font-size: 15px; color: var(--tinte-2); }
+  @media (max-width: 900px) { .en__spalten { grid-template-columns: 1fr; } }
+</style>

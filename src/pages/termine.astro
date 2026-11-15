@@ -5,6 +5,7 @@ import TerminListe from '../components/TerminListe.astro';
 import {
   kommendeTermine, vergangeneTermine, termineNachMonat, datum, wochentag, monatKurz, url,
 } from '../lib/daten.js';
+import { veranstaltungen } from '../lib/seo.js';
 
 const kommend = kommendeTermine();
 const naechster = kommend[0];
@@ -15,11 +16,12 @@ const jahre = [...new Set(vergangen.map((t) => t.von.slice(0, 4)))];
 const nd = naechster ? datum(naechster.von, naechster.bis) : null;
 const tagZahl = naechster ? Number(naechster.von.slice(8, 10)) : 0;
 ---
-<Seite titel="Termine – Guido Mancusi" beschreibung="Kommende Konzerte und Opernabende mit Guido Mancusi." aktiv="termine">
+<Seite titel="Termine – Konzerte und Vorstellungen mit Guido Mancusi" beschreibung="Kommende Konzerte, Opern- und Operettenvorstellungen mit dem Dirigenten Guido Mancusi – mit Datum, Ort, Programm und Kalendereintrag." aktiv="termine" daten={veranstaltungen(new URL(url(''), Astro.site))}>
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="A" tempo="Allegro con brio" mm="144" titel="Termine" ebene="h1" />
+    <p class="einleitung">Konzerte, Opern- und Operettenabende mit Guido Mancusi am Dirigentenpult – jeder Termin auch zum Eintragen in den eigenen Kalender.</p>
     <figure class="foto buehnenfoto">
-      <img src={url('bilder/guido-mancusi-applaus.webp')} width="1800" height="889" alt="Guido Mancusi mit Orchester beim Schlussapplaus in einem Konzertsaal" fetchpriority="high" />
+      <img src={url('bilder/guido-mancusi-applaus.webp')} srcset={`${url('bilder/guido-mancusi-applaus-900.webp')} 900w, ${url('bilder/guido-mancusi-applaus.webp')} 1800w`} sizes="(max-width: 1240px) 100vw, 1136px" width="1800" height="889" alt="Guido Mancusi mit Orchester beim Schlussapplaus in einem Konzertsaal" fetchpriority="high" />
     </figure>
 
     {naechster ? (

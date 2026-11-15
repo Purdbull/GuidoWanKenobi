@@ -71,5 +71,36 @@
       }
     ]
   },
-  "notenpult": "https://mancusi-notenpult.cnmp27rkfm.workers.dev/"
+  "notenpult": "https://mancusi-notenpult.cnmp27rkfm.workers.dev/",
+  "biografieKapitel": {
+    "0": "Herkunft und Ausbildung",
+    "1": "Der Dirigent",
+    "5": "Der Komponist"
+  },
+  "steckbrief": [
+    {
+      "feld": "Geboren",
+      "wert": "1966 in Neapel"
+    },
+    {
+      "feld": "Lebt in",
+      "wert": "Wien"
+    },
+    {
+      "feld": "Tätig als",
+      "wert": "Komponist und Dirigent"
+    },
+    {
+      "feld": "Ausbildung",
+      "wert": "Wiener Sängerknaben; Komposition und Dirigieren an der Musikhochschule Wien"
+    },
+    {
+      "feld": "Als Dirigent",
+      "wert": "Chefdirigent am Stadttheater Klagenfurt und des Schloss Schönbrunn Orchesters · Volksoper Wien (2011–2022) · Seefestspiele Mörbisch (2018, 2021) · Oper Timișoara (2021–2026)"
+    },
+    {
+      "feld": "Bühnenwerke",
+      "wert": "„Der Traummann“ (Operette nach Oscar Wilde) · „In Gottes Namen“ (Oper) · „Kowalski oder das Geschenk“ (Quasi-Operette) · „Anton und Maria“ (Operette für Kinder) · „Hanna Glawari 2.0“ (Musicalplay)"
+    }
+  ]
 }

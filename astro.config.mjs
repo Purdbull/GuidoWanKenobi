@@ -7,6 +7,6 @@ export default defineConfig({
   site: process.env.SITE_URL || 'https://mancusi.at',
   base: process.env.BASE_PATH || '/',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  build: { format: 'directory', inlineStylesheets: 'always' },
   compressHTML: true,
 });
