@@ -778,5 +778,15 @@
     "ort": "Philharmonie Essen",
     "mit": "Essener Philharmoniker",
     "programm": "Balleröffnung - Johann Strauß, amncusi"
+  },
+  {
+    "id": "t-mwhlwqry1hw8",
+    "von": "2027-02-24",
+    "bis": "",
+    "zeit": "19:00",
+    "titel": "Chorkonzert zur Fastenzeit",
+    "ort": "Franziskanerkirche Wien",
+    "mit": "Chor der MUK-Wien",
+    "programm": "Gesualdo, Rihm, Dolikh, Pärt, Bruckner, Liszt, Mancusi, Monteverdi"
   }
 ]
