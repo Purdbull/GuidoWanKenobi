@@ -30,6 +30,9 @@ const verzeichnisDaten = {
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="B" tempo="Andante cantabile" mm="72" titel="Werkverzeichnis" ebene="h1" />
     <p class="einleitung">Das Werkverzeichnis des Komponisten Guido Mancusi: Messen, Passionen und Kantaten, Orchesterwerke und Filmmusiken, Operetten, Ballett und Oper – {werke.length} Werke, eingeräumt ins Notenregal. Jeder Rücken ist ein Werk.</p>
+    <figure class="foto werkfoto">
+      <img src={url('bilder/guido-mancusi-notenblaetter.webp')} width="900" height="600" alt="Guido Mancusi wirft Notenblätter in die Luft" fetchpriority="high" />
+    </figure>
 
     <div class="legende" role="group" aria-label="Nach Gattung filtern">
       <button type="button" class="legende__knopf" aria-pressed="true" data-kat="">Alle <span>{werke.length}</span></button>
@@ -78,10 +81,15 @@ const verzeichnisDaten = {
 
   {buehne.length > 0 && (
     <section class="abschnitt huelle buehnenwerke" aria-labelledby="buehnenwerke">
+      <div class="bw__oben">
       <div class="bw__kopf">
         <p class="versal bw__label">Für Theater und Festivals</p>
         <h2 id="buehnenwerke" class="bw__titel">Bühnenwerke</h2>
         <p class="bw__lead">Operetten, Opern, Kinderopern, Ballett und Musik zum Schauspiel – {buehne.length} Werke für die Bühne. Anfragen zu Aufführungen und Notenmaterial an <a href={`mailto:${texte.kontakt.email}`}>{texte.kontakt.email}</a>.</p>
+      </div>
+      <figure class="foto bw__foto">
+        <img src={url('bilder/guido-mancusi-partitur.webp')} width="320" height="320" alt="Guido Mancusi vor einer seiner Partituren" loading="lazy" />
+      </figure>
       </div>
       <ol class="bw__liste" data-sichtbar>
         {buehne.map((w, i) => (
@@ -190,7 +198,13 @@ const verzeichnisDaten = {
     .regal { padding-inline: 8px; }
   }
 
+  .werkfoto img { aspect-ratio: 2 / 1; object-fit: cover; object-position: 50% 30%; }
+  @media (max-width: 640px) { .werkfoto img { aspect-ratio: 3 / 2; } }
+
   /* ---------- Bühnenwerke ---------- */
+  .bw__oben { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px 56px; }
+  .bw__oben .bw__kopf { flex: 1 1 420px; }
+  .bw__foto { flex: 0 1 300px; max-width: 300px; }
   .bw__kopf { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
   .bw__label { color: var(--rot); }
   .bw__titel { font-family: var(--titel); font-weight: 500; font-size: clamp(38px, 5vw, 56px); line-height: 1.02; letter-spacing: -0.015em; }

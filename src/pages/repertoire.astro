@@ -1,7 +1,7 @@
 ---
 import Seite from '../layouts/Seite.astro';
 import Abschnittskopf from '../components/Abschnittskopf.astro';
-import { repertoireNachKategorie, repertoireZahlen } from '../lib/daten.js';
+import { repertoireNachKategorie, repertoireZahlen, url } from '../lib/daten.js';
 import { lebenszeit } from '../lib/komponisten.js';
 
 const gruppen = repertoireNachKategorie();
@@ -13,7 +13,12 @@ const mehrzahl = (n, eins, viele) => `${n} ${n === 1 ? eins : viele}`;
 <Seite titel="Repertoire – Guido Mancusi dirigiert Oper, Operette und Musical" beschreibung={`${z.werke} Werke, die Guido Mancusi dirigiert: Opern von Mozart bis Puccini, Operetten von Strauss bis Lehár, Musicals, Ballette, Konzerte und Kirchenmusik.`} aktiv="repertoire">
   <section class="abschnitt huelle">
     <Abschnittskopf ziffer="C" tempo="Moderato maestoso" mm="96" titel="Repertoire" ebene="h1" />
-    <p class="einleitung">Was Guido Mancusi als Dirigent auf dem Pult hat: Musiktheater und Konzert aus mehr als drei Jahrhunderten – von {z.aeltester?.name ?? 'Purcell'} bis zum Broadway.</p>
+    <div class="rep__intro">
+      <p class="einleitung">Was Guido Mancusi als Dirigent auf dem Pult hat: Musiktheater und Konzert aus mehr als drei Jahrhunderten – von {z.aeltester?.name ?? 'Purcell'} bis zum Broadway.</p>
+      <figure class="foto rep__foto">
+        <img src={url('bilder/guido-mancusi-taktstock-blick.webp')} width="226" height="320" alt="Guido Mancusi mit Taktstock, die Arme verschränkt" />
+      </figure>
+    </div>
     <dl class="zahlen blatt" data-sichtbar>
       <div class="gestaffelt" style="--i:0"><dd data-zaehlen={z.werke}>{z.werke}</dd><dt>Werke</dt></div>
       <div class="gestaffelt" style="--i:1"><dd data-zaehlen={z.komponisten}>{z.komponisten}</dd><dt>Komponisten</dt></div>
@@ -65,6 +70,11 @@ const mehrzahl = (n, eins, viele) => `${n} ${n === 1 ? eins : viele}`;
 </Seite>
 
 <style>
+  .rep__intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px 56px; }
+  .rep__intro .einleitung { flex: 1 1 420px; }
+  .rep__foto { flex: 0 0 auto; width: 220px; }
+  @media (max-width: 560px) { .rep__foto { width: 180px; } }
+
   /* ---------- Kennzahlen ---------- */
   .zahlen { margin: 8px 0 0; padding: 40px clamp(20px, 4vw, 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 28px; }
   .zahlen div { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; border-left: 1px solid var(--blattgold); }
